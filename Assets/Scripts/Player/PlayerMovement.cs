@@ -21,9 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject bullet;
     // Variabile per il gameobject del proiettile
     [SerializeField] Transform gun;
-    //Variabile per spostare o scalare l'oggetto
-    [SerializeField] GameObject Player;
-    
+    //Variabile per spostare o scalare l'oggetto    
     Vector2 moveInput; 
     //Variabile per il vettore che serve al player per muoversi
     Rigidbody2D myRigidbody;
@@ -37,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     float gravityScaleAtStart;
     //Variabile per la gravità
     [SerializeField] public GameObject PauseMenu;
+    [SerializeField] GameObject Player;
+
     bool isAlive = true;
     //Variabile per identificare la morte
     bool stopInput = false;
@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     bool heShoot = false;
     private Vector2 stopMove = new Vector2 (0f, 0f);
     bool isGround = true;
+    private bool platform = false;
+    [SerializeField] private LayerMask platformLayer;
 
 
 
@@ -65,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         //Recupera i componenti del capsule collider
         myFeetCollider = GetComponent<BoxCollider2D>();
         //Recupera i componenti del box collider
+        //Player = GetComponent<GameObject>();
         gravityScaleAtStart = myRigidbody.gravityScale;
         //Le dimensioni della gravità diventano quelle del rigidbody
     }
@@ -80,6 +83,13 @@ public class PlayerMovement : MonoBehaviour
         FlipSprite();
         ClimbLadder();
         Die();
+        if (IsOnPlatform()){platform=true;}
+		else {platform=false;}
+		if (stopInput){
+			myAnimator.SetTrigger("idle");
+			myRigidbody.velocity = new Vector2(0, 0);
+			//return;
+		}
     }
 #endregion
 
@@ -256,12 +266,38 @@ public void OnPause(InputValue value)
 
 void OnCollisionEnter2D(Collision2D other)
     {
-    if (other.gameObject.tag == "ground" && !isGround /*collision.gameObject.name.Contains("ground")*/)
+        //Se il player tocca il terreno
+    if (other.gameObject.tag == "ground" && !isGround)
         {
             isGround = true;
-            Debug.Log("Hai tocca il terreno" + isGround);
+            //Debug.Log("Hai tocca il terreno" + isGround);
             myAnimator.SetBool("isGround", isGround = true);
 		}
+        //Se il player tocca una piattaforma
+        if (other.gameObject.tag == "Platforms")
+        {
+            isGround = true;
+            platform = true;
+            Debug.Log("Hai tocca la paittaforma" + isGround);
+            myAnimator.SetBool("isGround", isGround = true);
+            if (platform){Player.transform.parent = other.transform;}
+		}
     }
+private void OnCollisionExit2D(Collision2D other){
+	if (other.gameObject.tag == "Platforms")
+        {
+            Debug.Log("Sei uscito dalla piattaforma");
+            platform = false;
+			transform.parent = null;
+		}
+	}
 
+
+private bool IsOnPlatform()
+    {
+        //return Physics2D.OverlapCircle(groundCheck.position, 0.2f, platformLayer);
+		
+        return Physics2D.OverlapArea(new Vector2(transform.position.x - 0.5f, transform.position.y - 0.5f),
+			new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f), platformLayer);
+    }
 }
