@@ -152,6 +152,7 @@ public void OnPause(InputValue value)
         //Se il player sta premendo il tasto
         {
             myAnimator.SetTrigger("Jump");
+            myAnimator.SetBool("isGround", !isGround);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
             if(isGround)
