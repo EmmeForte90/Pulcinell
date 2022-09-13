@@ -11,6 +11,7 @@ using Spine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement instance;
     [SerializeField] float runSpeed = 10f; 
     // Variabile per il valore della corsa
     [SerializeField] float jumpSpeed = 5f;
@@ -24,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per spostare o scalare l'oggetto    
     Vector2 moveInput; 
     //Variabile per il vettore che serve al player per muoversi
-    Rigidbody2D myRigidbody;
+    public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
     Animator myAnimator;
     //Variabile per l'animator 
@@ -55,7 +56,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float attackrange = 0.5f;
     [SerializeField] float nextAttackTime = 0f;
 
-
+private void Awake()
+    {
+        instance = this;
+    }
 
 #region Start
     void Start()

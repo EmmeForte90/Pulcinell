@@ -5,8 +5,7 @@ using UnityEngine;
 public class BouncePad : MonoBehaviour
 {
     private Animator anim;
-
-    public float bounceForce = 20f;
+    [SerializeField ]public float bounceForce = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +25,8 @@ public class BouncePad : MonoBehaviour
         if(other.tag == "Player")
         {
             //Una forza che settiamo con una variabile lo spinge sull'asse Y
-            PlayerController.instance.m_Rigidbody2D.velocity = new Vector2(PlayerController.instance.m_Rigidbody2D.velocity.x, bounceForce);
-            anim.SetTrigger("Bounce");
+            PlayerMovement.instance.myRigidbody.velocity = new Vector2(PlayerMovement.instance.myRigidbody.velocity.x, bounceForce);
+            //anim.SetTrigger("Bounce");
         }
     }
 
