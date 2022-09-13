@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     // Variabile per il gameobject del proiettile
     [SerializeField] Transform gun;
     //Variabile per spostare o scalare l'oggetto
+    [SerializeField] GameObject Player;
     
     Vector2 moveInput; 
     //Variabile per il vettore che serve al player per muoversi
@@ -42,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
     //Blocca i movimenti
     bool heShoot = false;
     private Vector2 stopMove = new Vector2 (0f, 0f);
+    bool isGround = true;
+
 
 
 
@@ -140,13 +143,22 @@ public void OnPause(InputValue value)
     {
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
-        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return;}
+        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+        { 
+            return;
+        }
         //Se il player non sta toccando il suolo il salto(metodo) finisce
         if(value.isPressed)
         //Se il player sta premendo il tasto
         {
+            myAnimator.SetTrigger("Jump");
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
+            if(isGround)
+            {
+            isGround = false;
+            }
+
         }
     }
 
@@ -239,4 +251,16 @@ public void OnPause(InputValue value)
         }
     }
 #endregion
+
+
+void OnCollisionEnter2D(Collision2D other)
+    {
+    if (other.gameObject.tag == "ground" && !isGround /*collision.gameObject.name.Contains("ground")*/)
+        {
+            isGround = true;
+            Debug.Log("Hai tocca il terreno" + isGround);
+            myAnimator.SetBool("isGround", isGround = true);
+		}
+    }
+
 }
