@@ -46,6 +46,9 @@ public class PlayerMovement : MonoBehaviour
     bool isGround = true;
     private bool platform = false;
 
+    [SerializeField] public LayerMask layerMask;
+    
+
 
     [Header("Attacco")]
     [SerializeField] float attackRate = 2f;
@@ -157,12 +160,12 @@ public void OnPause(InputValue value)
     {
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
-        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground","Platforms"))) 
         { 
             return;
         }
         //Se il player non sta toccando il suolo il salto(metodo) finisce
-        if(value.isPressed)
+        if(value.isPressed && !platform)
         //Se il player sta premendo il tasto
         {
             myAnimator.SetTrigger("Jump");
@@ -170,18 +173,19 @@ public void OnPause(InputValue value)
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
-
-            if(platform)
-            {
-                Debug.Log("Sei riuscito a saltare via dalla piattaforma");
-                myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
-                Player.transform.parent = null;
-            }
             if(isGround)
             {
             isGround = false;
             }
             
+        } else if (value.isPressed && platform)
+        {
+            platform = false;
+            myAnimator.SetTrigger("Jump");
+            myAnimator.SetBool("isGround", !isGround);
+            AudioManager.instance.PlaySFX(0);
+            myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
+
         }
     }
 
