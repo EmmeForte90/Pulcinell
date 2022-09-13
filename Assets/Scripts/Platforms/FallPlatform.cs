@@ -20,7 +20,7 @@ public class FallPlatform : MonoBehaviour
 	//Quando il player collide con l'oggetto
 	void OnCollisionEnter2D(Collision2D col)
 	{
-		if (col.gameObject.name.Equals("Player"))
+		if (col.gameObject.tag == "Player")
 		{
 			//Avvia un timer stabilito con una variabile nel database delle piattaforme per mantenere il conteggio
 			Platformdatabase.Instance.StartCoroutine("SpawnPlatform",

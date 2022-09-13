@@ -26,7 +26,7 @@ public class BouncePad : MonoBehaviour
         if(other.tag == "Player")
         {
             //Una forza che settiamo con una variabile lo spinge sull'asse Y
-            //PlayerController.instance.m_Rigidbody2D.velocity = new Vector2(PlayerController.instance.m_Rigidbody2D.velocity.x, bounceForce);
+            PlayerController.instance.m_Rigidbody2D.velocity = new Vector2(PlayerController.instance.m_Rigidbody2D.velocity.x, bounceForce);
             anim.SetTrigger("Bounce");
         }
     }
