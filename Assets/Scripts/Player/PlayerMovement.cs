@@ -45,7 +45,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 stopMove = new Vector2 (0f, 0f);
     bool isGround = true;
     private bool platform = false;
-    [SerializeField] private LayerMask platformLayer;
 
 
     [Header("Attacco")]
@@ -75,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
 #region Update
     void Update()
     {
-        
         if (!isAlive) { return; }
         //Se il player è morto si disattiva la funzione
         //Altrimenti si attivano le funzioni
@@ -83,13 +81,13 @@ public class PlayerMovement : MonoBehaviour
         FlipSprite();
         ClimbLadder();
         Die();
-        if (IsOnPlatform()){platform=true;}
+        /*if (IsOnPlatform()){platform=true;}
 		else {platform=false;}
 		if (stopInput){
 			myAnimator.SetTrigger("idle");
 			myRigidbody.velocity = new Vector2(0, 0);
 			//return;
-		}
+		}*/
     }
 #endregion
 
@@ -155,7 +153,7 @@ public void OnPause(InputValue value)
 #endregion
 
 #region Salto
-    void OnJump(InputValue value) //La funzione si attiva se si preme il tasto
+    void OnJump(InputValue value) 
     {
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
@@ -172,11 +170,18 @@ public void OnPause(InputValue value)
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
+
+            if(platform)
+            {
+                Debug.Log("Sei riuscito a saltare via dalla piattaforma");
+                myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
+                Player.transform.parent = null;
+            }
             if(isGround)
             {
             isGround = false;
             }
-
+            
         }
     }
 
@@ -285,7 +290,7 @@ void OnCollisionEnter2D(Collision2D other)
         {
             isGround = true;
             platform = true;
-            Debug.Log("Hai tocca la paittaforma" + isGround);
+            //Debug.Log("Hai tocca la paittaforma" + isGround);
             myAnimator.SetBool("isGround", isGround = true);
             if (platform){Player.transform.parent = other.transform;}
 		}
@@ -293,18 +298,9 @@ void OnCollisionEnter2D(Collision2D other)
 private void OnCollisionExit2D(Collision2D other){
 	if (other.gameObject.tag == "Platforms")
         {
-            Debug.Log("Sei uscito dalla piattaforma");
+            //Debug.Log("Sei uscito dalla piattaforma");
             platform = false;
-			transform.parent = null;
+			Player.transform.parent = null;
 		}
 	}
-
-
-private bool IsOnPlatform()
-    {
-        //return Physics2D.OverlapCircle(groundCheck.position, 0.2f, platformLayer);
-		
-        return Physics2D.OverlapArea(new Vector2(transform.position.x - 0.5f, transform.position.y - 0.5f),
-			new Vector2(transform.position.x + 0.5f, transform.position.y - 0.5f), platformLayer);
-    }
 }
