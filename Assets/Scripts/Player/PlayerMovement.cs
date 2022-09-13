@@ -48,12 +48,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask platformLayer;
 
 
-
-
     [Header("Attacco")]
     [SerializeField] float attackRate = 2f;
     [SerializeField] float attackrange = 0.5f;
     [SerializeField] float nextAttackTime = 0f;
+
 
 
 #region Start
@@ -93,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
     }
 #endregion
 
+
 #region Pausa
 public void OnPause(InputValue value)
 //Funzione pausa
@@ -102,6 +102,7 @@ public void OnPause(InputValue value)
         stopInput = true;
         PauseMenu.gameObject.SetActive(true);
         myAnimator.SetTrigger("idle");
+        //SFX.Play(0);
         myRigidbody.velocity = stopMove;
         Time.timeScale = 0f;
     }
@@ -109,6 +110,7 @@ public void OnPause(InputValue value)
     {
         stopInput = false;
         Time.timeScale = 1;
+        //SFX.Play(0);
         PauseMenu.gameObject.SetActive(false);
     }
 }
@@ -126,6 +128,7 @@ public void OnPause(InputValue value)
         nextAttackTime = Time.time + 1f / attackRate;
         //Se il player è morto si disattiva la funzione
         myAnimator.SetTrigger("isShoot");
+        AudioManager.instance.PlaySFX(1);
         Instantiate(bullet, gun.position, transform.rotation);
         //Richiama una variabile che appare alla posizione del
         //Gameobject gun e viene influenzato nella rotazione
@@ -142,7 +145,8 @@ public void OnPause(InputValue value)
     {
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
-        moveInput = value.Get<Vector2>(); 
+        moveInput = value.Get<Vector2>();
+        //SFX.Play(0); 
         //Il vettore assume il valore base
     }
 
@@ -163,6 +167,7 @@ public void OnPause(InputValue value)
         {
             myAnimator.SetTrigger("Jump");
             myAnimator.SetBool("isGround", !isGround);
+            AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
             if(isGround)
