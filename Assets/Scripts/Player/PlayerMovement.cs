@@ -75,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
 #region Update
     void Update()
     {
+        
         if (!isAlive) { return; }
         //Se il player è morto si disattiva la funzione
         //Altrimenti si attivano le funzioni
@@ -145,9 +146,10 @@ public void OnPause(InputValue value)
     {
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
+        AudioManager.instance.PlaySFX(2);
         moveInput = value.Get<Vector2>();
-        //SFX.Play(0); 
         //Il vettore assume il valore base
+        
     }
 
 #endregion
