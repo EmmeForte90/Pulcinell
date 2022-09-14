@@ -12,55 +12,76 @@ using Spine;
 public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement instance;
+
+    [Header("Fisica")]
     [SerializeField] float runSpeed = 10f; 
     // Variabile per il valore della corsa
     [SerializeField] float jumpSpeed = 5f;
     // Variabile per il valore della velocità del salto
     [SerializeField] float climbSpeed = 5f;
     //Variabile per la velocità di arrampicata
+     float gravityScaleAtStart;
+    //Variabile per la gravità
     [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
-    [SerializeField] GameObject bullet;
-    // Variabile per il gameobject del proiettile
-    [SerializeField] GameObject blam;
-    [SerializeField] Transform gun;
-    //Variabile per spostare o scalare l'oggetto    
-    Vector2 moveInput; 
-    //Variabile per il vettore che serve al player per muoversi
+    //Saltello di morte
     public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
+    
+    [Header("Animazione e Collisioni")]
     Animator myAnimator;
     //Variabile per l'animator 
     CapsuleCollider2D myBodyCollider;
     //Variabile per il capsule collider 
     BoxCollider2D myFeetCollider;
     //Variabile per il box collider
-    float gravityScaleAtStart;
-    //Variabile per la gravità
+    
+    [Header("Abilitazioni")]
     [SerializeField] public GameObject PauseMenu;
+    //Variabile per identificare il menu
     [SerializeField] GameObject Player;
-
+    //Variabile per identificare il player
+    Vector2 moveInput; 
+    //Variabile per il vettore che serve al player per muoversi
     bool isAlive = true;
     //Variabile per identificare la morte
     bool stopInput = false;
     //Blocca i movimenti
     bool heShoot = false;
+    //Sta sparando
     private Vector2 stopMove = new Vector2 (0f, 0f);
+    //Blocca il vettore del player
     bool isGround = true;
+    //Variabile per identificare il terreno
+    bool isMoving = false;
     private bool platform = false;
-
+    //Variabile per identificare la piattaforma
     [SerializeField] public LayerMask layerMask;
+    //Variabile per identificare i vari layer
     
-
-
     [Header("Attacco")]
     [SerializeField] float attackRate = 2f;
+    //Variabile per quantificare le volte di attacco
     [SerializeField] float attackrange = 0.5f;
+    //Variabile per il raggio d'attacco
     [SerializeField] float nextAttackTime = 0f;
+    //Variabile per il tempo d'attacco
+    
+    [Header("VFX")]
+    [SerializeField] GameObject bullet;
+    // Variabile per il gameobject del proiettile
+    [SerializeField] GameObject blam;
+    //Variabile per identificare il vfx dell'esplosione
+    [SerializeField] Transform gun;
+    //Variabile per spostare o scalare l'oggetto
+    [SerializeField] public ParticleSystem footsteps;
+    [SerializeField] public ParticleSystem impactEffect;
+    private ParticleSystem.EmissionModule footEmission;  
 
 private void Awake()
     {
         instance = this;
     }
+
 
 #region Start
     void Start()
@@ -76,6 +97,7 @@ private void Awake()
         //Player = GetComponent<GameObject>();
         gravityScaleAtStart = myRigidbody.gravityScale;
         //Le dimensioni della gravità diventano quelle del rigidbody
+        footEmission = footsteps.emission;
     }
 #endregion
 
@@ -89,16 +111,34 @@ private void Awake()
         FlipSprite();
         ClimbLadder();
         Die();
-        /*if (IsOnPlatform()){platform=true;}
-		else {platform=false;}
-		if (stopInput){
-			myAnimator.SetTrigger("idle");
-			myRigidbody.velocity = new Vector2(0, 0);
-			//return;
-		}*/
     }
 #endregion
 
+#region FixedUpdate
+void FixedUpdate()
+{
+    #region Polvere
+
+        if (isMoving && isGround)
+        {
+            footEmission.rateOverTime = 35f;
+        } else if (!isMoving && isGround)
+        {
+            footEmission.rateOverTime = 0f;
+        }
+
+        if (!isGround)
+        {
+            impactEffect.gameObject.SetActive(true);
+            impactEffect.Stop();
+            impactEffect.transform.position = footsteps.transform.position;
+            impactEffect.Play();
+        }
+
+        #endregion
+}
+
+#endregion
 
 #region Pausa
 public void OnPause(InputValue value)
@@ -154,9 +194,10 @@ public void OnPause(InputValue value)
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
         AudioManager.instance.PlaySFX(2);
+        isMoving = true;
         moveInput = value.Get<Vector2>();
         //Il vettore assume il valore base
-        
+      
     }
 
 #endregion
@@ -269,7 +310,7 @@ public void OnPause(InputValue value)
 #region Morte
     void Die()
     {
-        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards")))
+        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Fall")))
         //Se il player tocca il nemico
         {
             isAlive = false;
@@ -285,6 +326,7 @@ public void OnPause(InputValue value)
     }
 #endregion
 
+#region Collisioni
 
 void OnCollisionEnter2D(Collision2D other)
     {
@@ -313,4 +355,6 @@ private void OnCollisionExit2D(Collision2D other){
 			Player.transform.parent = null;
 		}
 	}
+
+#endregion
 }
