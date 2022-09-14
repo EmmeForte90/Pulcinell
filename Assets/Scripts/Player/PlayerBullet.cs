@@ -4,74 +4,83 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
-    public GameObject explosion;
-
-    public float speed;
-
-    private Rigidbody2D rb;
-
-    // Start is called before the first frame update
+    [Header("Bullet")]
+    [SerializeField] float bulletSpeed = 20f;
+    //Variabile della velocità del proiettile
+    [SerializeField] GameObject Explode;
+    [SerializeField] Transform prefabExp;
+    Rigidbody2D myRigidbody;
+    //Il corpo rigido
+    PlayerMovement player;
+    //Attribuscie una variabile allo script di movimento del player
+    //Per permettere al proiettile di emularne l'andamento
+    float xSpeed;
+    //L'andatura
+    
     void Start()
     {
-        AudioManager.instance.PlaySFX(2);
-        rb = GetComponent<Rigidbody2D>();
+        myRigidbody = GetComponent<Rigidbody2D>();
+        //Recupera i componenti del rigidbody
+        player = FindObjectOfType<PlayerMovement>();
+        //Recupera i componenti dello script
+        xSpeed = player.transform.localScale.x * bulletSpeed;
+        //La variabile è uguale alla scala moltiplicata la velocità del proiettile
+        //Se il player si gira  anche lo spawn del proittile farà lo stesso
+    }
+
+#region Update
+    void Update()
+    {
+         myRigidbody.velocity = new Vector2 (xSpeed, 0f);
+        //La velocità e la direzione del proiettile
+        FlipSprite();
+        
+    }
+#endregion
+
+#region  FlipSprite
+    void FlipSprite()
+    {
+        bool bulletHorSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
+        //se il player si sta muovendo le sue coordinate x sono maggiori di quelle e
+        //di un valore inferiore a 0
+
+        if (bulletHorSpeed) //Se il player si sta muovendo
+        {
+            transform.localScale = new Vector2 (Mathf.Sign(myRigidbody.velocity.x), 1f);
+            //La scala assume un nuovo vettore e il rigidbody sull'asse x 
+            //viene modificato mentre quello sull'asse y no. 
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
+#endregion
+    void OnTriggerEnter2D(Collider2D other) 
     {
-        //Calcolo posizione
-        //rb.velocity = transform.right * speed;
-        transform.position += new Vector3(speed * transform.localScale.x * Time.deltaTime, 0f, 0f);
-
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-
-        AudioManager.instance.PlaySFX(1);
-
-        //Se colpisce il nemico
-        if (other.tag == "Enemy")
-        {
-            //Il nemico subisce danno
-            Debug.Log("Hit enemey");
-            IDamegable hit = other.GetComponent<IDamegable>();
-            hit.Damage();
-            //DatabaseEnemy.instance.Damage();
-            CameraShake.Shake(0.10f, 0.50f);
-
-            Instantiate(explosion, transform.position, transform.rotation);
-
-            Destroy(this.gameObject);
-
+        if(other.gameObject.tag == "Enemy")
+        //Se il proiettile tocca il nemico
+        {            
+            Instantiate(Explode, transform.position, transform.rotation);
+            //CameraShake.Shake(0.10f, 0.50f);
+            Destroy(other.gameObject);
+            //Viene distrutto
         }
 
-        //Se colpisce un boss
-
-        if (other.tag == "Boss")
-        {
-          
-            Instantiate(explosion, transform.position, transform.rotation);
-
-            Destroy(this.gameObject);
-
-        }
-
-        //Se colpisce lo scenario
-
-        if (other.tag == "Ground")
-        {
-
-            Instantiate(explosion, transform.position, transform.rotation);
+        if(other.gameObject.tag == "ground")
+        //Se il proiettile tocca il nemico
+        {            
+            Instantiate(Explode, transform.position, transform.rotation);
+            //CameraShake.Shake(0.10f, 0.50f);
             Destroy(gameObject);
-
+            //Viene distrutto
         }
-
-
-
-
+        
     }
+
+    void OnCollisionEnter2D(Collision2D other) 
+    {
+        Destroy(gameObject);   
+        //Se il proiettile tocca una superficie viene distrutto 
+    }
+
 }

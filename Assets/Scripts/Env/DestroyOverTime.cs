@@ -4,19 +4,9 @@ using UnityEngine;
 
 public class DestroyOverTime : MonoBehaviour
 {
-    public float lifeTime;
+    [Header("Tempo di esplosione")]
+    [SerializeField] public float lifeTime;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
-    {
-
-        Destroy(gameObject, lifeTime);
-    }
+    {Destroy(gameObject, lifeTime);}
 }

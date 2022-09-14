@@ -1,0 +1,24 @@
+skeleton.png
+size:2048,512
+filter:Linear,Linear
+pma:true
+Livello 14
+bounds:2,254,250,250
+Livello 15
+bounds:2,2,250,250
+Livello 16
+bounds:254,254,250,250
+Livello 17
+bounds:254,2,250,250
+Livello 18
+bounds:506,254,250,250
+Livello 19
+bounds:506,2,250,250
+Livello 20
+bounds:758,254,250,250
+Livello 21
+bounds:758,2,250,250
+Livello 22
+bounds:1010,254,250,250
+Livello 23
+bounds:1010,2,250,250
