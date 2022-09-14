@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
     [SerializeField] GameObject bullet;
     // Variabile per il gameobject del proiettile
+    [SerializeField] GameObject blam;
     [SerializeField] Transform gun;
     //Variabile per spostare o scalare l'oggetto    
     Vector2 moveInput; 
@@ -135,6 +136,7 @@ public void OnPause(InputValue value)
         //Se il player è morto si disattiva la funzione
         myAnimator.SetTrigger("isShoot");
         AudioManager.instance.PlaySFX(1);
+        Instantiate(blam, gun.position, transform.rotation);
         Instantiate(bullet, gun.position, transform.rotation);
         //Richiama una variabile che appare alla posizione del
         //Gameobject gun e viene influenzato nella rotazione
