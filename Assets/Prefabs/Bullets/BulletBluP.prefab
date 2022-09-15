@@ -178,6 +178,11 @@ MonoBehaviour:
   bulletSpeed: 20
   Explode: {fileID: 828553308391180402, guid: bfc6838d06cfce34b8c28772eafb0f10, type: 3}
   prefabExp: {fileID: 8124317420923233289, guid: bfc6838d06cfce34b8c28772eafb0f10, type: 3}
+  isNormal: 0
+  isRapid: 1
+  isBomb: 0
+  target: 0
+  isShotgun: 0
 --- !u!114 &3786960750264312585
 MonoBehaviour:
   m_ObjectHideFlags: 0

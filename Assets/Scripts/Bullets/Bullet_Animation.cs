@@ -23,7 +23,7 @@ public class Bullet_Animation : MonoBehaviour
 
     public void restoreBullet()
     {
-        SetAnimation(full, false, 1f);
+        SetAnimation(full, true, 1f);
     }
 
     public void removeBullet()

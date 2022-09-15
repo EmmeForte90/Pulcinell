@@ -16,7 +16,15 @@ public class PlayerBullet : MonoBehaviour
     //Per permettere al proiettile di emularne l'andamento
     float xSpeed;
     //L'andatura
-    
+
+    [Header("Che tipo di bullet")]
+    [SerializeField] bool isNormal;
+    [SerializeField] bool isRapid;
+    [SerializeField] bool isBomb;
+    [SerializeField] bool target;
+    [SerializeField] bool isShotgun;
+
+
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -62,7 +70,16 @@ public class PlayerBullet : MonoBehaviour
         {            
             Instantiate(Explode, transform.position, transform.rotation);
             //CameraShake.Shake(0.10f, 0.50f);
-            Destroy(other.gameObject);
+            if(isNormal && !isRapid )
+            {
+                Destroy(gameObject);
+                Destroy(other.gameObject);
+            }
+            else if(!isNormal && isRapid)
+            {
+                Destroy(other.gameObject);
+            }
+            //Destroy(other.gameObject);
             //Viene distrutto
         }
 

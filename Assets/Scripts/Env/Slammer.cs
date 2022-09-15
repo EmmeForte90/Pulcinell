@@ -23,7 +23,7 @@ public class Slammer : MonoBehaviour
         //Se non sta attaccando
         if (!slamming && !resetting)
         {
-            if (Vector3.Distance(slammerTarget.position, PlayerController.instance.transform.position) < 2f)
+            if (Vector3.Distance(slammerTarget.position, PlayerMovement.instance.transform.position) < 2f)
             {
                 slamming = true;
                 waitCounter = waitAfterSlam;
