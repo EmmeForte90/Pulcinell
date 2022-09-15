@@ -190,14 +190,6 @@ public void OnPause(InputValue value)
     
 #endregion
 
-#region CambioArma
-   /* void OnChangeWeapon(InputValue value)
-    //Funzione per sparare
-    {
-       
-    }*/    
-    
-#endregion
 
 #region CambioArma
     public void SetBulletPrefab(GameObject newBullet)

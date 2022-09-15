@@ -6,16 +6,26 @@ public class PlayerBullet : MonoBehaviour
 {
     [Header("Bullet")]
     [SerializeField] float bulletSpeed = 20f;
+    [SerializeField] float shotgunBullet = 3f;
+    [SerializeField] float bombBullet = 10f;
     //Variabile della velocità del proiettile
     [SerializeField] GameObject Explode;
     [SerializeField] Transform prefabExp;
+    private float lifeTime = 0.5f;
+    //Riservato allo shotgun
+
     Rigidbody2D myRigidbody;
     //Il corpo rigido
     PlayerMovement player;
     //Attribuscie una variabile allo script di movimento del player
     //Per permettere al proiettile di emularne l'andamento
     float xSpeed;
+    float shotgunSpeed;
     //L'andatura
+    float bombSpeed;
+    public float GrenadeRadius = 5000f;
+    public float ExplosionForce = 7000f;
+    //Riservato alla bomb
 
     [Header("Che tipo di bullet")]
     [SerializeField] bool isNormal;
@@ -32,6 +42,8 @@ public class PlayerBullet : MonoBehaviour
         player = FindObjectOfType<PlayerMovement>();
         //Recupera i componenti dello script
         xSpeed = player.transform.localScale.x * bulletSpeed;
+        shotgunSpeed = player.transform.localScale.x * shotgunBullet;
+        bombSpeed = player.transform.localScale.x * bombBullet;
         //La variabile è uguale alla scala moltiplicata la velocità del proiettile
         //Se il player si gira  anche lo spawn del proittile farà lo stesso
     }
@@ -39,12 +51,26 @@ public class PlayerBullet : MonoBehaviour
 #region Update
     void Update()
     {
+        if(isNormal || isRapid && !isShotgun && !isBomb)
+        {
          myRigidbody.velocity = new Vector2 (xSpeed, 0f);
+        }
+        else if(!isNormal && !isRapid && isShotgun && !isBomb)
+        {
+        myRigidbody.velocity = new Vector2 (shotgunSpeed, 0f);
+        }
+        else if(!isNormal && !isRapid && !isShotgun && isBomb)
+        {
+        //myRigidbody.velocity = new Vector2 (bombSpeed, 5f);
+        
+        }
+
         //La velocità e la direzione del proiettile
         FlipSprite();
         
     }
 #endregion
+ 
 
 #region  FlipSprite
     void FlipSprite()
@@ -63,6 +89,8 @@ public class PlayerBullet : MonoBehaviour
     }
 
 #endregion
+
+
     void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.gameObject.tag == "Enemy")
@@ -71,19 +99,21 @@ public class PlayerBullet : MonoBehaviour
             Instantiate(Explode, transform.position, transform.rotation);
             //CameraShake.Shake(0.10f, 0.50f);
             if(isNormal && !isRapid )
+            //Se è un proiettile normale e non rapido
             {
                 Destroy(gameObject);
                 Destroy(other.gameObject);
+                //Viene distrutto quando colpisce il nemico
             }
             else if(!isNormal && isRapid)
+            //Quando è un proiettile rapido e non normale
             {
                 Destroy(other.gameObject);
+                //Non viene distrutto
             }
-            //Destroy(other.gameObject);
-            //Viene distrutto
         }
 
-        if(other.gameObject.tag == "ground")
+        if(other.gameObject.tag == "ground" && !isShotgun)
         //Se il proiettile tocca il nemico
         {            
             Instantiate(Explode, transform.position, transform.rotation);
@@ -91,7 +121,16 @@ public class PlayerBullet : MonoBehaviour
             Destroy(gameObject);
             //Viene distrutto
         }
+        else if(isShotgun)
+        {
+            Invoke("Destroy", lifeTime);
+        }
         
+    }
+
+    void Destroy()
+    {
+        Destroy(gameObject);   
     }
 
     void OnCollisionEnter2D(Collision2D other) 
