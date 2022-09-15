@@ -180,6 +180,7 @@ public void OnPause(InputValue value)
         AudioManager.instance.PlaySFX(1);
         Instantiate(blam, gun.position, transform.rotation);
         Instantiate(bullet, gun.position, transform.rotation);
+        FindObjectOfType<PlayerBulletCount>().removeOneBullet();
         //Richiama una variabile che appare alla posizione del
         //Gameobject gun e viene influenzato nella rotazione
         myRigidbody.velocity = stopMove;

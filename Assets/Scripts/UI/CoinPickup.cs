@@ -15,6 +15,7 @@ public class CoinPickup : MonoBehaviour
     bool wasCollected = false;
     //Bool per evitare che la moneta sia raccolta più volte
     [SerializeField] public bool isHeal;
+    [SerializeField] public bool isBullet;
 
 void Start()
 {
@@ -25,7 +26,9 @@ void Start()
 
     void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.tag == "Player" && !wasCollected && !isHeal)
+
+        #region CollCoin
+        if (other.tag == "Player" && !wasCollected && !isHeal && !isBullet)
         //Se il player tocca la moneta e non è stato collezionata
         {
             wasCollected = true;
@@ -38,9 +41,17 @@ void Start()
             //Attiva il suono
             Invoke("takeCoin", loadDelay);
             
-        }else if (other.tag == "Player" && !wasCollected && isHeal)
+        }
+
+        #endregion
+        
+        #region  CollHP
+        else if (other.tag == "Player" && !wasCollected && isHeal && !isBullet)
         //Se il player tocca la moneta e non è stato collezionata
         {
+            //Se gli HP non sono al massimo la raccoglio altrimenti no
+            if(PlayerHealth.instance.heartsRemain != PlayerHealth.instance.heartsNumber.Count)
+            {
             wasCollected = true;
             //La moneta è collezionata
             FindObjectOfType<PlayerHealth>().restoreOneHeart();
@@ -50,10 +61,35 @@ void Start()
             myAnimator.SetTrigger("take");
             //Attiva il suono
             Invoke("takeCoin", loadDelay);
+            }
             
         }
+        #endregion
+
+        #region CollBullet
+        else if (other.tag == "Player" && !wasCollected && !isHeal && isBullet)
+        //Se il player tocca la moneta e non è stato collezionata
+        {
+            //Se i proiettili non sono al massimo la raccoglio altrimenti no
+            if(PlayerBulletCount.instance.bulletRemain != PlayerBulletCount.instance.bulletNumber.Count)
+            {
+            wasCollected = true;
+            //La moneta è collezionata
+            FindObjectOfType<PlayerBulletCount>().restoreOneBullet();
+            //Richiama la funzione dello script GameSessione e aumenta lo score
+            AudioSource.PlayClipAtPoint(coinPickupSFX, Camera.main.transform.position);
+            //Avvia l'audio
+            myAnimator.SetTrigger("take");
+            //Attiva il suono
+            Invoke("takeCoin", loadDelay);
+            }
+            
+            
+        }
+        #endregion
     }
 
+#region Funzione per cancellare l'item
     void takeCoin()
     {
         gameObject.SetActive(false);
@@ -61,4 +97,5 @@ void Start()
         Destroy(gameObject);
         //Lo distrugge
     }
+    #endregion
 }

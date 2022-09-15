@@ -7,12 +7,17 @@ using UnityEngine.SceneManagement;
     public class PlayerHealth : MonoBehaviour
     {
         public List<GameObject> heartsNumber;
+
+        public static PlayerHealth instance;
+
+
         [HideInInspector]
         public int heartsRemain;
 
         private void Awake()
         {
             heartsRemain = heartsNumber.Count;
+            instance = this;
         }
 
         public bool healthIsFull()
