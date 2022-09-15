@@ -22,7 +22,8 @@ public class PlayerBullet : MonoBehaviour
     float xSpeed;
     float shotgunSpeed;
     //L'andatura
-    float bombSpeed;
+    float bombSpeed = 5f;
+    public Vector3 LauchOffset;
     //Riservato alla bomb
 
     [Header("Che tipo di bullet")]
@@ -31,6 +32,7 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField] bool isBomb;
     [SerializeField] bool target;
     [SerializeField] bool isShotgun;
+    [SerializeField] bool rightFace;
 
 
     void Start()
@@ -41,16 +43,27 @@ public class PlayerBullet : MonoBehaviour
         //Recupera i componenti dello script
         xSpeed = player.transform.localScale.x * bulletSpeed;
         shotgunSpeed = player.transform.localScale.x * shotgunBullet;
-        bombSpeed = player.transform.localScale.x * bombBullet;
         //La variabile è uguale alla scala moltiplicata la velocità del proiettile
         //Se il player si gira  anche lo spawn del proittile farà lo stesso
+        
         if(isBomb)
-        {
+        {        
+            if(PlayerMovement.instance.transform.position.x > 0)
+            {
             var direction = transform.right + Vector3.up;
             GetComponent<Rigidbody2D>().AddForce(direction * bombSpeed, ForceMode2D.Impulse);
+            }
+            else if(PlayerMovement.instance.transform.position.x < 0)
+            {
+            var direction = -transform.right + Vector3.up;
+            GetComponent<Rigidbody2D>().AddForce(direction * bombSpeed, ForceMode2D.Impulse);
+            }
         }
+        transform.Translate(LauchOffset);
         
     }
+
+
 
 
 #region Update
@@ -66,10 +79,8 @@ public class PlayerBullet : MonoBehaviour
         }
         else if(!isNormal && !isRapid && !isShotgun && isBomb)
         {
-        //myRigidbody.velocity = new Vector2 (bombSpeed, 5f);
 
         }
-
         //La velocità e la direzione del proiettile
         FlipSprite();
         
@@ -90,6 +101,7 @@ public class PlayerBullet : MonoBehaviour
             //La scala assume un nuovo vettore e il rigidbody sull'asse x 
             //viene modificato mentre quello sull'asse y no. 
         }
+        
         
     }
 

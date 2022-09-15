@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
     // Variabile per il gameobject del proiettile
     [SerializeField] GameObject blam;
     //Variabile per identificare il vfx dell'esplosione
-    [SerializeField] Transform gun;
+    [SerializeField] public Transform gun;
     //Variabile per spostare o scalare l'oggetto
     [SerializeField] public ParticleSystem footsteps;
     [SerializeField] public ParticleSystem impactEffect;
