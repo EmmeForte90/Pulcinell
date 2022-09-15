@@ -23,8 +23,6 @@ public class PlayerBullet : MonoBehaviour
     float shotgunSpeed;
     //L'andatura
     float bombSpeed;
-    public float GrenadeRadius = 5000f;
-    public float ExplosionForce = 7000f;
     //Riservato alla bomb
 
     [Header("Che tipo di bullet")]
@@ -46,7 +44,14 @@ public class PlayerBullet : MonoBehaviour
         bombSpeed = player.transform.localScale.x * bombBullet;
         //La variabile è uguale alla scala moltiplicata la velocità del proiettile
         //Se il player si gira  anche lo spawn del proittile farà lo stesso
+        if(isBomb)
+        {
+            var direction = transform.right + Vector3.up;
+            GetComponent<Rigidbody2D>().AddForce(direction * bombSpeed, ForceMode2D.Impulse);
+        }
+        
     }
+
 
 #region Update
     void Update()
@@ -62,7 +67,7 @@ public class PlayerBullet : MonoBehaviour
         else if(!isNormal && !isRapid && !isShotgun && isBomb)
         {
         //myRigidbody.velocity = new Vector2 (bombSpeed, 5f);
-        
+
         }
 
         //La velocità e la direzione del proiettile

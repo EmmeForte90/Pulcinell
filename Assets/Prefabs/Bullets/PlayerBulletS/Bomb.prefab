@@ -139,8 +139,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpeed: 20
+  shotgunBullet: 3
+  bombBullet: 5
   Explode: {fileID: 828553308391180402, guid: bfc6838d06cfce34b8c28772eafb0f10, type: 3}
   prefabExp: {fileID: 8124317420923233289, guid: bfc6838d06cfce34b8c28772eafb0f10, type: 3}
+  lauchOffset: {x: 0, y: 0, z: 0}
   isNormal: 0
   isRapid: 0
   isBomb: 1
