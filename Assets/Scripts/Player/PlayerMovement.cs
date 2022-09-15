@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
      float gravityScaleAtStart;
     //Variabile per la gravità
     [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
+    [SerializeField] Vector2 knockBack = new Vector2 (20f, 20f);
     //Saltello di morte
     public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
@@ -198,10 +199,10 @@ public void OnPause(InputValue value)
         isMoving = true;
         moveInput = value.Get<Vector2>();
         //Il vettore assume il valore base
-        if(!value.isPressed)
+        /*if(!value.isPressed)
         {
          AudioManager.instance.StopSFX(2);
-        }
+        }*/
       
     }
 
@@ -315,7 +316,7 @@ public void OnPause(InputValue value)
 #region Morte
     void Die()
     {
-        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Fall")))
+        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask(/*"Enemies",*/ "Fall")))
         //Se il player tocca il nemico
         {
             isAlive = false;
@@ -323,13 +324,14 @@ public void OnPause(InputValue value)
             myAnimator.SetTrigger("Dying");
             //Parte l'animazione di morte
             myRigidbody.velocity = deathKick;
-            //Il rigidbody assume il valore death kick
+            //Il rigidbody assume il valore deathKick 
             FindObjectOfType<GameSession>().ProcessPlayerDeath();
             //Richiama i componenti dello script gamesessione e 
             //ne attiva la funzione di processo di morte 
         }
     }
 #endregion
+
 
 #region Collisioni
 
@@ -350,6 +352,15 @@ void OnCollisionEnter2D(Collision2D other)
             //Debug.Log("Hai tocca la paittaforma" + isGround);
             myAnimator.SetBool("isGround", isGround = true);
             if (platform){Player.transform.parent = other.transform;}
+		}
+
+        if (other.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Hai ricevuto il danno");
+            FindObjectOfType<PlayerHealth>().removeOneHeart();
+            myRigidbody.velocity = knockBack;
+            myAnimator.SetTrigger("Hurt");
+
 		}
     }
 private void OnCollisionExit2D(Collision2D other){

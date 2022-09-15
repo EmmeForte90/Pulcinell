@@ -14,6 +14,7 @@ public class CoinPickup : MonoBehaviour
     //Animatore
     bool wasCollected = false;
     //Bool per evitare che la moneta sia raccolta più volte
+    [SerializeField] public bool isHeal;
 
 void Start()
 {
@@ -24,12 +25,25 @@ void Start()
 
     void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.tag == "Player" && !wasCollected)
+        if (other.tag == "Player" && !wasCollected && !isHeal)
         //Se il player tocca la moneta e non è stato collezionata
         {
             wasCollected = true;
             //La moneta è collezionata
             FindObjectOfType<GameSession>().AddToScore(pointsForCoinPickup);
+            //Richiama la funzione dello script GameSessione e aumenta lo score
+            AudioSource.PlayClipAtPoint(coinPickupSFX, Camera.main.transform.position);
+            //Avvia l'audio
+            myAnimator.SetTrigger("take");
+            //Attiva il suono
+            Invoke("takeCoin", loadDelay);
+            
+        }else if (other.tag == "Player" && !wasCollected && isHeal)
+        //Se il player tocca la moneta e non è stato collezionata
+        {
+            wasCollected = true;
+            //La moneta è collezionata
+            FindObjectOfType<PlayerHealth>().restoreOneHeart();
             //Richiama la funzione dello script GameSessione e aumenta lo score
             AudioSource.PlayClipAtPoint(coinPickupSFX, Camera.main.transform.position);
             //Avvia l'audio

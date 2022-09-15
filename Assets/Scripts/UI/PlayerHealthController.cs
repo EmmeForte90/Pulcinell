@@ -5,22 +5,21 @@ public class PlayerHealthController : MonoBehaviour
 {
     public static PlayerHealthController instance;
 
+[Header("Quantità")]
+    [SerializeField] public int currentHealth, maxHealth;
+    [SerializeField] public int currentBullet, maxBullet;
 
-    public int currentHealth, maxHealth;
-    public int currentBullet, maxBullet;
+[Header("Invincibilità")]
 
-    public float invincibleLength;
+    [SerializeField] public float invincibleLength;
     private float invincibleCounter;
 
-    private SpriteRenderer theSR;
-
-    public GameObject deathEffect;
+[Header("Morte")]
+    [SerializeField]public GameObject deathEffect;
 
     private void Awake()
     {
         instance = this;
-
-        
     }
 
 
@@ -29,8 +28,6 @@ public class PlayerHealthController : MonoBehaviour
     {
         currentHealth = maxHealth;
         currentBullet = maxBullet;
-       
-        theSR = GetComponent<SpriteRenderer>();
 
     }
 
@@ -39,14 +36,11 @@ public class PlayerHealthController : MonoBehaviour
     {
         if(invincibleCounter > 0)
         {
-            
-
-
             invincibleCounter -= Time.deltaTime;
 
             if(invincibleCounter <= 0) 
             {
-                theSR.color = new Color(theSR.color.r, theSR.color.g, theSR.color.b, 1f);
+                //theSR.color = new Color(theSR.color.r, theSR.color.g, theSR.color.b, 1f);
             }
         }
     }
@@ -55,8 +49,6 @@ public class PlayerHealthController : MonoBehaviour
     {
         if(invincibleCounter <= 0)
         {
-
-
             currentHealth--;
 
         if(currentHealth <= 0)
@@ -65,60 +57,42 @@ public class PlayerHealthController : MonoBehaviour
 
                 Instantiate(deathEffect, transform.position, transform.rotation);
                 //PlayerController.instance.gameObject.SetActive(false);
-
-               //PlayerController.instance.stopInput = true;
-
-                LevelManager.instance.RespawnPlayer();
+                //PlayerController.instance.stopInput = true;
+                FindObjectOfType<GameSession>().ProcessPlayerDeath();
 
 
             } 
         else
         {
             invincibleCounter = invincibleLength;
-                theSR.color = new Color(theSR.color.r, theSR.color.g, theSR.color.b, 1f);
-
+                //theSR.color = new Color(theSR.color.r, theSR.color.g, theSR.color.b, 1f);
                 //PlayerController.instance.knockBack();
-
-
-                
-
-
-                AudioManager.instance.PlaySFX(9);
+                //AudioManager.instance.PlaySFX(9);
             }
-
-        UIController.instance.UpdateHealthDisplay();
-
-
+            UIController.instance.UpdateHealthDisplay();
     }
+}
 
-    }
-
-    public void HealPlayer()
+public void HealPlayer()
     {
         //currentHealth = maxHealth;
         currentHealth++;
-
     if(currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
         }
-
         UIController.instance.UpdateHealthDisplay();
-
     }
 
     public void RechargeBull()
     {
         //currentHealth = maxHealth;
         currentBullet++;
-
         if (currentBullet > maxBullet)
         {
             currentBullet = maxBullet;
         }
-
         UIController.instance.UpdateBulletDisplay();
-
     }
 
 }

@@ -74,7 +74,7 @@ public class UIController : MonoBehaviour
 
     public void UpdatePizzaCount()
     {
-        pizzaText.text = LevelManager.instance.pizzaCollected.ToString();
+//        pizzaText.text = LevelManager.instance.pizzaCollected.ToString();
     }
 
     public void FadeToBlack()
