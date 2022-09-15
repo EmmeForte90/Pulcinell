@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per il tempo d'attacco
     
     [Header("VFX")]
-    [SerializeField] GameObject bullet;
+    [SerializeField] private GameObject bullet;
     // Variabile per il gameobject del proiettile
     [SerializeField] GameObject blam;
     //Variabile per identificare il vfx dell'esplosione
@@ -186,6 +186,24 @@ public void OnPause(InputValue value)
         myRigidbody.velocity = stopMove;
         }
         }
+    }    
+    
+#endregion
+
+#region CambioArma
+   /* void OnChangeWeapon(InputValue value)
+    //Funzione per sparare
+    {
+       
+    }*/    
+    
+#endregion
+
+#region CambioArma
+    public void SetBulletPrefab(GameObject newBullet)
+    //Funzione per sparare
+    {
+       bullet = newBullet;
     }    
     
 #endregion
