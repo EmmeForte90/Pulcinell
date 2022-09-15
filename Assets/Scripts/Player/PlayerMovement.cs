@@ -122,6 +122,7 @@ void FixedUpdate()
         if (isMoving && isGround)
         {
             footEmission.rateOverTime = 35f;
+            
         } else if (!isMoving && isGround)
         {
             footEmission.rateOverTime = 0f;
@@ -197,6 +198,10 @@ public void OnPause(InputValue value)
         isMoving = true;
         moveInput = value.Get<Vector2>();
         //Il vettore assume il valore base
+        if(!value.isPressed)
+        {
+         AudioManager.instance.StopSFX(2);
+        }
       
     }
 

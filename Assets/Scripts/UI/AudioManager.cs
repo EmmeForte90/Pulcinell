@@ -36,6 +36,12 @@ public class AudioManager : MonoBehaviour
         soundEffects[soundToPlay].Play();
     }
 
+    public void StopSFX(int soundToPlay)
+    {
+        soundEffects[soundToPlay].Stop();
+
+    }
+
     public void PlayLevelVictory()
     {
         bgm.Stop();
