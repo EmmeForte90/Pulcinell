@@ -7,21 +7,22 @@ using UnityEngine.InputSystem;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
+    public static PlayerWeaponManager instance;
    [Header("Proiettili")]
     [SerializeField] private GameObject normal;
     [SerializeField] private GameObject rapid;
     [SerializeField] private GameObject shotgun;
     [SerializeField] private GameObject bomb;
 
-    [SerializeField] private float tapCount = 1;
-
+    [SerializeField] public float tapCount;
 
     PlayerMovement playerShootScript;
-    ChangeWeaponAnimation CW;
 
     private void Awake()
     {
         playerShootScript = GetComponent<PlayerMovement>();
+        instance = this;
+        tapCount = 1;
     }
 
 
@@ -35,7 +36,7 @@ void OnChangeWeapon(InputValue value)
         //normal
         SetWeapon(1);
         tapCount++;
-        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();;
         }
         else if(tapCount == 2)
         {
@@ -67,7 +68,7 @@ void OnChangeWeapon(InputValue value)
 }
 #endregion
 
-void SetWeapon(int WeaponID)
+public void SetWeapon(int WeaponID)
 {
     switch (WeaponID)
     {

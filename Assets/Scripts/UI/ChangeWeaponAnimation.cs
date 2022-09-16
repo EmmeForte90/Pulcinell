@@ -7,7 +7,6 @@ using Spine;
 
 public class ChangeWeaponAnimation : MonoBehaviour
 {
-    Skin characterSkin;
     private SkeletonGraphic skelGraph;
     public AnimationReferenceAsset Normal;
     public AnimationReferenceAsset Change;
@@ -22,20 +21,44 @@ public class ChangeWeaponAnimation : MonoBehaviour
         skelGraph.AnimationState.SetAnimation(0, animation, loop).TimeScale = timeScale;
     }
 
-    public void StayWeapon()
-    {
-        SetAnimation(Normal, false, 1f);
-    }
-
     public void ChangeWeapon()
     {
-        StartCoroutine(SetAnimationChange());        
+        StartCoroutine(SetAnimationChange()); 
+
+        if(PlayerWeaponManager.instance.tapCount == 0)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Normal");   
+        }else if(PlayerWeaponManager.instance.tapCount == 1)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Normal");   
+        }
+        else if(PlayerWeaponManager.instance.tapCount == 2)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Rapid");
+
+        }else if(PlayerWeaponManager.instance.tapCount == 3)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Shotgun");
+
+        }else if(PlayerWeaponManager.instance.tapCount == 4)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Bomb");
+
+        }
+       
     }
+
+
 public IEnumerator SetAnimationChange()
     {
         SetAnimation(Change, false, 1f);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.9f);
 
         SetAnimation(Normal, true, 1f);
     }
