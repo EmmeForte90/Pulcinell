@@ -76,7 +76,8 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per spostare o scalare l'oggetto
     [SerializeField] public ParticleSystem footsteps;
     [SerializeField] public ParticleSystem impactEffect;
-    private ParticleSystem.EmissionModule footEmission;  
+    private ParticleSystem.EmissionModule footEmission;
+    //Particle system interact  
 
 private void Awake()
     {
@@ -99,6 +100,7 @@ private void Awake()
         gravityScaleAtStart = myRigidbody.gravityScale;
         //Le dimensioni della gravità diventano quelle del rigidbody
         footEmission = footsteps.emission;
+        //Emissione Particle
     }
 #endregion
 
@@ -115,7 +117,6 @@ private void Awake()
     }
 #endregion
 
-#region FixedUpdate
 void FixedUpdate()
 {
     #region Polvere
@@ -139,8 +140,6 @@ void FixedUpdate()
 
         #endregion
 }
-
-#endregion
 
 #region Pausa
 public void OnPause(InputValue value)
@@ -189,7 +188,6 @@ public void OnPause(InputValue value)
     }    
     
 #endregion
-
 
 #region CambioArma
     public void SetBulletPrefab(GameObject newBullet)
@@ -342,7 +340,6 @@ public void OnPause(InputValue value)
         }
     }
 #endregion
-
 
 #region Collisioni
 

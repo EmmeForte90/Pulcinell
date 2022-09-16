@@ -5,19 +5,23 @@ using UnityEngine;
 public class PlayerBulletCount : MonoBehaviour
 {
     public List<GameObject> bulletNumber;
+    //Lista dei proiettili
 
         public static PlayerBulletCount instance;
+        //Istanza per far interagire con altri script
 
         [HideInInspector]
         public int bulletRemain;
+        //Calcolo dei proiettili che restano
 
         private void Awake()
         {
-            bulletRemain = bulletNumber.Count;        
+            bulletRemain = bulletNumber.Count; 
+            //Numero totale di proiettili       
             instance = this;
-
         }
 
+#region  Proiettili al completo
         public bool bulletIsFull()
         {
             if (bulletRemain == bulletNumber.Count)
@@ -25,6 +29,9 @@ public class PlayerBulletCount : MonoBehaviour
             else
                 return false;
         }
+#endregion
+
+#region  Recupera un proiettile
 
         public void restoreOneBullet()
         {
@@ -34,6 +41,10 @@ public class PlayerBulletCount : MonoBehaviour
                 bulletRemain += 1;
             }
         }
+
+#endregion
+
+#region  Rimuove un proiettile
 
         public void removeOneBullet()
         {
@@ -46,6 +57,10 @@ public class PlayerBulletCount : MonoBehaviour
             }
         }
 
+#endregion
+
+#region  Proiettili finiti
+
         public void EndBullet()
         {
             while( bulletRemain !=  bulletNumber.Count)
@@ -55,4 +70,7 @@ public class PlayerBulletCount : MonoBehaviour
             
             
         }
+
+#endregion
+
 }

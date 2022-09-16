@@ -7,18 +7,24 @@ using UnityEngine.SceneManagement;
     public class PlayerHealth : MonoBehaviour
     {
         public List<GameObject> heartsNumber;
+        //Lista degli HP
 
         public static PlayerHealth instance;
+        //Instanza per interagire con altri script
 
 
         [HideInInspector]
         public int heartsRemain;
+        //Hp rimanenti
 
         private void Awake()
         {
             heartsRemain = heartsNumber.Count;
+            //HP totali
             instance = this;
         }
+
+#region  HP al massimo
 
         public bool healthIsFull()
         {
@@ -27,6 +33,9 @@ using UnityEngine.SceneManagement;
             else
                 return false;
         }
+        #endregion
+
+#region  Recupera 1 HP
 
         public void restoreOneHeart()
         {
@@ -36,6 +45,10 @@ using UnityEngine.SceneManagement;
                 heartsRemain += 1;
             }
         }
+
+#endregion
+
+#region  Rimuovi 1 HP
 
         public void removeOneHeart()
         {
@@ -48,6 +61,10 @@ using UnityEngine.SceneManagement;
             }
         }
 
+#endregion
+
+#region  Se gli HP arrivato a 0 il player muore
+
         public void playerDeath()
         {
             while(heartsRemain != heartsNumber.Count)
@@ -58,4 +75,6 @@ using UnityEngine.SceneManagement;
             //transform.position = Data.checkpointPos;
             
         }
-    }
+
+#endregion
+}

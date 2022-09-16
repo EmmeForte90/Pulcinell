@@ -1490,7 +1490,7 @@ RectTransform:
   - {fileID: 1827319775}
   - {fileID: 1773898560}
   m_Father: {fileID: 1796860179}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6858,7 +6858,7 @@ RectTransform:
   - {fileID: 1615833118}
   - {fileID: 210603921}
   m_Father: {fileID: 1796860179}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7545,6 +7545,7 @@ GameObject:
   - component: {fileID: 950105338}
   - component: {fileID: 950105340}
   - component: {fileID: 950105339}
+  - component: {fileID: 950105341}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -7612,6 +7613,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950105337}
   m_CullTransparentMesh: 1
+--- !u!114 &950105341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950105337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813b487543fc0c948a7e7ca0f21ca03a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelSelect: WorldMap
+  mainMenu: MainMenu
 --- !u!1 &1026446417
 GameObject:
   m_ObjectHideFlags: 0
@@ -8501,7 +8516,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1285761975}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 950105341}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: MainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &1285761975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14724,11 +14751,11 @@ GameObject:
   - component: {fileID: 1746629011}
   - component: {fileID: 1746629010}
   - component: {fileID: 1746629009}
+  - component: {fileID: 1746629007}
   - component: {fileID: 1746629017}
   - component: {fileID: 1746629018}
   - component: {fileID: 1746629008}
   - component: {fileID: 1746629019}
-  - component: {fileID: 1746629007}
   - component: {fileID: 1746629006}
   - component: {fileID: 1746629016}
   m_Layer: 6
@@ -14781,7 +14808,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.033143997, y: 0.043904066}
+  m_Offset: {x: -0.033143997, y: 0.077026606}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -14792,7 +14819,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.62080383, y: 0.21446562}
+  m_Size: {x: 0.62080383, y: 0.14822054}
   m_EdgeRadius: 0
 --- !u!114 &1746629008
 MonoBehaviour:
@@ -14838,8 +14865,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.04700613, y: 0.83658326}
-  m_Size: {x: 0.5214491, y: 1.7627962}
+  m_Offset: {x: -0.04700613, y: 0.8697052}
+  m_Size: {x: 0.5214491, y: 1.6965523}
   m_Direction: 0
 --- !u!50 &1746629010
 Rigidbody2D:
@@ -14962,7 +14989,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -296193325
   m_SortingLayer: 3
-  m_SortingOrder: 3
+  m_SortingOrder: 4
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1746629014
 MeshFilter:
@@ -15391,9 +15418,9 @@ RectTransform:
   - {fileID: 950105338}
   - {fileID: 774219296}
   - {fileID: 527332974}
-  - {fileID: 572036839}
   - {fileID: 1936716572}
   - {fileID: 757152811}
+  - {fileID: 572036839}
   m_Father: {fileID: 8882107767074883296}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16145,7 +16172,7 @@ RectTransform:
   m_Children:
   - {fileID: 120896008}
   m_Father: {fileID: 1796860179}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
