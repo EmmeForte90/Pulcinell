@@ -8,10 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: skeleton_Material
-  m_Shader: {fileID: 4800000, guid: 34850ab874413a14f92d32245eb244ea, type: 3}
-  m_ValidKeywords:
-  - _TIMESETTINGS_LINEAR_DEFAULT
+  m_Shader: {fileID: 4800000, guid: 13c02b14c4d048fa9653293d54f6e0e1, type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords:
+  - _TIMESETTINGS_LINEAR_DEFAULT
   - _USE8NEIGHBOURHOOD_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -38,6 +38,7 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _Cutoff: 0.1
+    - _EnableExternalAlpha: 0
     - _OutlineMipLevel: 0
     - _OutlineReferenceTexWidth: 1024
     - _OutlineSmoothness: 1
@@ -56,7 +57,9 @@ Material:
     - _Use8Neighbourhood: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 0, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SineMoveFrequency: {r: 1, g: 1, b: 0, a: 0}
     - _SineMoveOffset: {r: 0, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []

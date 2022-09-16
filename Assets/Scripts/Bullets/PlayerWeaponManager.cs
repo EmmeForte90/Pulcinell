@@ -4,30 +4,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 //Usa l'input system di Unity scaricato dal packet manager
 
+
 public class PlayerWeaponManager : MonoBehaviour
 {
    [Header("Proiettili")]
-    [SerializeField] private GameObject Weapon_1;
-    [SerializeField] private GameObject Weapon_2;
-    [SerializeField] private GameObject Weapon_3;
-    [SerializeField] private GameObject Weapon_4;
+    [SerializeField] private GameObject normal;
+    [SerializeField] private GameObject rapid;
+    [SerializeField] private GameObject shotgun;
+    [SerializeField] private GameObject bomb;
 
     [SerializeField] private float tapCount = 1;
 
 
     PlayerMovement playerShootScript;
+    ChangeWeaponAnimation CW;
 
     private void Awake()
     {
         playerShootScript = GetComponent<PlayerMovement>();
     }
 
-void Update()
-{
-    
-
-
-}
 
 #region ChangeWeapon
 void OnChangeWeapon(InputValue value)
@@ -36,23 +32,34 @@ void OnChangeWeapon(InputValue value)
     {
         if(tapCount == 1)
         {
+        //normal
         SetWeapon(1);
         tapCount++;
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
         }
         else if(tapCount == 2)
         {
+        //rapid
         SetWeapon(2);
         tapCount++;
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        
         }
         else if(tapCount == 3)
         {
+        //shotgun
         SetWeapon(3);
         tapCount++;
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        
         }
         else if(tapCount == 4)
         {
+        //bomb
         SetWeapon(4);
         tapCount = 1;
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        
         }
     } 
     
@@ -65,27 +72,23 @@ void SetWeapon(int WeaponID)
     switch (WeaponID)
     {
         case 1:
-    PlayerMovement.instance.SetBulletPrefab(Weapon_1);
+    PlayerMovement.instance.SetBulletPrefab(normal);
     break;
 
     case 2:
-    PlayerMovement.instance.SetBulletPrefab(Weapon_2);
+    PlayerMovement.instance.SetBulletPrefab(rapid);
     break;
 
     case 3:
-    PlayerMovement.instance.SetBulletPrefab(Weapon_3);
+    PlayerMovement.instance.SetBulletPrefab(shotgun);
     break;
 
     case 4:
-    PlayerMovement.instance.SetBulletPrefab(Weapon_4);
+    PlayerMovement.instance.SetBulletPrefab(bomb);
     break;
         
     }
     
-    
 
-}
- 
-
-
+ }
 }
