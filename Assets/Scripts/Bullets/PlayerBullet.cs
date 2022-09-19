@@ -48,12 +48,12 @@ public class PlayerBullet : MonoBehaviour
         
         if(isBomb)
         {        
-            if(PlayerMovement.instance.transform.position.x > 0)
+            if(PlayerMovement.instance.transform.localScale.x > 0)
             {
             var direction = transform.right + Vector3.up;
             GetComponent<Rigidbody2D>().AddForce(direction * bombSpeed, ForceMode2D.Impulse);
             }
-            else if(PlayerMovement.instance.transform.position.x < 0)
+            else if(PlayerMovement.instance.transform.localScale.x < 0)
             {
             var direction = -transform.right + Vector3.up;
             GetComponent<Rigidbody2D>().AddForce(direction * bombSpeed, ForceMode2D.Impulse);
