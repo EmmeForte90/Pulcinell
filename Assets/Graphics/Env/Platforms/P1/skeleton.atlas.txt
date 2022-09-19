@@ -1,0 +1,10 @@
+skeleton.png
+size:512,256
+filter:Linear,Linear
+pma:true
+Chain
+bounds:286,78,7,94
+Circle
+bounds:286,19,62,57
+Plat
+bounds:2,2,282,170
