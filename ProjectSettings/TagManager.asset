@@ -12,6 +12,8 @@ TagManager:
   - Bullet
   - HealthBar
   - Platforms
+  - LP
+  - RP
   layers:
   - Default
   - TransparentFX
