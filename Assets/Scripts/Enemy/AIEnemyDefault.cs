@@ -114,11 +114,7 @@ private void OnTriggerEnter2D(Collider2D other)
         if (other.tag == "Player")
         {
 
-            anim.SetTrigger("isAttacking");
-            if(bigEnm)
-            {
-                StartCoroutine(corforBigEnm());
-            }
+            anim.SetTrigger("isAttack");
             attack = true;
             //AudioManager.instance.PlaySFX(10);
             HitEnemy();
@@ -145,13 +141,6 @@ IEnumerator HitEnemy()
         attack = false;
         //Attacco.gameObject.SetActive(true);
 
-    }
-
-    IEnumerator corforBigEnm()
-    {
-        yield return new WaitForSeconds(1f);
-        //AudioManager.instance.PlaySFX(10);
-        //CameraShake.Shake(0.25f, 4f);
     }
 
     #endregion

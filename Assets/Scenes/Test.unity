@@ -2502,9 +2502,9 @@ GameObject:
   - component: {fileID: 632582092}
   - component: {fileID: 632582091}
   - component: {fileID: 632582090}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Brain
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2517,7 +2517,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 632582088}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.213858, y: 5.8569393, z: -2}
+  m_LocalPosition: {x: 25.213858, y: 5.83, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2540,7 +2540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 5
   MaxHP: 5
-  enemy: {fileID: 1651127142}
+  enemy: {fileID: 632582088}
   HPBarra: {fileID: 0}
   bigEnm: 1
   gigaFat: 0
@@ -2553,7 +2553,7 @@ MonoBehaviour:
   waitTime: 3
   moveCount: 5
   waitCount: 2
-  anim: {fileID: 1651127147}
+  anim: {fileID: 632582094}
   hit: 0
   Attacco: {fileID: 0}
   playerlayer:
@@ -2597,8 +2597,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.06123066, y: 1.0757868}
-  m_Size: {x: 0.5547199, y: 2.1484265}
+  m_Offset: {x: -0.17972851, y: 1.9146805}
+  m_Size: {x: 1.0366383, y: 3.8262138}
   m_Direction: 0
 --- !u!114 &632582093
 MonoBehaviour:
