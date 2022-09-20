@@ -6,13 +6,6 @@ public class Platformdatabase : MonoBehaviour
 {
 	public static Platformdatabase Instance = null;
 
-	[Header("Ripristino per piattaforma che cade")]
-
-	[SerializeField]
-	GameObject platformPrefab;
-	[SerializeField]
-	public float Delay;
-
 	[Header("Apparizione piattaforma casuale")]
 
 	[SerializeField]
@@ -69,13 +62,6 @@ public class Platformdatabase : MonoBehaviour
 
 	}
 	
-	
-
-	IEnumerator SpawnPlatform(Vector2 spawnPosition)
-	{
-		yield return new WaitForSeconds(Delay);
-		Instantiate(platformPrefab, spawnPosition, platformPrefab.transform.rotation);
-	}
 
 
 }
