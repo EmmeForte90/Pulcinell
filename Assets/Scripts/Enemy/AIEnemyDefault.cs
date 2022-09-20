@@ -111,14 +111,14 @@ void Update()
  
 private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        /*if (other.tag == "Player")
         {
 
-            anim.SetTrigger("isAttack");
-            attack = true;
+            //anim.SetTrigger("isAttack");
+            //attack = true;
             //AudioManager.instance.PlaySFX(10);
-            HitEnemy();
-        }
+            //HitEnemy();
+        }*/
         if(other.tag == "Bullet")
         {
             StartCoroutine(HitEnemy());
@@ -134,6 +134,8 @@ IEnumerator HitEnemy()
         //Attacco.gameObject.SetActive(false);
         moveCount = 0;
         //Il nemico si ferma 
+        anim.SetTrigger("isHurt");
+        RB.AddForce(transform.up * bounceForce);
         yield return new WaitForSeconds(0.5f);
         //Si ferma per mezzo secondo
         moveCount = 1;
