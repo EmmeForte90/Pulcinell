@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Slammer : MonoBehaviour
 {
-    public Transform theSlammer, slammerTarget, corda, cordatarget;
+    public Transform theSlammer, slammerTarget, slammerReset; //corda, cordatarget;
     private Vector3 startPoint;
 
-    public float slamSpeed, waitAfterSlam, resetSpeed, cordaresetspeed;
+    public float slamSpeed, waitAfterSlam, resetSpeed; //cordaresetspeed;
     private float waitCounter;
     private bool slamming, resetting;
 
@@ -33,13 +33,13 @@ public class Slammer : MonoBehaviour
         if (slamming)
         {
             theSlammer.position = Vector3.MoveTowards(theSlammer.position, slammerTarget.position, slamSpeed * Time.deltaTime);
-            corda.position = Vector3.MoveTowards(corda.position, cordatarget.position, slamSpeed * Time.deltaTime);
+            //corda.position = Vector3.MoveTowards(corda.position, cordatarget.position, slamSpeed * Time.deltaTime);
 
 
             //Quando colpisce l'area designata
             if (theSlammer.position == slammerTarget.position)
             {
-                CameraShake.Shake(0.10f, 0.50f);
+               // CameraShake.Shake(0.10f, 0.50f);
 
                 waitCounter -= Time.deltaTime;
                 if (waitCounter <= 0)
@@ -53,10 +53,10 @@ public class Slammer : MonoBehaviour
         //Modalità di ripristino
         if (resetting)
         {
-            theSlammer.position = Vector3.MoveTowards(theSlammer.position, startPoint, resetSpeed * Time.deltaTime);
-            corda.position = Vector3.MoveTowards(corda.position, startPoint, cordaresetspeed * Time.deltaTime);
+            theSlammer.position = Vector3.MoveTowards(theSlammer.position, slammerReset.position, resetSpeed * Time.deltaTime);
+            //corda.position = Vector3.MoveTowards(corda.position, startPoint, cordaresetspeed * Time.deltaTime);
 
-            if (theSlammer.position == startPoint)
+            if (theSlammer.position == slammerReset.position)
             {
                 resetting = false;
             }

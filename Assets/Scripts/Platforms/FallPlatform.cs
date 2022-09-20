@@ -9,6 +9,8 @@ public class FallPlatform : MonoBehaviour
 	public float Delay;
 	[SerializeField]
 	public float Explose;
+	[SerializeField]
+	public Transform pointClass;
 
 
 	// Use this for initialization
@@ -17,14 +19,14 @@ public class FallPlatform : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 	}
 
+
 	//Quando il player collide con l'oggetto
 	void OnCollisionEnter2D(Collision2D col)
 	{
 		if (col.gameObject.tag == "Player")
 		{
 			//Avvia un timer stabilito con una variabile nel database delle piattaforme per mantenere il conteggio
-			Platformdatabase.Instance.StartCoroutine("SpawnPlatform",
-					new Vector2(transform.position.x, transform.position.y));
+			Platformdatabase.Instance.StartCoroutine("SpawnPlatform", new Vector2(transform.position.x, transform.position.y));
 			
 			//La piattaforma cade
 			Invoke("DropPlatform", Delay);
@@ -34,6 +36,6 @@ public class FallPlatform : MonoBehaviour
 
 	void DropPlatform()
 	{
-		rb.isKinematic = false;
+		rb.velocity = new Vector2(transform.position.x, pointClass.transform.position.y);
 	}
 }
