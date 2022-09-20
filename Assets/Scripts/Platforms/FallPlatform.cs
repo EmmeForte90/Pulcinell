@@ -4,38 +4,62 @@ using UnityEngine;
 
 public class FallPlatform : MonoBehaviour
 {
-	Rigidbody2D rb;
-	[SerializeField]
-	public float Delay;
-	[SerializeField]
-	public float Explose;
-	[SerializeField]
-	public Transform pointClass;
+	public Transform thePlatform, slammerTarget, slammerPoint, slammerReset; //corda, cordatarget;
+    private Vector3 startPoint;
+
+    public float slamSpeed, waitAfterSlam, resetSpeed; //cordaresetspeed;
+    private float waitCounter;
+    private bool slamming, resetting;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        startPoint = thePlatform.position;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Se non sta attaccando
+        if (!slamming && !resetting)
+        {
+            if (Vector3.Distance(slammerPoint.position, PlayerMovement.instance.transform.position) < 2f)
+            {
+                slamming = true;
+                waitCounter = waitAfterSlam;
+            }
+        }
+        //Se sta attaccando
+        if (slamming)
+        {
+            thePlatform.position = Vector3.MoveTowards(thePlatform.position, slammerTarget.position, slamSpeed * Time.deltaTime);
+            //corda.position = Vector3.MoveTowards(corda.position, cordatarget.position, slamSpeed * Time.deltaTime);
 
 
-	// Use this for initialization
-	void Start()
-	{
-		rb = GetComponent<Rigidbody2D>();
-	}
+            //Quando colpisce l'area designata
+            if (thePlatform.position == slammerTarget.position)
+            {
+               // CameraShake.Shake(0.10f, 0.50f);
 
+                waitCounter -= Time.deltaTime;
+                if (waitCounter <= 0)
+                {
+                    slamming = false;
+                    resetting = true;
+                }
 
-	//Quando il player collide con l'oggetto
-	void OnCollisionEnter2D(Collision2D col)
-	{
-		if (col.gameObject.tag == "Player")
-		{
-			//Avvia un timer stabilito con una variabile nel database delle piattaforme per mantenere il conteggio
-			Platformdatabase.Instance.StartCoroutine("SpawnPlatform", new Vector2(transform.position.x, transform.position.y));
-			
-			//La piattaforma cade
-			Invoke("DropPlatform", Delay);
-			Destroy(gameObject, Explose);
-		}
-	}
+            }
+        }
+        //Modalità di ripristino
+        if (resetting)
+        {
+            thePlatform.position = Vector3.MoveTowards(thePlatform.position, slammerReset.position, resetSpeed * Time.deltaTime);
+            //corda.position = Vector3.MoveTowards(corda.position, startPoint, cordaresetspeed * Time.deltaTime);
 
-	void DropPlatform()
-	{
-		rb.velocity = new Vector2(transform.position.x, pointClass.transform.position.y);
-	}
+            if (thePlatform.position == slammerReset.position)
+            {
+                resetting = false;
+            }
+        }
+    }
 }
