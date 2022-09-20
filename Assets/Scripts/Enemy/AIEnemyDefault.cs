@@ -7,10 +7,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
 
 {
     //public int HP { get; set; }
-    
-    [Header("Sprite e animazione")]
-    [SerializeField]
-    protected Rigidbody2D RB;
+        
     [Header("Movimenti")]
     [SerializeField]
     public Transform LP;
@@ -27,8 +24,8 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     void Start()
     {
         //Inizializzazione
-        RB = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        //RB = GetComponent<Rigidbody2D>();
+        //anim = GetComponent<Animator>();
         LP.parent = null;
         RP.parent = null;
         moveCount = moveTime;
@@ -110,7 +107,7 @@ void Update()
 #endif
 */
    
-#region Attacco
+#region Attacco e danno
  
 private void OnTriggerEnter2D(Collider2D other)
     {
@@ -126,6 +123,11 @@ private void OnTriggerEnter2D(Collider2D other)
             //AudioManager.instance.PlaySFX(10);
             HitEnemy();
         }
+        if(other.tag == "Bullet")
+        {
+            StartCoroutine(HitEnemy());
+            //Quando il nemico collide con il bullet parte la corutine
+        }
 
     }
     
@@ -134,9 +136,12 @@ private void OnTriggerEnter2D(Collider2D other)
 IEnumerator HitEnemy()
     {
         //Attacco.gameObject.SetActive(false);
-        waitCount = 1;
+        moveCount = 0;
+        //Il nemico si ferma 
         yield return new WaitForSeconds(0.5f);
-        waitCount = 0;
+        //Si ferma per mezzo secondo
+        moveCount = 1;
+        //Poi riparte
         attack = false;
         //Attacco.gameObject.SetActive(true);
 

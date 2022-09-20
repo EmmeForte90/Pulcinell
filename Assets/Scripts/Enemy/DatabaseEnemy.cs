@@ -25,6 +25,12 @@ public class DatabaseEnemy : MonoBehaviour
     [SerializeField]
     public bool TallE;
 
+    [Header("Fisica")]
+    [SerializeField]
+    protected Rigidbody2D RB;
+    [SerializeField ]
+    public float bounceForce = 20f;
+
     [Header("Tempo di movimento")]
     [SerializeField]
     public float moveSpeed;
@@ -36,6 +42,7 @@ public class DatabaseEnemy : MonoBehaviour
     protected Animator anim;
     [SerializeField]
     protected bool hit = false;
+    protected bool isDead = false;
 
     [Header("parametri d'attacco")]
     public Transform Attacco;
@@ -52,29 +59,33 @@ public class DatabaseEnemy : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        RB = GetComponent<Rigidbody2D>();
         HP = MaxHP;
-        HPBarra.SethmaxHP(MaxHP);
+        //HPBarra.SethmaxHP(MaxHP);
     }
 
     #region Danno
     public void Damage()
     {
-        anim.SetTrigger("isHurt");
         hurtEnemy();
         HP--;
-        HPBarra.SethHP(HP);
+        //HPBarra.SethHP(HP);
         if (HP <= 0)
         {
-           Instantiate(DIE, enemy.transform.position, enemy.transform.rotation);
-           Destroy(enemy.gameObject);
+        anim.SetBool("isDead", isDead);
+        Instantiate(DIE, enemy.transform.position, enemy.transform.rotation);
+        Destroy(gameObject);
         }
 
     }
     IEnumerator hurtEnemy()
     {
+        anim.SetTrigger("isHurt");
+        RB.AddForce(transform.up * bounceForce);        
         waitCount = 1;
         yield return new WaitForSeconds(0.5f);
         waitCount = 0;
+        //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
         hit = false;
     }
     #endregion

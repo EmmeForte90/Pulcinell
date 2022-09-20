@@ -118,15 +118,46 @@ public class PlayerBullet : MonoBehaviour
             if(isNormal && !isRapid )
             //Se è un proiettile normale e non rapido
             {
-                Destroy(gameObject);
-                Destroy(other.gameObject);
-                //Viene distrutto quando colpisce il nemico
+            Destroy(gameObject);
+            //Il nemico subisce danno
+            //Debug.Log("Hit enemy");
+            IDamegable hit = other.GetComponent<IDamegable>();
+            hit.Damage();
+            //DatabaseEnemy.instance.Damage();
+            //Destroy(other.gameObject);
+            //Viene distrutto quando colpisce il nemico
+
             }
             else if(!isNormal && isRapid)
             //Quando è un proiettile rapido e non normale
             {
-                Destroy(other.gameObject);
-                //Non viene distrutto
+            //Debug.Log("Hit enemy");
+            IDamegable hit = other.GetComponent<IDamegable>();
+            hit.Damage();
+            //DatabaseEnemy.instance.Damage();
+            //Destroy(other.gameObject);
+            //Non viene distrutto
+            }
+            else if(isBomb)
+            //Quando è un proiettile rapido e non normale
+            {
+            //Debug.Log("Hit enemy");
+            Destroy(gameObject);
+            IDamegable hit = other.GetComponent<IDamegable>();
+            hit.Damage();
+            //DatabaseEnemy.instance.Damage();
+            //Destroy(other.gameObject);
+            //Non viene distrutto
+            }
+            else if(isShotgun)
+            //Quando è un proiettile rapido e non normale
+            {
+            //Debug.Log("Hit enemy");
+            IDamegable hit = other.GetComponent<IDamegable>();
+            hit.Damage();
+            //DatabaseEnemy.instance.Damage();
+            //Destroy(other.gameObject);
+            //Non viene distrutto
             }
         }
 
