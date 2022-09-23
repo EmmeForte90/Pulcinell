@@ -12,6 +12,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     [SerializeField]
     public Transform LP;
     public Transform RP;
+    private float horizontal;
     //public Transform Detector;
     
     
@@ -101,21 +102,15 @@ if(!isAttack){
         //Se il nemico sta attaccando
         else if(isAttack)
         {
-            if(GunEnemy)
-            {
-                float diff = transform.localPosition.x - PlayerMovement.instance.transform.localPosition.x;
-if(diff > 0) 
-{
-    movingRight = true;
-    transform.localScale = new Vector2(1, transform.localScale.y);
-}
-else if(diff < 0)
-{
-    movingRight = false;
-    transform.localScale = new Vector2(-1, transform.localScale.y);
-}
+        if(GunEnemy)
+        {
+        if (transform.position.x < PlayerMovement.instance.transform.position.x)
+        {horizontal = 1;}
+		else {horizontal = -1;}
+        Flip();
+        }
             
-            }
+            
             else if(gigaFat)
             {
 
@@ -142,7 +137,16 @@ else if(diff < 0)
         
         #endregion
 
-    
+    private void Flip()
+    {
+        if (movingRight && horizontal < 0f || !movingRight && horizontal > 0f)
+        {
+            movingRight = !movingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+    }
 public void Shoot()
 {
     shotCounter -= Time.deltaTime;
