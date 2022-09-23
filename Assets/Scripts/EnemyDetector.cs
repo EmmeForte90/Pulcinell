@@ -29,13 +29,24 @@ public class EnemyDetector : MonoBehaviour
             {
                 FindObjectOfType<AIEnemyDefault>().Shoot();
             }
-            //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
+            /*//Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             else if(!shooter)
             {
                 FindObjectOfType<AIEnemyDefault>().Attack();
-            }
+            }*/
         }
     }
+
+private void OnTriggerEnter2D(Collider2D other)
+{
+    if (other.tag == "Player")
+        {
+            //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
+            
+            FindObjectOfType<AIEnemyDefault>().Attack();
+        
+        }
+}
 
     //Quando il player esce dal raggio d'azione del nemico questo ferma l'attacco e si rimettere a fare quello che stava facendo prima
     private void OnTriggerExit2D(Collider2D other)

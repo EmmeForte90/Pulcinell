@@ -167,8 +167,8 @@ public void Shoot()
 public void Attack()
     {
         isAttack = true;
-        anim.SetTrigger("isAttack");
-    
+        anim.SetBool("isAttack", isAttack);
+
     }
 
 public void StopAttack()
@@ -180,7 +180,7 @@ public void StopAttack()
     }
     
 
-IEnumerator waitaftershot()
+/*IEnumerator waitaftershot()
     {
         moveCount -= Time.deltaTime;
         yield return new WaitForSeconds(1f);
@@ -188,7 +188,7 @@ IEnumerator waitaftershot()
     }
 
 //Controllo danni, funziona solo nell'engine
-/*#if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.H))
         {
             Damage();
