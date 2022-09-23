@@ -12,10 +12,6 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
     [Header("Sprite e animazione")]
     [SerializeField]
     public Transform Enemy;
-    [SerializeField]
-    protected Rigidbody2D theRB;
-    [SerializeField]
-    protected SpriteRenderer theSR;
 
     [Header("Shooting")]
     [SerializeField]
@@ -44,14 +40,11 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
     // Start is called before the first frame update
     void Start()
     {
-        theRB = GetComponent<Rigidbody2D>();
+        RB = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
         leftPoint.parent = null;
         rightPoint.parent = null;
-
         movingRight = true;
-
         moveCount = moveTime;
     }
 
@@ -70,7 +63,7 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
 
                 if (movingRight)
                 {
-                    theRB.velocity = new Vector2(moveSpeed, theRB.velocity.y);
+                    RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
 
 
 
@@ -78,12 +71,12 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
                     {
                         movingRight = false;
 
-                        transform.localScale = new Vector2(2, transform.localScale.y);
+                        transform.localScale = new Vector2(1, transform.localScale.y);
                     }
                 }
                 else
                 {
-                    theRB.velocity = new Vector2(-moveSpeed, theRB.velocity.y);
+                    RB.velocity = new Vector2(-moveSpeed, RB.velocity.y);
 
 
 
@@ -91,7 +84,7 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
                     {
                         movingRight = true;
 
-                        transform.localScale = new Vector2(-2, transform.localScale.y);
+                        transform.localScale = new Vector2(-1, transform.localScale.y);
                     }
                 }
 
@@ -105,7 +98,7 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
             else if (waitCount > 0)
             {
                 waitCount -= Time.deltaTime;
-                theRB.velocity = new Vector2(0f, theRB.velocity.y);
+                RB.velocity = new Vector2(0f, RB.velocity.y);
 
                 if (waitCount <= 0)
                 {
@@ -119,33 +112,6 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
 
         }
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#if UNITY_EDITOR
-
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-          
-
-        }
-#endif
-
-
     }
 
 
@@ -166,8 +132,6 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
                 //Repeting shooter
                 var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
                 anim.SetTrigger("isAttacking");
-
-
                 newBullet.transform.localScale = Enemy.localScale;
             }
 
@@ -177,52 +141,51 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
     IEnumerator waitaftershot()
     {
         moveCount -= Time.deltaTime;
-
         yield return new WaitForSeconds(1f);
-
-       
         waitCount -= Time.deltaTime;
-
-
     }
 
     #endregion
 
-
-    #region danno
-    public new void Damage()
+    #region Danno
+ 
+private void OnTriggerEnter2D(Collider2D other)
     {
-
-        anim.SetTrigger("isHurt");
-
-        hurtEnemy();
-
-        HP--;
-        HPBarra.SethHP(HP);
-
-
-
-        if (HP <= 0)
+        /*if (other.tag == "Player")
         {
-            Instantiate(DIE, enemy.transform.position, enemy.transform.rotation);
 
-
-            Destroy(enemy.gameObject);
-
+            //anim.SetTrigger("isAttack");
+            //attack = true;
+            //AudioManager.instance.PlaySFX(10);
+            //HitEnemy();
+        }*/
+        if(other.tag == "Bullet")
+        {
+            StartCoroutine(HitEnemy());
+            //Quando il nemico collide con il bullet parte la corutine
         }
+
     }
-    IEnumerator hurtEnemy()
+    
+
+    // Cooldown dell'attacco
+IEnumerator HitEnemy()
     {
-        waitCount = 1;
-
+        //Attacco.gameObject.SetActive(false);
+        moveCount = 0;
+        //Il nemico si ferma 
+        anim.SetTrigger("isHurt");
+        RB.AddForce(transform.up * bounceForce);
         yield return new WaitForSeconds(0.5f);
-        waitCount = 0;
-        hit = false;
+        //Si ferma per mezzo secondo
+        moveCount = 1;
+        //Poi riparte
+        attack = false;
+        //Attacco.gameObject.SetActive(true);
 
     }
+
     #endregion
-
-
 
 }
 

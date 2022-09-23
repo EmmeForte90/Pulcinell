@@ -24,12 +24,17 @@ public class DatabaseEnemy : MonoBehaviour
     public bool rider;
     [SerializeField]
     public bool TallE;
+    [SerializeField]
+    public bool GunEnemy;
 
     [Header("Fisica")]
     [SerializeField]
     protected Rigidbody2D RB;
     [SerializeField ]
     public float bounceForce = 20f;
+    [SerializeField ]
+    public Transform Enemy;
+
 
     [Header("Tempo di movimento")]
     [SerializeField]
@@ -47,6 +52,18 @@ public class DatabaseEnemy : MonoBehaviour
     [Header("parametri d'attacco")]
     public Transform Attacco;
     public LayerMask playerlayer;
+
+    [Header("Shooting")]
+    [SerializeField]
+    public GameObject bullet;
+    [SerializeField]
+    public Transform firePoint;
+    [SerializeField]
+    public float timeBetweenShots;
+    [SerializeField]
+    public float shotCounter;
+    [SerializeField]
+    public float FUOCO;
 
     [Header ("Morte")]
     public GameObject DIE;

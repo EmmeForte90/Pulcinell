@@ -364,11 +364,8 @@ void OnCollisionEnter2D(Collision2D other)
 
         if (other.gameObject.tag == "Enemy")
         {
-            Debug.Log("Hai ricevuto il danno");
-            FindObjectOfType<PlayerHealth>().removeOneHeart();
-            myRigidbody.velocity = knockBack;
-            myAnimator.SetTrigger("Hurt");
-
+            //Debug.Log("Hai ricevuto il danno");
+            Hurt();
 		}
     }
 private void OnCollisionExit2D(Collision2D other){
@@ -381,4 +378,12 @@ private void OnCollisionExit2D(Collision2D other){
 	}
 
 #endregion
+
+public void Hurt()
+{
+    FindObjectOfType<PlayerHealth>().removeOneHeart();
+    myRigidbody.velocity = knockBack;
+    myAnimator.SetTrigger("Hurt");
+}
+
 }

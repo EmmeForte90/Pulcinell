@@ -12,9 +12,11 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     [SerializeField]
     public Transform LP;
     public Transform RP;
+    //public Transform Detector;
     bool movingRight = true;
     [SerializeField]
-    protected bool attack = false;
+    protected bool isAttack = false;
+    
 
     private void Awake()
     {
@@ -28,6 +30,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
         //anim = GetComponent<Animator>();
         LP.parent = null;
         RP.parent = null;
+        //Detector.parent = null;
         moveCount = moveTime;
         //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
 
@@ -38,6 +41,7 @@ void Update()
 
 #region movimenti nemici
 
+if(!isAttack){
             if (moveCount > 0)
             //Tempo di pausa per far fermare il nemico
             {
@@ -94,9 +98,68 @@ void Update()
                 }
                 anim.SetBool("isMoving", false);
             }
+        } else if(isAttack)
+        {
+            if(GunEnemy)
+            {
+            
+
+            }
+            else if(gigaFat)
+            {
+
+            }
+            else if(TallE)
+            {
+
+                
+            }
+            else if(bigEnm)
+            {
+
+                
+            }
+            else if(rider)
+            {
+                
+            }
+
+
+
         }
+} 
         
         #endregion
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        //waitaftershot();
+        if (other.tag == "Player")
+        {
+            //if(GunEnemy)
+            //{
+            shotCounter -= Time.deltaTime;
+            isAttack = true;
+            if (shotCounter <= 0)
+            {
+                shotCounter = timeBetweenShots;
+                //Repeting shooter
+                var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
+                anim.SetBool("isAttack", isAttack);
+                anim.SetTrigger("isShoot");
+                newBullet.transform.localScale = Enemy.localScale;
+            }
+            //}
+
+        }
+    }
+
+    IEnumerator waitaftershot()
+    {
+        moveCount -= Time.deltaTime;
+        yield return new WaitForSeconds(1f);
+        waitCount -= Time.deltaTime;
+    }
 
 //Controllo danni, funziona solo nell'engine
 /*#if UNITY_EDITOR
@@ -107,7 +170,7 @@ void Update()
 #endif
 */
    
-#region Attacco e danno
+#region Danno
  
 private void OnTriggerEnter2D(Collider2D other)
     {
@@ -140,7 +203,7 @@ IEnumerator HitEnemy()
         //Si ferma per mezzo secondo
         moveCount = 1;
         //Poi riparte
-        attack = false;
+        isAttack = false;
         //Attacco.gameObject.SetActive(true);
 
     }
