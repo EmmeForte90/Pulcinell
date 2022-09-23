@@ -15,7 +15,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     //public Transform Detector;
     bool movingRight = true;
     [SerializeField]
-    protected bool isAttack = false;
+    public bool isAttack = false;
     
 
     private void Awake()
@@ -42,6 +42,7 @@ void Update()
 #region movimenti nemici
 
 if(!isAttack){
+
             if (moveCount > 0)
             //Tempo di pausa per far fermare il nemico
             {
@@ -131,14 +132,10 @@ if(!isAttack){
         
         #endregion
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        //waitaftershot();
-        if (other.tag == "Player")
-        {
-            //if(GunEnemy)
-            //{
-            shotCounter -= Time.deltaTime;
+    
+public void Shoot()
+{
+    shotCounter -= Time.deltaTime;
             isAttack = true;
             if (shotCounter <= 0)
             {
@@ -149,12 +146,25 @@ if(!isAttack){
                 anim.SetTrigger("isShoot");
                 newBullet.transform.localScale = Enemy.localScale;
             }
-            //}
+}
 
-        }
+public void Attack()
+    {
+                
+    
+    
     }
 
-    IEnumerator waitaftershot()
+public void StopAttack()
+    {
+        isAttack = false;
+        anim.SetBool("isAttack", isAttack = false);
+        moveCount = moveTime;
+
+    }
+    
+
+IEnumerator waitaftershot()
     {
         moveCount -= Time.deltaTime;
         yield return new WaitForSeconds(1f);
