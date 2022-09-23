@@ -49,7 +49,7 @@ public class Torretta : DatabaseEnemy, IDamegable
     void Start()
     {
         HP = maxHP;
-        HPBarra.SethmaxHP(maxHP);
+        //HPBarra.SethmaxHP(maxHP);
     }
 
     // Update is called once per frame
@@ -119,9 +119,7 @@ public class Torretta : DatabaseEnemy, IDamegable
         hurtEnemy();
 
         HP--;
-        HPBarra.SethHP(HP);
-
-
+        //HPBarra.SethHP(HP);
 
         if (HP <= 0)
         {

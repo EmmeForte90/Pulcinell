@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe20b03e36df9845bbe35370fa44f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 20
+  bulletSpeed: 10
   shotgunBullet: 3
   bombBullet: 10
   Explode: {fileID: 828553308391180402, guid: bfc6838d06cfce34b8c28772eafb0f10, type: 3}

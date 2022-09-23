@@ -14,8 +14,8 @@ public class DatabaseEnemy : MonoBehaviour
     public int MaxHP;
     [SerializeField]
     public GameObject enemy;
-    [SerializeField]
-    public EHealtBar HPBarra;
+    //[SerializeField]
+    //public EHealtBar HPBarra;
     [SerializeField]
     public bool bigEnm;
     [SerializeField]
@@ -45,9 +45,10 @@ public class DatabaseEnemy : MonoBehaviour
     public float moveCount, waitCount;
     [SerializeField]
     protected Animator anim;
-    [SerializeField]
     protected bool hit = false;
     protected bool isDead = false;
+    protected bool movingRight = true;
+    protected bool isAttack = false;
 
     [Header("parametri d'attacco")]
     public Transform Attacco;
@@ -64,6 +65,8 @@ public class DatabaseEnemy : MonoBehaviour
     public float shotCounter;
     [SerializeField]
     public float FUOCO;
+    [SerializeField]
+    public GameObject blam;
 
     [Header ("Morte")]
     public GameObject DIE;
@@ -106,10 +109,6 @@ public class DatabaseEnemy : MonoBehaviour
         hit = false;
     }
     #endregion
-
-
-
-
 
 }
 

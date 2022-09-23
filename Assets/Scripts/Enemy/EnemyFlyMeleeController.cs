@@ -60,7 +60,7 @@ public class EnemyFlyMeleeController : DatabaseEnemy,IDamegable
             points[i].parent = null;
         }
         HP = maxHP;
-        HPBarra.SethmaxHP(maxHP);
+        //HPBarra.SethmaxHP(maxHP);
     }
 
     // Update is called once per frame
@@ -152,9 +152,7 @@ public class EnemyFlyMeleeController : DatabaseEnemy,IDamegable
                 hurtEnemy();
 
                 HP--;
-                HPBarra.SethHP(HP);
-
-
+                //HPBarra.SethHP(HP);
 
                 if (HP <= 0)
                 {

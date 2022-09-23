@@ -13,9 +13,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     public Transform LP;
     public Transform RP;
     //public Transform Detector;
-    bool movingRight = true;
-    [SerializeField]
-    public bool isAttack = false;
+    
     
 
     private void Awake()
@@ -40,7 +38,7 @@ void Update()
 {
 
 #region movimenti nemici
-
+//Se il nemico non sta attaccando
 if(!isAttack){
 
             if (moveCount > 0)
@@ -99,12 +97,24 @@ if(!isAttack){
                 }
                 anim.SetBool("isMoving", false);
             }
-        } else if(isAttack)
+        } 
+        //Se il nemico sta attaccando
+        else if(isAttack)
         {
             if(GunEnemy)
             {
+                float diff = transform.localPosition.x - PlayerMovement.instance.transform.localPosition.x;
+if(diff > 0) 
+{
+    movingRight = true;
+    transform.localScale = new Vector2(1, transform.localScale.y);
+}
+else if(diff < 0)
+{
+    movingRight = false;
+    transform.localScale = new Vector2(-1, transform.localScale.y);
+}
             
-
             }
             else if(gigaFat)
             {
@@ -136,12 +146,14 @@ if(!isAttack){
 public void Shoot()
 {
     shotCounter -= Time.deltaTime;
-            isAttack = true;
+    isAttack = true;
+    
             if (shotCounter <= 0)
             {
                 shotCounter = timeBetweenShots;
                 //Repeting shooter
                 var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
+                Instantiate(blam, firePoint.position, firePoint.rotation);
                 anim.SetBool("isAttack", isAttack);
                 anim.SetTrigger("isShoot");
                 newBullet.transform.localScale = Enemy.localScale;
@@ -150,8 +162,8 @@ public void Shoot()
 
 public void Attack()
     {
-                
-    
+        isAttack = true;
+        anim.SetTrigger("isAttack");
     
     }
 
