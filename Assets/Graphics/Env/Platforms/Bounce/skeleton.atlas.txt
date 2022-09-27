@@ -1,0 +1,9 @@
+skeleton.png
+size:256,128
+filter:Linear,Linear
+pma:true
+Livello 1
+bounds:2,2,27,108
+rotate:90
+Livello 2
+bounds:2,31,236,64

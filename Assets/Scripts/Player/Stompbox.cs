@@ -4,48 +4,37 @@ using UnityEngine;
 
 public class Stompbox : MonoBehaviour
 {
-    
-    public Transform attackPoint;
-    public float attackrange;
-    public GameObject collectible;
-    public LayerMask enemyLayers;
+    public GameObject stompBox;
+    //public Transform attackPoint;
+    //public float attackrange;
+    //public GameObject collectible;
+    //public LayerMask enemyLayers;
 
-    [Range(0, 100)] public float chanceToDrop;
+    //[Range(0, 100)] public float chanceToDrop;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D Enemy)
-    {
-        if (Enemy.tag == "Player" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
+        if (other.gameObject.tag == "Player" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
         {
             Debug.Log("We hit");
             AIEnemyDefault.instance.Damage();
-
-            float dropSelect = Random.Range(0, 100f);
+            PlayerMovement.instance.OnAir();
+            PlayerMovement.instance.BumpEnemy();
+            /*float dropSelect = Random.Range(0, 100f);
 
             if (dropSelect <= chanceToDrop)
             {
                 Instantiate(collectible, Enemy.transform.position, Enemy.transform.rotation);
             }
             //PlayerController.instance.Bounce();
-            AudioManager.instance.PlaySFX(3);
+            AudioManager.instance.PlaySFX(3);*/
         }
 
-       
-
-
-           
-
-
+        if (other.gameObject.tag == "Ground" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
+        {
+            Debug.Log("Sei a terra");
+            PlayerMovement.instance.OnGround();
+        }
     }
 }

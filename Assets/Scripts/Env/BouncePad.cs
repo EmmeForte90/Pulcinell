@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BouncePad : MonoBehaviour
 {
-    private Animator anim;
-    [SerializeField ]public float bounceForce = 20f;
+    [SerializeField] Animator anim;
+    [SerializeField] public float bounceForce = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -13,11 +13,6 @@ public class BouncePad : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     //Se il giocatore tocca il bersaglio
     private void OnTriggerEnter2D(Collider2D other)
@@ -25,8 +20,9 @@ public class BouncePad : MonoBehaviour
         if(other.tag == "Player")
         {
             //Una forza che settiamo con una variabile lo spinge sull'asse Y
+            PlayerMovement.instance.OnAir();
             PlayerMovement.instance.myRigidbody.velocity = new Vector2(PlayerMovement.instance.myRigidbody.velocity.x, bounceForce);
-            //anim.SetTrigger("Bounce");
+            anim.SetTrigger("bounce");
         }
     }
 
