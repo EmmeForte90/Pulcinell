@@ -1,29 +1,48 @@
 E1.png
-size:256,128
+size:512,256
 filter:Linear,Linear
 pma:true
 Avabraccio
-bounds:132,10,20,36
+bounds:471,165,20,36
+rotate:90
 Belt
-bounds:131,48,49,22
+bounds:442,103,49,22
 Body
-bounds:2,34,51,92
+bounds:298,85,51,92
+rotate:90
 Bracio
-bounds:156,79,21,47
+bounds:419,99,21,47
 Eye
-bounds:2,2,30,18
+bounds:445,53,30,18
 rotate:90
 Gamba
-bounds:131,72,23,54
+bounds:442,127,23,54
+rotate:90
 Head
-bounds:55,46,74,80
+bounds:298,9,74,80
+rotate:90
 Hip
-bounds:80,7,50,37
+bounds:390,148,50,37
+Livello 1
+bounds:380,2,81,63
+rotate:90
+Livello 2
+bounds:2,99,249,86
+Livello 3
+bounds:2,13,294,84
+Livello 4
+bounds:253,138,135,47
+Livello 5
+bounds:392,94,52,25
+rotate:90
 Mano1
-bounds:154,28,17,18
+bounds:445,33,17,18
 Mano2
-bounds:154,9,16,17
+bounds:442,85,16,17
+rotate:90
 Piede
-bounds:57,4,21,40
+bounds:253,115,21,40
+rotate:90
 Spallaccio
-bounds:22,5,33,27
+bounds:442,152,33,27
+rotate:90
