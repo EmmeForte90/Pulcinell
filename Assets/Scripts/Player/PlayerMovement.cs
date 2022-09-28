@@ -11,7 +11,6 @@ using Spine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static PlayerMovement instance;
 
     [Header("Fisica")]
     [SerializeField] float runSpeed = 10f; 
@@ -106,7 +105,21 @@ private void Awake()
     }
 #endregion
 
+#region SINGLETON
+        public static PlayerMovement instance;
+        public static PlayerMovement Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = GameObject.FindObjectOfType<PlayerMovement>();
+                return instance;
+            }
+        }
+        #endregion
+
 #region Update
+
     void Update()
     {
         if (!isAlive) { return; }
@@ -116,12 +129,8 @@ private void Awake()
         FlipSprite();
         ClimbLadder();
         Die();
-    }
-#endregion
 
-void FixedUpdate()
-{
-    #region Polvere
+        #region Polvere
 
         if (isMoving && isGround)
         {
@@ -141,7 +150,10 @@ void FixedUpdate()
         }
 
         #endregion
-}
+    }
+#endregion
+
+
 
 public void OnAir()
 {
@@ -403,6 +415,8 @@ private void OnCollisionExit2D(Collision2D other){
 public void Hurt()
 {
     PlayerHealth.instance.removeOneHeart();
+    //Vector2 direction;
+    //myRigidbody.AddForce(direction * knockBack, ForceMode2D.Impulse);
     myRigidbody.velocity = new Vector2(knockBack, knockBack);
     //myRigidbody.velocity = knockBack;
     myAnimator.SetTrigger("Hurt");
