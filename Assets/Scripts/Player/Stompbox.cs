@@ -20,7 +20,7 @@ public class Stompbox : MonoBehaviour
             Debug.Log("We hit");
             IDamegable hit = other.GetComponent<IDamegable>();
             hit.Damage();
-            FindObjectOfType<AIEnemyDefault>().HitEnemy();           
+            FindObjectOfType<AIEnemyDefault>().Hurt();           
             PlayerMovement.instance.OnAir();
             PlayerMovement.instance.BumpEnemy();
             /*float dropSelect = Random.Range(0, 100f);

@@ -188,8 +188,12 @@ private void OnTriggerEnter2D(Collider2D other)
 
     }
 
+public void Hurt()
+{
+    StartCoroutine(HitEnemy());
+}
 // Cooldown dell'attacco
-public IEnumerator HitEnemy()
+IEnumerator HitEnemy()
     {
         //Attacco.gameObject.SetActive(false);
         moveCount = 0;
