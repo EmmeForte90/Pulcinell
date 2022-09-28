@@ -14,6 +14,7 @@ TagManager:
   - Platforms
   - LP
   - RP
+  - StompBox
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - Fall
   - 'Enemies '
   - Traps
-  - 
+  - Bounce
   - 
   - 
   - 

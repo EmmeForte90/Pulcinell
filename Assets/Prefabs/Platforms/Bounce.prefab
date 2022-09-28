@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 201533425242484169}
   - component: {fileID: 201533425242484170}
   - component: {fileID: 201533425242484171}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bounce
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -8,7 +8,7 @@ public class EnemyDetector : MonoBehaviour
     [Header("Rilevatore")]
     [SerializeField]
     public Transform Detector;
-    AIEnemyDefault Enemies;
+    DatabaseEnemy Enemies;
     [SerializeField]
     public bool shooter;
 
@@ -27,7 +27,7 @@ public class EnemyDetector : MonoBehaviour
             //Se è un nemico che spara attiva le funzioni di sparo come l'animazione
             if(shooter)
             {
-                FindObjectOfType<AIEnemyDefault>().Shoot();
+                FindObjectOfType<DatabaseEnemy>().Shoot();
             }
             /*//Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             else if(!shooter)
@@ -43,7 +43,7 @@ private void OnTriggerEnter2D(Collider2D other)
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             
-            FindObjectOfType<AIEnemyDefault>().Attack();
+            FindObjectOfType<DatabaseEnemy>().Attack();
         
         }
 }
@@ -54,7 +54,7 @@ private void OnTriggerEnter2D(Collider2D other)
 
         if (other.tag == "Player")
         {
-            FindObjectOfType<AIEnemyDefault>().StopAttack();
+            FindObjectOfType<DatabaseEnemy>().StopAttack();
         }
     }
 }

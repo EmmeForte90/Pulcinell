@@ -147,37 +147,9 @@ if(!isAttack){
             transform.localScale = localScale;
         }
     }
-public void Shoot()
-{
-    shotCounter -= Time.deltaTime;
-    isAttack = true;
-    
-            if (shotCounter <= 0)
-            {
-                shotCounter = timeBetweenShots;
-                //Repeting shooter
-                var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
-                Instantiate(blam, firePoint.position, firePoint.rotation);
-                anim.SetBool("isAttack", isAttack);
-                anim.SetTrigger("isShoot");
-                newBullet.transform.localScale = Enemy.localScale;
-            }
-}
 
-public void Attack()
-    {
-        isAttack = true;
-        anim.SetBool("isAttack", isAttack);
 
-    }
 
-public void StopAttack()
-    {
-        isAttack = false;
-        anim.SetBool("isAttack", isAttack = false);
-        moveCount = moveTime;
-
-    }
     
 
 /*IEnumerator waitaftershot()
@@ -215,10 +187,9 @@ private void OnTriggerEnter2D(Collider2D other)
         }
 
     }
-    
 
-    // Cooldown dell'attacco
-IEnumerator HitEnemy()
+// Cooldown dell'attacco
+public IEnumerator HitEnemy()
     {
         //Attacco.gameObject.SetActive(false);
         moveCount = 0;

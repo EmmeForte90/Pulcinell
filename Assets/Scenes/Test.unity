@@ -139,13 +139,13 @@ GameObject:
   - component: {fileID: 73678767}
   - component: {fileID: 73678769}
   - component: {fileID: 73678768}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: StomBox
-  m_TagString: Untagged
+  m_TagString: StompBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &73678767
 Transform:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 73678766}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -187,7 +187,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.13063717, y: 0.038912773}
+  m_Offset: {x: -0.11279392, y: -0.13080215}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -198,7 +198,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.73872566, y: 0.12167168}
+  m_Size: {x: 0.41384315, y: 0.29138947}
   m_EdgeRadius: 0
 --- !u!1 &94721143
 GameObject:
@@ -1826,7 +1826,7 @@ GameObject:
   - component: {fileID: 443139807}
   - component: {fileID: 443139806}
   - component: {fileID: 443139805}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: New Terrain (1)
   m_TagString: ground
   m_Icon: {fileID: 0}
@@ -12012,7 +12012,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.791686, y: 1.1964254}
+  m_Offset: {x: -1.791686, y: 0.9632282}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -12023,7 +12023,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.192667, y: 2.4766674}
+  m_Size: {x: 1.192667, y: 2.010273}
   m_EdgeRadius: 0
 --- !u!1 &1598016859
 GameObject:
@@ -12336,7 +12336,7 @@ MonoBehaviour:
   GunEnemy: 0
   RB: {fileID: 1651127143}
   bounceForce: 20
-  Enemy: {fileID: 0}
+  Enemy: {fileID: 1651127150}
   moveSpeed: 2
   moveTime: 10
   waitTime: 1
@@ -17528,7 +17528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1736650994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17857,7 +17857,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.033143997, y: 0.077026606}
+  m_Offset: {x: -0.040906906, y: 0.06305337}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -17868,7 +17868,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.62080383, y: 0.14822054}
+  m_Size: {x: 0.605278, y: 0.17616701}
   m_EdgeRadius: 0
 --- !u!114 &1746629008
 MonoBehaviour:
@@ -19827,6 +19827,14 @@ PrefabInstance:
     - target: {fileID: 201533425242484172, guid: 257ec33e7e66a694ca72b5edd8927017, type: 3}
       propertyPath: m_Name
       value: Bounce
+      objectReference: {fileID: 0}
+    - target: {fileID: 201533425242484172, guid: 257ec33e7e66a694ca72b5edd8927017, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 201533425242484172, guid: 257ec33e7e66a694ca72b5edd8927017, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 257ec33e7e66a694ca72b5edd8927017, type: 3}

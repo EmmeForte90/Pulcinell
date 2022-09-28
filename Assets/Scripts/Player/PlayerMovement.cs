@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per il raggio d'attacco
     [SerializeField] float nextAttackTime = 0f;
     //Variabile per il tempo d'attacco
-    float bounceForce = 5f;
+    float bounceForce = 7f;
     
     [Header("VFX")]
     [SerializeField] private GameObject bullet;
@@ -144,7 +144,7 @@ void FixedUpdate()
 
 public void OnAir()
 {
-    //isGround = false;
+    isGround = false;
     myAnimator.SetTrigger("Jump");
     myAnimator.SetBool("isGround", !isGround);
 }

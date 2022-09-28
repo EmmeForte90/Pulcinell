@@ -15,10 +15,12 @@ public class Stompbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
+        if (other.gameObject.tag == "Enemy" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
         {
             Debug.Log("We hit");
-            AIEnemyDefault.instance.Damage();
+            IDamegable hit = other.GetComponent<IDamegable>();
+            hit.Damage();
+            FindObjectOfType<AIEnemyDefault>().HitEnemy();           
             PlayerMovement.instance.OnAir();
             PlayerMovement.instance.BumpEnemy();
             /*float dropSelect = Random.Range(0, 100f);
@@ -33,8 +35,8 @@ public class Stompbox : MonoBehaviour
 
         if (other.gameObject.tag == "Ground" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
         {
-            Debug.Log("Sei a terra");
-            PlayerMovement.instance.OnGround();
+           // Debug.Log("Sei a terra");
+           // PlayerMovement.instance.OnGround();
         }
     }
 }

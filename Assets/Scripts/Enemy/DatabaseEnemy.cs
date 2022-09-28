@@ -84,10 +84,42 @@ public class DatabaseEnemy : MonoBehaviour
         //HPBarra.SethmaxHP(MaxHP);
     }
 
+public void Attack()
+    {
+        isAttack = true;
+        anim.SetBool("isAttack", isAttack);
+
+    }
+
+public void StopAttack()
+    {
+        isAttack = false;
+        anim.SetBool("isAttack", isAttack = false);
+        moveCount = moveTime;
+
+    }
+
+public void Shoot()
+{
+    shotCounter -= Time.deltaTime;
+    isAttack = true;
+    
+            if (shotCounter <= 0)
+            {
+                shotCounter = timeBetweenShots;
+                //Repeting shooter
+                var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
+                Instantiate(blam, firePoint.position, firePoint.rotation);
+                anim.SetBool("isAttack", isAttack);
+                anim.SetTrigger("isShoot");
+                newBullet.transform.localScale = Enemy.localScale;
+            }
+}
+
     #region Danno
     public void Damage()
     {
-        hurtEnemy();
+        //HitEnemy();
         HP--;
         //HPBarra.SethHP(HP);
         if (HP <= 0)
@@ -98,7 +130,7 @@ public class DatabaseEnemy : MonoBehaviour
         }
 
     }
-    IEnumerator hurtEnemy()
+    /*IEnumerator hurtEnemy()
     {
         anim.SetTrigger("isHurt");
         RB.AddForce(transform.up * bounceForce);        
@@ -107,7 +139,8 @@ public class DatabaseEnemy : MonoBehaviour
         waitCount = 0;
         //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
         hit = false;
-    }
+    }*/
+
     #endregion
 
 }
