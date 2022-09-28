@@ -16,7 +16,7 @@ public class DamagePlayer : MonoBehaviour
         if(other.gameObject.tag == "Test")
         //Se il proiettile tocca il nemico
         {            
-            Debug.Log("Ha colpito");
+            //Debug.Log("Ha colpito");
         }
 
     }

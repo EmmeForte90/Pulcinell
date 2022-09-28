@@ -97,8 +97,8 @@ public class DatabaseEnemy : MonoBehaviour
 public void Attack()
     {
     isAttack = true;
+    anim.SetBool("isMoving", false);
     anim.SetBool("isAttack", isAttack);
-    PunchNow = true;
     StartCoroutine(nextAttackTrue());
     }
 
@@ -111,6 +111,7 @@ public IEnumerator nextAttackTrue()
 public IEnumerator nextAttackFalse()
 {
     PunchNow = false;
+    anim.SetBool("isAttack", !isAttack);
     yield return new WaitForSeconds(nextAttackTime);
     PunchNow = true;
 

@@ -36,14 +36,14 @@ void OnChangeWeapon(InputValue value)
         //normal
         SetWeapon(1);
         tapCount++;
-        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(1);
         }
         else if(tapCount == 2)
         {
         //rapid
         SetWeapon(2);
         tapCount++;
-        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(2);
         
         }
         else if(tapCount == 3)
@@ -51,7 +51,7 @@ void OnChangeWeapon(InputValue value)
         //shotgun
         SetWeapon(3);
         tapCount++;
-        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(3);
         
         }
         else if(tapCount == 4)
@@ -59,7 +59,7 @@ void OnChangeWeapon(InputValue value)
         //bomb
         SetWeapon(4);
         tapCount = 1;
-        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(4);
         
         }
     } 

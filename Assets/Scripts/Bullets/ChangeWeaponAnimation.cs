@@ -21,30 +21,30 @@ public class ChangeWeaponAnimation : MonoBehaviour
         skelGraph.AnimationState.SetAnimation(0, animation, loop).TimeScale = timeScale;
     }
 
-    public void ChangeWeapon()
+    public void ChangeWeapon(int id)
     {
         StartCoroutine(SetAnimationChange()); 
 
-        if(PlayerWeaponManager.instance.tapCount == 0)
+        if(id == 0)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Normal");   
-        }else if(PlayerWeaponManager.instance.tapCount == 1)
+        }else if(id == 1)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Normal");   
         }
-        else if(PlayerWeaponManager.instance.tapCount == 2)
+        else if(id == 2)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Rapid");
 
-        }else if(PlayerWeaponManager.instance.tapCount == 3)
+        }else if(id == 3)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Shotgun");
 
-        }else if(PlayerWeaponManager.instance.tapCount == 4)
+        }else if(id == 4)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Bomb");
