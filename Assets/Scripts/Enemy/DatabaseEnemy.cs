@@ -17,6 +17,8 @@ public class DatabaseEnemy : MonoBehaviour
     //[SerializeField]
     //public EHealtBar HPBarra;
     [SerializeField]
+    public bool NormalEnemy;
+    [SerializeField]
     public bool bigEnm;
     [SerializeField]
     public bool gigaFat;
@@ -49,10 +51,13 @@ public class DatabaseEnemy : MonoBehaviour
     protected bool isDead = false;
     protected bool movingRight = true;
     protected bool isAttack = false;
+    protected bool PunchNow = false;
 
     [Header("parametri d'attacco")]
-    public Transform Attacco;
-    public LayerMask playerlayer;
+    [SerializeField] public BoxCollider2D hitBox;
+    [SerializeField] LayerMask playerlayer;
+    [SerializeField] float nextAttackTime;
+    //Variabile per il tempo d'attacco
 
     [Header("Shooting")]
     [SerializeField]
@@ -80,19 +85,40 @@ public class DatabaseEnemy : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody2D>();
+        hitBox = GetComponent<BoxCollider2D>();
         HP = MaxHP;
         //HPBarra.SethmaxHP(MaxHP);
     }
 
+
+
+
+#region  Attacco
 public void Attack()
     {
-        isAttack = true;
-        anim.SetBool("isAttack", isAttack);
-
+    StartCoroutine(nextAttackTrue());
+    isAttack = true;
+    anim.SetBool("isAttack", isAttack);
+    PunchNow = true;
     }
+    
+public IEnumerator nextAttackTrue()
+{
+    PunchNow = true;
+    yield return new WaitForSeconds(nextAttackTime);
+    PunchNow = false;
+}
+public IEnumerator nextAttackFalse()
+{
+    PunchNow = false;
+    yield return new WaitForSeconds(nextAttackTime);
+    PunchNow = true;
+
+}
 
 public void StopAttack()
     {
+        hitBox.enabled = false;
         isAttack = false;
         anim.SetBool("isAttack", isAttack = false);
         moveCount = moveTime;
@@ -115,6 +141,7 @@ public void Shoot()
                 newBullet.transform.localScale = Enemy.localScale;
             }
 }
+#endregion
 
     #region Danno
     public void Damage()

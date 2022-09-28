@@ -29,6 +29,13 @@ public class EnemyDetector : MonoBehaviour
             {
                 FindObjectOfType<DatabaseEnemy>().Shoot();
             }
+            if (other.tag == "Test")
+        {
+            //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
+            
+            FindObjectOfType<DatabaseEnemy>().Attack();
+        
+        }
             /*//Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             else if(!shooter)
             {
@@ -40,6 +47,14 @@ public class EnemyDetector : MonoBehaviour
 private void OnTriggerEnter2D(Collider2D other)
 {
     if (other.tag == "Player")
+        {
+            //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
+            
+            FindObjectOfType<DatabaseEnemy>().Attack();
+        
+        }
+
+        if (other.tag == "Test")
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             

@@ -157,10 +157,10 @@ public class AIEnemeySmall : DatabaseEnemy, IDamegable
             anim.SetTrigger("isAttacking");
 
             attack = true;
-            HitEnemy();
+            //HitEnemy();
         }
     }// Cooldown dell'attacco
-    IEnumerator HitEnemy()
+    /*IEnumerator HitEnemy()
     {
         Attacco.gameObject.SetActive(false);
         waitCount = 1;
@@ -170,7 +170,7 @@ public class AIEnemeySmall : DatabaseEnemy, IDamegable
         attack = false;
         Attacco.gameObject.SetActive(true);
 
-    }
+    }*/
     #endregion
 
 

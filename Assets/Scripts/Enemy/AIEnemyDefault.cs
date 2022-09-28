@@ -40,6 +40,7 @@ void Update()
 
 #region movimenti nemici
 //Se il nemico non sta attaccando
+
 if(!isAttack){
 
             if (moveCount > 0)
@@ -102,6 +103,22 @@ if(!isAttack){
         //Se il nemico sta attaccando
         else if(isAttack)
         {
+        
+        if(NormalEnemy)
+        {
+            if(PunchNow)
+            {
+                StartCoroutine(nextAttackTrue());
+                hitBox.enabled = true;
+            }else if(!PunchNow)
+            {
+                StartCoroutine(nextAttackFalse());
+                hitBox.enabled = false;
+
+            }
+            
+        }
+        
         if(GunEnemy)
         {
         if (transform.position.x < PlayerMovement.instance.transform.position.x)

@@ -15,6 +15,7 @@ TagManager:
   - LP
   - RP
   - StompBox
+  - Test
   layers:
   - Default
   - TransparentFX
