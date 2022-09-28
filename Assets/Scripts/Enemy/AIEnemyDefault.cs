@@ -114,7 +114,6 @@ if(!isAttack){
             {
                 StartCoroutine(nextAttackFalse());
                 hitBox.enabled = false;
-
             }
             
         }
@@ -130,6 +129,15 @@ if(!isAttack){
             
             else if(gigaFat)
             {
+                if(PunchNow)
+            {
+                StartCoroutine(nextAttackTrue());
+                hitBox.enabled = true;
+            }else if(!PunchNow)
+            {
+                StartCoroutine(nextAttackFalse());
+                hitBox.enabled = false;
+            }
 
             }
             else if(TallE)
@@ -139,7 +147,15 @@ if(!isAttack){
             }
             else if(bigEnm)
             {
-
+                if(PunchNow)
+            {
+                StartCoroutine(nextAttackTrue());
+                hitBox.enabled = true;
+            }else if(!PunchNow)
+            {
+                StartCoroutine(nextAttackFalse());
+                hitBox.enabled = false;
+            }
                 
             }
             else if(rider)

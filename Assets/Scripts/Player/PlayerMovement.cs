@@ -211,7 +211,7 @@ public void OnPause(InputValue value)
 
 #region CambioArma
     public void SetBulletPrefab(GameObject newBullet)
-    //Funzione per sparare
+    //Funzione per cambiare arma
     {
        bullet = newBullet;
     }    

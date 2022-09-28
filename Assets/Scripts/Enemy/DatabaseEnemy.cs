@@ -96,12 +96,12 @@ public class DatabaseEnemy : MonoBehaviour
 #region  Attacco
 public void Attack()
     {
-    StartCoroutine(nextAttackTrue());
     isAttack = true;
     anim.SetBool("isAttack", isAttack);
     PunchNow = true;
+    StartCoroutine(nextAttackTrue());
     }
-    
+
 public IEnumerator nextAttackTrue()
 {
     PunchNow = true;

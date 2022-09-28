@@ -36,7 +36,7 @@ void OnChangeWeapon(InputValue value)
         //normal
         SetWeapon(1);
         tapCount++;
-        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();;
+        FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon();
         }
         else if(tapCount == 2)
         {
