@@ -12,12 +12,6 @@ public class EnemyDetector : MonoBehaviour
     [SerializeField]
     public bool shooter;
 
-    void Start()
-    {
-        Enemies = FindObjectOfType<AIEnemyDefault>();
-    }
-
-
 //Il player entra nel raggio d'azione del nemico
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -27,13 +21,13 @@ public class EnemyDetector : MonoBehaviour
             //Se è un nemico che spara attiva le funzioni di sparo come l'animazione
             if(shooter)
             {
-                FindObjectOfType<DatabaseEnemy>().Shoot();
+            DatabaseEnemy.instance.Shoot();
             }
             if (other.tag == "Test")
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             
-            FindObjectOfType<DatabaseEnemy>().Attack();
+            DatabaseEnemy.instance.Attack();
         
         }
             /*//Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
@@ -50,7 +44,7 @@ private void OnTriggerEnter2D(Collider2D other)
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             
-            FindObjectOfType<DatabaseEnemy>().Attack();
+            DatabaseEnemy.instance.Attack();
         
         }
 
@@ -58,7 +52,7 @@ private void OnTriggerEnter2D(Collider2D other)
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             
-            FindObjectOfType<DatabaseEnemy>().Attack();
+            DatabaseEnemy.instance.Attack();
         
         }
 }
@@ -69,7 +63,7 @@ private void OnTriggerEnter2D(Collider2D other)
 
         if (other.tag == "Player")
         {
-            FindObjectOfType<DatabaseEnemy>().StopAttack();
+            DatabaseEnemy.instance.StopAttack();
         }
     }
 }

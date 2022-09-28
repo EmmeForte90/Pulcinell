@@ -23,7 +23,8 @@ public class PlayerMovement : MonoBehaviour
      float gravityScaleAtStart;
     //Variabile per la gravità
     [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
-    [SerializeField] Vector2 knockBack = new Vector2 (20f, 20f);
+    [SerializeField] float knockBack;
+    //[SerializeField] Vector2 knockBack = new Vector2 (20f, 20f);
     //Saltello di morte
     public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
@@ -199,7 +200,7 @@ public void OnPause(InputValue value)
         AudioManager.instance.PlaySFX(1);
         Instantiate(blam, gun.position, transform.rotation);
         Instantiate(bullet, gun.position, transform.rotation);
-        FindObjectOfType<PlayerBulletCount>().removeOneBullet();
+        PlayerBulletCount.instance.removeOneBullet();
         //Richiama una variabile che appare alla posizione del
         //Gameobject gun e viene influenzato nella rotazione
         myRigidbody.velocity = stopMove;
@@ -401,8 +402,9 @@ private void OnCollisionExit2D(Collision2D other){
 
 public void Hurt()
 {
-    FindObjectOfType<PlayerHealth>().removeOneHeart();
-    myRigidbody.velocity = knockBack;
+    PlayerHealth.instance.removeOneHeart();
+    myRigidbody.velocity = new Vector2(knockBack, knockBack);
+    //myRigidbody.velocity = knockBack;
     myAnimator.SetTrigger("Hurt");
 }
 

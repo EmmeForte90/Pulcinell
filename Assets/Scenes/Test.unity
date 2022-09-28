@@ -18076,7 +18076,7 @@ MonoBehaviour:
   jumpSpeed: 7
   climbSpeed: 5
   deathKick: {x: 10, y: 10}
-  knockBack: {x: 5, y: 5}
+  knockBack: 5
   myRigidbody: {fileID: 1746629010}
   PauseMenu: {fileID: 950105337}
   Player: {fileID: 1746629005}

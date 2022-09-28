@@ -121,7 +121,7 @@ public void StopAttack()
     {
         hitBox.enabled = false;
         isAttack = false;
-        anim.SetBool("isAttack", isAttack = false);
+        anim.SetBool("isAttack", !isAttack);
         moveCount = moveTime;
 
     }
