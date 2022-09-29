@@ -37,6 +37,8 @@ void OnChangeWeapon(InputValue value)
         SetWeapon(1);
         tapCount++;
         FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(1);
+        FindObjectOfType<PlayerMovement>().ChangeWeaponSkin(1);
+
         }
         else if(tapCount == 2)
         {
@@ -44,6 +46,7 @@ void OnChangeWeapon(InputValue value)
         SetWeapon(2);
         tapCount++;
         FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(2);
+        FindObjectOfType<PlayerMovement>().ChangeWeaponSkin(2);
         
         }
         else if(tapCount == 3)
@@ -52,6 +55,7 @@ void OnChangeWeapon(InputValue value)
         SetWeapon(3);
         tapCount++;
         FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(3);
+        FindObjectOfType<PlayerMovement>().ChangeWeaponSkin(3);
         
         }
         else if(tapCount == 4)
@@ -60,6 +64,7 @@ void OnChangeWeapon(InputValue value)
         SetWeapon(4);
         tapCount = 1;
         FindObjectOfType<ChangeWeaponAnimation>().ChangeWeapon(4);
+        FindObjectOfType<PlayerMovement>().ChangeWeaponSkin(4);
         
         }
     } 

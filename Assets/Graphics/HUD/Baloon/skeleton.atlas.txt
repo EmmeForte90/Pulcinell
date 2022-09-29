@@ -1,0 +1,16 @@
+skeleton.png
+size:2048,1024
+filter:Linear,Linear
+pma:true
+Rettangolo arrotondato 1
+bounds:1169,97,905,331
+rotate:90
+Rettangolo arrotondato 1 copia
+bounds:780,5,997,387
+rotate:90
+Rettangolo arrotondato 1 copia 3
+bounds:391,4,998,387
+rotate:90
+Rettangolo arrotondato 1 copia 4
+bounds:2,2,1000,387
+rotate:90

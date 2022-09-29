@@ -27,7 +27,9 @@ public class PlayerMovement : MonoBehaviour
     //Saltello di morte
     public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
-    
+
+    private SkeletonMecanim skelGraph;
+
     [Header("Animazione e Collisioni")]
     Animator myAnimator;
     //Variabile per l'animator 
@@ -100,6 +102,7 @@ private void Awake()
         //Player = GetComponent<GameObject>();
         gravityScaleAtStart = myRigidbody.gravityScale;
         //Le dimensioni della gravità diventano quelle del rigidbody
+        skelGraph = this.GetComponent<SkeletonMecanim>();
         footEmission = footsteps.emission;
         //Emissione Particle
     }
@@ -173,6 +176,41 @@ public void BumpEnemy()
     myAnimator.SetBool("isGround", !isGround);
     myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, bounceForce);
 }
+
+#region  Cambio skin per arma indossata
+
+public void ChangeWeaponSkin(int id)
+    {
+
+        if(id == 0)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Mano");   
+        }else if(id == 1)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Normal");   
+        }
+        else if(id == 2)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Rapid");
+
+        }else if(id == 3)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Shotgun");
+
+        }else if(id == 4)
+        {
+            var skeleton = skelGraph.Skeleton;
+            skeleton.SetSkin("Bomb");
+
+        }
+       
+    }
+
+#endregion
 
 #region Pausa
 public void OnPause(InputValue value)
