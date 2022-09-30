@@ -77,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per identificare il vfx dell'esplosione
     [SerializeField] public Transform gun;
     //Variabile per spostare o scalare l'oggetto
+    [SerializeField] GameObject Change;
     [SerializeField] public ParticleSystem footsteps;
     [SerializeField] public ParticleSystem impactEffect;
     private ParticleSystem.EmissionModule footEmission;
@@ -185,26 +186,36 @@ public void ChangeWeaponSkin(int id)
         if(id == 0)
         {
             var skeleton = skelGraph.Skeleton;
-            skeleton.SetSkin("Mano");   
+            skeleton.SetSkin("Mano");
+            Instantiate(Change, transform.position, transform.rotation);
+            AudioManager.instance.PlaySFX(4);   
         }else if(id == 1)
         {
             var skeleton = skelGraph.Skeleton;
-            skeleton.SetSkin("Normal");   
+            skeleton.SetSkin("Normal"); 
+            Instantiate(Change, transform.position, transform.rotation);
+            AudioManager.instance.PlaySFX(4);   
+  
         }
         else if(id == 2)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Rapid");
-
+            Instantiate(Change, transform.position, transform.rotation);
+            AudioManager.instance.PlaySFX(4);   
         }else if(id == 3)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Shotgun");
+            Instantiate(Change,  transform.position, transform.rotation);
+            AudioManager.instance.PlaySFX(4);   
 
         }else if(id == 4)
         {
             var skeleton = skelGraph.Skeleton;
             skeleton.SetSkin("Bomb");
+            Instantiate(Change,  transform.position, transform.rotation);
+            AudioManager.instance.PlaySFX(4);   
 
         }
        
