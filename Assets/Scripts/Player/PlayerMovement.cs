@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     //Sta sparando
     private Vector2 stopMove = new Vector2 (0f, 0f);
     //Blocca il vettore del player
-    bool isGround = true;
+    bool isGround = false;
     //Variabile per identificare il terreno
     bool isMoving = false;
     bool canDoubleJump = false;
@@ -164,16 +164,21 @@ void CheckGround()
         if(Physics2D.Raycast(transform.position, Vector2.down, 1f, layerMask))
         {
             isGround = true;
-            myAnimator.SetBool("isGround", isGround);
+            UpdateAnimation();
             canDoubleJump = true;
         }
         else
         {
             isGround = false;
-            myAnimator.SetBool("isGround", !isGround);
-            myAnimator.SetTrigger("Jump");
+            UpdateAnimation();
 
         }
+    }
+
+    void UpdateAnimation()
+    {
+            myAnimator.SetBool("isGround", isGround);
+        
     }
 
 /*public void OnAir()
@@ -192,7 +197,7 @@ public void OnGround()
 public void BumpEnemy()
 {
     myAnimator.SetTrigger("Jump");
-    myAnimator.SetBool("isGround", !isGround);
+    isGround = false;
     myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, bounceForce);
 }
 
@@ -332,7 +337,6 @@ public void OnPause(InputValue value)
         //Se il player sta premendo il tasto
         {
             myAnimator.SetTrigger("Jump");
-            myAnimator.SetBool("isGround", !isGround);
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
@@ -343,9 +347,8 @@ public void OnPause(InputValue value)
             
         } else if (value.isPressed && platform)
         {
-            platform = false;
             myAnimator.SetTrigger("Jump");
-            myAnimator.SetBool("isGround", !isGround);
+            platform = false;
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
 
@@ -353,7 +356,6 @@ public void OnPause(InputValue value)
         else if(value.isPressed && canDoubleJump)
         {
             myAnimator.SetTrigger("Jump");
-            myAnimator.SetBool("isGround", !isGround);
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             canDoubleJump = false;
