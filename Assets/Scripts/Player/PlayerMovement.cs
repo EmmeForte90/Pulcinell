@@ -56,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
     bool isGround = true;
     //Variabile per identificare il terreno
     bool isMoving = false;
+    bool canDoubleJump = false;
     private bool platform = false;
     //Variabile per identificare la piattaforma
     [SerializeField] public LayerMask layerMask;
@@ -122,13 +123,14 @@ private void Awake()
         }
         #endregion
 
-#region Update
+#region FixedUpdate
 
-    void Update()
+    void FixedUpdate()
     {
         if (!isAlive) { return; }
         //Se il player è morto si disattiva la funzione
         //Altrimenti si attivano le funzioni
+        CheckGround();
         Run();
         FlipSprite();
         ClimbLadder();
@@ -157,9 +159,24 @@ private void Awake()
     }
 #endregion
 
+void CheckGround()
+    {
+        if(Physics2D.Raycast(transform.position, Vector2.down, 1f, layerMask))
+        {
+            isGround = true;
+            myAnimator.SetBool("isGround", isGround);
+            canDoubleJump = true;
+        }
+        else
+        {
+            isGround = false;
+            myAnimator.SetBool("isGround", !isGround);
+            myAnimator.SetTrigger("Jump");
 
+        }
+    }
 
-public void OnAir()
+/*public void OnAir()
 {
     isGround = false;
     myAnimator.SetTrigger("Jump");
@@ -168,8 +185,9 @@ public void OnAir()
 
 public void OnGround()
 {
+
     myAnimator.SetBool("isGround", isGround);
-}
+}*/
 
 public void BumpEnemy()
 {
@@ -302,14 +320,15 @@ public void OnPause(InputValue value)
 #region Salto
     void OnJump(InputValue value) 
     {
-        if (!isAlive) { return; }
+        /*if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
         if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground","Platforms"))) 
         { 
             return;
-        }
+        }*/
         //Se il player non sta toccando il suolo il salto(metodo) finisce
-        if(value.isPressed && !platform)
+
+        if(value.isPressed && !platform && isGround)
         //Se il player sta premendo il tasto
         {
             myAnimator.SetTrigger("Jump");
@@ -317,10 +336,10 @@ public void OnPause(InputValue value)
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
-            if(isGround)
+            /*if(isGround)
             {
             isGround = false;
-            }
+            }*/
             
         } else if (value.isPressed && platform)
         {
@@ -330,6 +349,14 @@ public void OnPause(InputValue value)
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
 
+        }
+        else if(value.isPressed && canDoubleJump)
+        {
+            myAnimator.SetTrigger("Jump");
+            myAnimator.SetBool("isGround", !isGround);
+            AudioManager.instance.PlaySFX(0);
+            myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
+            canDoubleJump = false;
         }
     }
 

@@ -21,7 +21,7 @@ public class Stompbox : MonoBehaviour
             IDamegable hit = other.GetComponent<IDamegable>();
             hit.Damage();
             FindObjectOfType<AIEnemyDefault>().Hurt();           
-            PlayerMovement.instance.OnAir();
+            //PlayerMovement.instance.OnAir();
             PlayerMovement.instance.BumpEnemy();
             /*float dropSelect = Random.Range(0, 100f);
 
