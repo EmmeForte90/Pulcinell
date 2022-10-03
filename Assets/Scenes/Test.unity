@@ -413,6 +413,7 @@ MonoBehaviour:
   bounceForce: 20
   Enemy: {fileID: 94721144}
   moveSpeed: 2
+  runSpeed: 0
   moveTime: 10
   waitTime: 1
   moveCount: 5
@@ -423,6 +424,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   nextAttackTime: 0
+  agroRange: 0
   bullet: {fileID: 2810808265776775750, guid: cf8642062d5b25842a4bd701ed90d481, type: 3}
   firePoint: {fileID: 1719947874}
   timeBetweenShots: 4
@@ -3522,6 +3524,7 @@ MonoBehaviour:
   bounceForce: 20
   Enemy: {fileID: 632582089}
   moveSpeed: 1
+  runSpeed: 0
   moveTime: 5
   waitTime: 3
   moveCount: 5
@@ -3532,6 +3535,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   nextAttackTime: 0
+  agroRange: 0
   bullet: {fileID: 2810808265776775750, guid: cf8642062d5b25842a4bd701ed90d481, type: 3}
   firePoint: {fileID: 813293847}
   timeBetweenShots: 0
@@ -13289,6 +13293,7 @@ MonoBehaviour:
   bounceForce: 20
   Enemy: {fileID: 1651127150}
   moveSpeed: 2
+  runSpeed: 3
   moveTime: 10
   waitTime: 1
   moveCount: 5
@@ -13299,6 +13304,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   nextAttackTime: 1
+  agroRange: 5
   bullet: {fileID: 0}
   firePoint: {fileID: 0}
   timeBetweenShots: 0

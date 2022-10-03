@@ -38,10 +38,14 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
 void Update()
 {
 
-#region movimenti nemici
-//Se il nemico non sta attaccando
+//Calcolo distanza tra player e nemico
+float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
 
-if(!isAttack){
+#region Se il nemico NON sta attaccando...
+
+if(!isAttack && disToPlayer > agroRange){
+
+    anim.SetBool("isRunning", false);
 
             if (moveCount > 0)
             //Tempo di pausa per far fermare il nemico
@@ -100,8 +104,29 @@ if(!isAttack){
                 anim.SetBool("isMoving", false);
             }
         } 
-        //Se il nemico sta attaccando
-        else if(isAttack)
+#endregion
+
+#region Se il nemico STA ATTACCANDO
+else if(disToPlayer < agroRange)
+{        
+    //Se NON è un nemico con un fucile
+    if(!GunEnemy)
+    {
+    //Insegue il player
+    ChasePlayer();
+    }
+    //Altrimenti se è un nemico con un fucile
+    else if(GunEnemy)
+        {
+        //si gira nella direzione del player
+        if (transform.position.x < PlayerMovement.instance.transform.position.x)
+        {horizontal = 1;}
+		else {horizontal = -1;}
+        Flip();
+        }
+
+//Se sta attaccando
+    if (isAttack)
         {
         
         if(NormalEnemy)
@@ -117,16 +142,6 @@ if(!isAttack){
             }
             
         }
-        
-        if(GunEnemy)
-        {
-        if (transform.position.x < PlayerMovement.instance.transform.position.x)
-        {horizontal = 1;}
-		else {horizontal = -1;}
-        Flip();
-        }
-            
-            
             else if(gigaFat)
             {
                 if(PunchNow)
@@ -162,15 +177,46 @@ if(!isAttack){
             {
                 
             }
-
-
-
         }
-} 
-        
-        #endregion
+       
+}
+else if(disToPlayer > agroRange)
+{
+StopChasingPlayer();
+}
 
-    private void Flip()
+#endregion
+} 
+
+
+private void  ChasePlayer()
+{
+    anim.SetBool("isRunning", true);
+if(transform.position.x < PlayerMovement.instance.transform.position.x)
+{
+    //Left
+    RB.velocity = new Vector2(runSpeed, 0);
+    movingRight = true;
+    transform.localScale = new Vector2(1, transform.localScale.y);
+}
+else if(transform.position.x > PlayerMovement.instance.transform.position.x)
+{
+    //Right
+    RB.velocity = new Vector2(-runSpeed, 0);
+    movingRight = false;
+    transform.localScale = new Vector2(-1, transform.localScale.y);
+
+}
+}
+
+private void StopChasingPlayer()
+{
+    anim.SetBool("isRunning", false);
+    RB.velocity = new Vector2(moveSpeed, 0);
+}
+
+
+private void Flip()
     {
         if (movingRight && horizontal < 0f || !movingRight && horizontal > 0f)
         {
@@ -181,26 +227,6 @@ if(!isAttack){
         }
     }
 
-
-
-    
-
-/*IEnumerator waitaftershot()
-    {
-        moveCount -= Time.deltaTime;
-        yield return new WaitForSeconds(1f);
-        waitCount -= Time.deltaTime;
-    }
-
-//Controllo danni, funziona solo nell'engine
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Damage();
-        }
-#endif
-*/
-   
 #region Danno
  
 private void OnTriggerEnter2D(Collider2D other)

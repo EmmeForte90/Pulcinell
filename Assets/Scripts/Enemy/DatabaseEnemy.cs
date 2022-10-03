@@ -41,6 +41,8 @@ public class DatabaseEnemy : MonoBehaviour
     [Header("Tempo di movimento")]
     [SerializeField]
     public float moveSpeed;
+     [SerializeField]
+    public float runSpeed;
     [SerializeField]
     public float moveTime, waitTime;
     [SerializeField]
@@ -57,6 +59,7 @@ public class DatabaseEnemy : MonoBehaviour
     [SerializeField] public BoxCollider2D hitBox;
     [SerializeField] LayerMask playerlayer;
     [SerializeField] float nextAttackTime;
+    [SerializeField] public float agroRange;
     //Variabile per il tempo d'attacco
 
     [Header("Shooting")]
@@ -144,7 +147,7 @@ public void Shoot()
 }
 #endregion
 
-    #region Danno
+#region Danno
     public void Damage()
     {
         //HitEnemy();
