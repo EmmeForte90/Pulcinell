@@ -30,5 +30,6 @@ void InitializeInputActions()
 {
     pInput.Player.Move.performed += ctx => playerMove.GetMovementDirection(ctx.ReadValue<float>());
     pInput.Player.Jump.performed += ctx => playerMove.Jump();
+    pInput.Player.Dash.performed += ctx => playerMove.Dash();
 } 
 }

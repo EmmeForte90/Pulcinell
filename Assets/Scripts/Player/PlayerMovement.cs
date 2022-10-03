@@ -61,6 +61,9 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per identificare la piattaforma
     [SerializeField] public LayerMask layerMask;
     //Variabile per identificare i vari layer
+    Vector2 wallJumpDir;
+
+    bool canWallJumpLeft = false, canWallJumpRight = false, isWallJumping = false;
     
     [Header("Attacco")]
     [SerializeField] float attackRate = 2f;
@@ -130,9 +133,10 @@ private void Awake()
         if (!isAlive) { return; }
         //Se il player è morto si disattiva la funzione
         //Altrimenti si attivano le funzioni
-        CheckGround();
         Run();
         FlipSprite();
+        CheckGround();
+        checkWallJump();
         ClimbLadder();
         Die();
 
@@ -159,6 +163,7 @@ private void Awake()
     }
 #endregion
 
+#region CheckGround
 void CheckGround()
     {
         if(Physics2D.Raycast(transform.position, Vector2.down, 1f, layerMask))
@@ -174,6 +179,7 @@ void CheckGround()
 
         }
     }
+#endregion
 
     void UpdateAnimation()
     {
@@ -317,6 +323,10 @@ public void OnPause(InputValue value)
         {
          AudioManager.instance.StopSFX(2);
         }*/
+        if(isWallJumping)
+        {
+            myRigidbody.velocity = wallJumpDir * jumpSpeed;
+        }
       
     }
 
@@ -431,6 +441,35 @@ public void OnPause(InputValue value)
         myAnimator.SetBool("isClimbing", playerHasVerticalSpeed);
         //Si attiva l'animazione dell'arrampicata
     }
+#endregion
+
+#region WallJump
+void checkWallJump()
+{
+     if(Physics2D.Raycast(transform.position, Vector2.left, 2f, layerMask))
+        {
+            canWallJumpLeft = true;
+            canWallJumpRight = false;
+            isWallJumping = false;
+
+        }
+        else
+        {
+            canWallJumpLeft = false;
+
+        }
+        
+        if(Physics2D.Raycast(transform.position, Vector2.right, 2f, layerMask))
+        {
+            canWallJumpLeft = false;
+            canWallJumpRight = true;
+            isWallJumping = false;
+        }
+        else
+        {
+            canWallJumpRight = false;
+        }
+}
 #endregion
 
 #region Morte
