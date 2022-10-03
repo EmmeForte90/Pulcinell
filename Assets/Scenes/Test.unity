@@ -397,43 +397,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 94721143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84715415e0023ec4b9e85771e993246e, type: 3}
+  m_Script: {fileID: 11500000, guid: f4702195d2dab2445a5c2e7a4f24bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 3
-  MaxHP: 3
+  HP: 2
+  MaxHP: 2
   enemy: {fileID: 94721143}
-  NormalEnemy: 0
-  bigEnm: 0
-  gigaFat: 0
-  rider: 0
-  TallE: 0
-  GunEnemy: 1
   RB: {fileID: 94721146}
   bounceForce: 20
   Enemy: {fileID: 94721144}
   moveSpeed: 2
   runSpeed: 0
-  moveTime: 10
+  moveTime: 3
   waitTime: 1
   moveCount: 5
-  waitCount: 2
+  waitCount: 3
   anim: {fileID: 94721149}
-  hitBox: {fileID: 0}
-  playerlayer:
-    serializedVersion: 2
-    m_Bits: 64
-  nextAttackTime: 0
-  agroRange: 0
-  bullet: {fileID: 2810808265776775750, guid: cf8642062d5b25842a4bd701ed90d481, type: 3}
-  firePoint: {fileID: 1719947874}
-  timeBetweenShots: 4
-  shotCounter: 1
-  FUOCO: 2
-  blam: {fileID: 6379835380598871280, guid: 0c035402a7541294ca9f1688f1f523fc, type: 3}
   DIE: {fileID: 3517251304656506221, guid: 5795977a6644088469b30bfef55d9ba0, type: 3}
   LP: {fileID: 1515059751}
   RP: {fileID: 2041976671}
+  bullet: {fileID: 2810808265776775750, guid: cf8642062d5b25842a4bd701ed90d481, type: 3}
+  firePoint: {fileID: 1719947874}
+  timeBetweenShots: 2
+  shotCounter: 1
+  FUOCO: 5
+  blam: {fileID: 6379835380598871280, guid: 0c035402a7541294ca9f1688f1f523fc, type: 3}
 --- !u!1 &96649845
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,7 +796,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -2.0948973, y: 1.8991079}
+  m_Offset: {x: -2.2149744, y: 1.8991079}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -819,7 +807,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 23.694235, y: 3.8820324}
+  m_Size: {x: 15.609102, y: 3.8820324}
   m_EdgeRadius: 0
 --- !u!114 &179410476
 MonoBehaviour:
@@ -3514,12 +3502,6 @@ MonoBehaviour:
   HP: 5
   MaxHP: 5
   enemy: {fileID: 632582088}
-  NormalEnemy: 0
-  bigEnm: 1
-  gigaFat: 0
-  rider: 0
-  TallE: 0
-  GunEnemy: 0
   RB: {fileID: 632582091}
   bounceForce: 20
   Enemy: {fileID: 632582089}
@@ -3530,21 +3512,15 @@ MonoBehaviour:
   moveCount: 5
   waitCount: 2
   anim: {fileID: 632582094}
+  DIE: {fileID: 6258777126171426866, guid: 8aceb5e525489634290de93e60fb5f3a, type: 3}
+  LP: {fileID: 2128143407}
+  RP: {fileID: 179406038}
   hitBox: {fileID: 0}
   playerlayer:
     serializedVersion: 2
     m_Bits: 64
   nextAttackTime: 0
   agroRange: 0
-  bullet: {fileID: 2810808265776775750, guid: cf8642062d5b25842a4bd701ed90d481, type: 3}
-  firePoint: {fileID: 813293847}
-  timeBetweenShots: 0
-  shotCounter: 0
-  FUOCO: 0
-  blam: {fileID: 2810808265776775750, guid: cf8642062d5b25842a4bd701ed90d481, type: 3}
-  DIE: {fileID: 6258777126171426866, guid: 8aceb5e525489634290de93e60fb5f3a, type: 3}
-  LP: {fileID: 2128143407}
-  RP: {fileID: 179406038}
 --- !u!50 &632582091
 Rigidbody2D:
   serializedVersion: 4
@@ -13283,12 +13259,6 @@ MonoBehaviour:
   HP: 3
   MaxHP: 3
   enemy: {fileID: 1651127142}
-  NormalEnemy: 1
-  bigEnm: 0
-  gigaFat: 0
-  rider: 0
-  TallE: 0
-  GunEnemy: 0
   RB: {fileID: 1651127143}
   bounceForce: 20
   Enemy: {fileID: 1651127150}
@@ -13299,21 +13269,15 @@ MonoBehaviour:
   moveCount: 5
   waitCount: 2
   anim: {fileID: 1651127147}
+  DIE: {fileID: 9136753938875010072, guid: 29d8f18aca0a2c3458386cbea0d956da, type: 3}
+  LP: {fileID: 1976727022}
+  RP: {fileID: 496999430}
   hitBox: {fileID: 1303931262}
   playerlayer:
     serializedVersion: 2
     m_Bits: 64
   nextAttackTime: 1
   agroRange: 5
-  bullet: {fileID: 0}
-  firePoint: {fileID: 0}
-  timeBetweenShots: 0
-  shotCounter: 0
-  FUOCO: 0
-  blam: {fileID: 0}
-  DIE: {fileID: 9136753938875010072, guid: 29d8f18aca0a2c3458386cbea0d956da, type: 3}
-  LP: {fileID: 1976727022}
-  RP: {fileID: 496999430}
 --- !u!70 &1651127145
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

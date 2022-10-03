@@ -7,19 +7,26 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
 
 {
     //public int HP { get; set; }
-        
     [Header("Movimenti")]
     [SerializeField]
     public Transform LP;
     public Transform RP;
     private float horizontal;
     //public Transform Detector;
+    [Header("parametri d'attacco")]
+    [SerializeField] public BoxCollider2D hitBox;
+    [SerializeField] LayerMask playerlayer;
+    [SerializeField] float nextAttackTime;
+    [SerializeField] public float agroRange;
+    //Variabile per il tempo d'attacco
+
     
     
 
     private void Awake()
     {
         instance = this;
+
     }
     
     void Start()
@@ -31,6 +38,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
         RP.parent = null;
         //Detector.parent = null;
         moveCount = moveTime;
+        hitBox = GetComponent<BoxCollider2D>();
         //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
 
     }
@@ -108,28 +116,12 @@ if(!isAttack && disToPlayer > agroRange){
 
 #region Se il nemico STA ATTACCANDO
 else if(disToPlayer < agroRange)
-{        
-    //Se NON è un nemico con un fucile
-    if(!GunEnemy)
-    {
+{           
     //Insegue il player
     ChasePlayer();
-    }
-    //Altrimenti se è un nemico con un fucile
-    else if(GunEnemy)
-        {
-        //si gira nella direzione del player
-        if (transform.position.x < PlayerMovement.instance.transform.position.x)
-        {horizontal = 1;}
-		else {horizontal = -1;}
-        Flip();
-        }
-
+   
 //Se sta attaccando
     if (isAttack)
-        {
-        
-        if(NormalEnemy)
         {
             if(PunchNow)
             {
@@ -142,43 +134,8 @@ else if(disToPlayer < agroRange)
             }
             
         }
-            else if(gigaFat)
-            {
-                if(PunchNow)
-            {
-                StartCoroutine(nextAttackTrue());
-                hitBox.enabled = true;
-            }else if(!PunchNow)
-            {
-                StartCoroutine(nextAttackFalse());
-                hitBox.enabled = false;
-            }
-
-            }
-            else if(TallE)
-            {
-
-                
-            }
-            else if(bigEnm)
-            {
-                if(PunchNow)
-            {
-                StartCoroutine(nextAttackTrue());
-                hitBox.enabled = true;
-            }else if(!PunchNow)
-            {
-                StartCoroutine(nextAttackFalse());
-                hitBox.enabled = false;
-            }
-                
-            }
-            else if(rider)
-            {
-                
-            }
-        }
-       
+            
+            
 }
 else if(disToPlayer > agroRange)
 {
@@ -211,6 +168,7 @@ else if(transform.position.x > PlayerMovement.instance.transform.position.x)
 
 private void StopChasingPlayer()
 {
+    StopAttack();
     anim.SetBool("isRunning", false);
     RB.velocity = new Vector2(moveSpeed, 0);
 }
@@ -226,6 +184,42 @@ private void Flip()
             transform.localScale = localScale;
         }
     }
+
+#region  Attacco
+public void Attack()
+    {
+    isAttack = true;
+    anim.SetBool("isMoving", false);
+    anim.SetBool("isAttack", true);
+    StartCoroutine(nextAttackTrue());
+    }
+
+public IEnumerator nextAttackTrue()
+{
+    PunchNow = true;
+    yield return new WaitForSeconds(nextAttackTime);
+    PunchNow = false;
+}
+public IEnumerator nextAttackFalse()
+{
+    PunchNow = false;
+    anim.SetBool("isAttack", false);
+    yield return new WaitForSeconds(nextAttackTime);
+    PunchNow = true;
+
+}
+
+public void StopAttack()
+    {
+        hitBox.enabled = false;
+        isAttack = false;
+        anim.SetBool("isAttack", false);
+        moveCount = moveTime;
+
+    }
+
+
+#endregion
 
 #region Danno
  
@@ -247,26 +241,7 @@ private void OnTriggerEnter2D(Collider2D other)
 
     }
 
-public void Hurt()
-{
-    StartCoroutine(HitEnemy());
-}
-// Cooldown dell'attacco
-IEnumerator HitEnemy()
-    {
-        //Attacco.gameObject.SetActive(false);
-        moveCount = 0;
-        //Il nemico si ferma 
-        anim.SetTrigger("isHurt");
-        RB.AddForce(transform.up * bounceForce);
-        yield return new WaitForSeconds(0.5f);
-        //Si ferma per mezzo secondo
-        moveCount = 1;
-        //Poi riparte
-        isAttack = false;
-        //Attacco.gameObject.SetActive(true);
 
-    }
 
     #endregion
 

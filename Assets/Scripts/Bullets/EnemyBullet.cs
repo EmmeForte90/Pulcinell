@@ -16,7 +16,7 @@ public class EnemyBullet : MonoBehaviour
 
     Rigidbody2D myRigidbody;
     //Il corpo rigido
-    AIEnemyDefault Enemies;
+    AIEnemyGun Enemies;
     //Attribuscie una variabile allo script di movimento del player
     //Per permettere al proiettile di emularne l'andamento
     float xSpeed;
@@ -39,7 +39,7 @@ public class EnemyBullet : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         //Recupera i componenti del rigidbody
-        Enemies = FindObjectOfType<AIEnemyDefault>();
+        Enemies = FindObjectOfType<AIEnemyGun>();
         //Recupera i componenti dello script
         xSpeed = Enemies.transform.localScale.x * bulletSpeed;
         shotgunSpeed = Enemies.transform.localScale.x * shotgunBullet;

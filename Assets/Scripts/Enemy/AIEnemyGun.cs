@@ -6,13 +6,13 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
 
 {
     //public int HP { get; set; }
-
-
-
-    [Header("Sprite e animazione")]
+        
+    [Header("Movimenti")]
     [SerializeField]
-    public Transform Enemy;
-
+    public Transform LP;
+    public Transform RP;
+    private float horizontal;
+    //public Transform Detector;
     [Header("Shooting")]
     [SerializeField]
     public GameObject bullet;
@@ -24,130 +24,148 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
     public float shotCounter;
     [SerializeField]
     public float FUOCO;
-
-
-    [Header("Movimenti")]
     [SerializeField]
-    public Transform leftPoint, rightPoint;
-    protected bool movingRight;
-    [SerializeField]
-    protected bool attack = false;
+    public GameObject blam;
+    
+    
 
     private void Awake()
     {
         instance = this;
     }
-    // Start is called before the first frame update
+    
     void Start()
     {
-        RB = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        leftPoint.parent = null;
-        rightPoint.parent = null;
-        movingRight = true;
+        //Inizializzazione
+        //RB = GetComponent<Rigidbody2D>();
+        //anim = GetComponent<Animator>();
+        LP.parent = null;
+        RP.parent = null;
+        //Detector.parent = null;
         moveCount = moveTime;
+        //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+void Update()
+{
 
-        if (!hit || !attack)
-        {
+//Calcolo distanza tra player e nemico
 
-            #region movimenti nemici
+#region Se il nemico NON sta attaccando...
+
+if(!isAttack){
 
             if (moveCount > 0)
+            //Tempo di pausa per far fermare il nemico
             {
                 moveCount -= Time.deltaTime;
+                //MovimentoPer deltatime
 
                 if (movingRight)
+                //Se si muove a destra
                 {
                     RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
-
-
-
-                    if (transform.position.x > rightPoint.position.x)
+                    //Un vettore lo fa muovere a destra
+                    if (transform.position.x > RP.transform.position.x)
+                    //Se la posizione è maggiore del RightPoint
                     {
                         movingRight = false;
-
-                        transform.localScale = new Vector2(1, transform.localScale.y);
+                        //Non si muove più a destra
+                        transform.localScale = new Vector2(-1, transform.localScale.y);
+                        //Si volta dall'altra parte e inizia a muoversi
                     }
                 }
                 else
                 {
                     RB.velocity = new Vector2(-moveSpeed, RB.velocity.y);
-
-
-
-                    if (transform.position.x < leftPoint.position.x)
+                    //Il vettore lo fa muovere a sinistra
+                    if (transform.position.x < LP.transform.position.x)
                     {
                         movingRight = true;
-
-                        transform.localScale = new Vector2(-1, transform.localScale.y);
+                        //Si muove a destra
+                        transform.localScale = new Vector2(1, transform.localScale.y);
+                        //Si volta dall'altra parte e inizia a muoversi
                     }
                 }
 
                 if (moveCount <= 0)
+                //Se il conteggio del movimento è uguale o inferiore a zero
                 {
                     waitCount = Random.Range(waitTime * .75f, waitTime * 1.25f);
+                    //Il tempo di attesa diventa randomico
                 }
 
                 anim.SetBool("isMoving", true);
             }
             else if (waitCount > 0)
+            //Se il conteggio del movimento è maggiore di zero
             {
                 waitCount -= Time.deltaTime;
                 RB.velocity = new Vector2(0f, RB.velocity.y);
-
+                //Il personaggio si muove
                 if (waitCount <= 0)
+                //Se il conteggio del movimento è uguale o inferiore a zero
                 {
                     moveCount = Random.Range(moveTime * .75f, waitTime * .75f);
+                    //Il tempo di movimento diventa randomico
                 }
                 anim.SetBool("isMoving", false);
             }
-        }
-        else if (hit || attack)
-        {
+        } 
+#endregion
 
+#region Se il nemico STA ATTACCANDO
+    //Altrimenti se è un nemico con un fucile
+    else if (isAttack)
+        {
+        if (transform.position.x < PlayerMovement.instance.transform.position.x)
+        {horizontal = 1;}
+		else {horizontal = -1;}
+        Flip();
         }
-        #endregion
+       
+}
+
+
+#endregion
+
+
+private void Flip()
+    {
+        if (movingRight && horizontal < 0f || !movingRight && horizontal > 0f)
+        {
+            movingRight = !movingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
     }
 
-
-    #region Attacco
-    private void OnTriggerStay2D(Collider2D other)
-    {
-
-        waitaftershot();
-
-        if (other.tag == "Player")
-        {
-
-            shotCounter -= Time.deltaTime;
-
+public void Shoot()
+{
+    shotCounter -= Time.deltaTime;
+    isAttack = true;
+    
             if (shotCounter <= 0)
             {
                 shotCounter = timeBetweenShots;
                 //Repeting shooter
                 var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
-                anim.SetTrigger("isAttacking");
+                Instantiate(blam, firePoint.position, firePoint.rotation);
+                anim.SetBool("isAttack", isAttack);
+                anim.SetTrigger("isShoot");
                 newBullet.transform.localScale = Enemy.localScale;
             }
-
-        }
-    }
-
-    IEnumerator waitaftershot()
+}
+public void StopAttack()
     {
-        moveCount -= Time.deltaTime;
-        yield return new WaitForSeconds(1f);
-        waitCount -= Time.deltaTime;
+        isAttack = false;
+        anim.SetBool("isAttack", isAttack = false);
+        moveCount = moveTime;
+
     }
-
-    #endregion
-
-    #region Danno
+#region Danno
  
 private void OnTriggerEnter2D(Collider2D other)
     {
@@ -166,9 +184,8 @@ private void OnTriggerEnter2D(Collider2D other)
         }
 
     }
-    
 
-    // Cooldown dell'attacco
+// Cooldown dell'attacco
 IEnumerator HitEnemy()
     {
         //Attacco.gameObject.SetActive(false);
@@ -180,12 +197,13 @@ IEnumerator HitEnemy()
         //Si ferma per mezzo secondo
         moveCount = 1;
         //Poi riparte
-        attack = false;
+        isAttack = false;
         //Attacco.gameObject.SetActive(true);
 
     }
 
     #endregion
+
 
 }
 

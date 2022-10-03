@@ -16,7 +16,7 @@ public class DatabaseEnemy : MonoBehaviour
     public GameObject enemy;
     //[SerializeField]
     //public EHealtBar HPBarra;
-    [SerializeField]
+    /*[SerializeField]
     public bool NormalEnemy;
     [SerializeField]
     public bool bigEnm;
@@ -27,7 +27,7 @@ public class DatabaseEnemy : MonoBehaviour
     [SerializeField]
     public bool TallE;
     [SerializeField]
-    public bool GunEnemy;
+    public bool GunEnemy;*/
 
     [Header("Fisica")]
     [SerializeField]
@@ -36,6 +36,8 @@ public class DatabaseEnemy : MonoBehaviour
     public float bounceForce = 20f;
     [SerializeField ]
     public Transform Enemy;
+    AIEnemyGun enGun;
+    AIEnemyDefault enDefault;
 
 
     [Header("Tempo di movimento")]
@@ -55,26 +57,6 @@ public class DatabaseEnemy : MonoBehaviour
     protected bool isAttack = false;
     protected bool PunchNow = false;
 
-    [Header("parametri d'attacco")]
-    [SerializeField] public BoxCollider2D hitBox;
-    [SerializeField] LayerMask playerlayer;
-    [SerializeField] float nextAttackTime;
-    [SerializeField] public float agroRange;
-    //Variabile per il tempo d'attacco
-
-    [Header("Shooting")]
-    [SerializeField]
-    public GameObject bullet;
-    [SerializeField]
-    public Transform firePoint;
-    [SerializeField]
-    public float timeBetweenShots;
-    [SerializeField]
-    public float shotCounter;
-    [SerializeField]
-    public float FUOCO;
-    [SerializeField]
-    public GameObject blam;
 
     [Header ("Morte")]
     public GameObject DIE;
@@ -88,66 +70,36 @@ public class DatabaseEnemy : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody2D>();
-        hitBox = GetComponent<BoxCollider2D>();
+        enDefault = GetComponent<AIEnemyDefault>();
+        enGun = GetComponent<AIEnemyGun>();
         HP = MaxHP;
         //HPBarra.SethmaxHP(MaxHP);
     }
 
+#region Morte
 
-
-
-#region  Attacco
-public void Attack()
-    {
-    isAttack = true;
-    anim.SetBool("isMoving", false);
-    anim.SetBool("isAttack", isAttack);
-    StartCoroutine(nextAttackTrue());
-    }
-
-public IEnumerator nextAttackTrue()
+public void Hurt()
 {
-    PunchNow = true;
-    yield return new WaitForSeconds(nextAttackTime);
-    PunchNow = false;
-}
-public IEnumerator nextAttackFalse()
-{
-    PunchNow = false;
-    anim.SetBool("isAttack", !isAttack);
-    yield return new WaitForSeconds(nextAttackTime);
-    PunchNow = true;
-
+    StartCoroutine(HitEnemy());
 }
 
-public void StopAttack()
+// Cooldown dell'attacco
+public IEnumerator HitEnemy()
     {
-        hitBox.enabled = false;
+        //Attacco.gameObject.SetActive(false);
+        moveCount = 0;
+        //Il nemico si ferma 
+        anim.SetTrigger("isHurt");
+        RB.AddForce(transform.up * bounceForce);
+        yield return new WaitForSeconds(0.5f);
+        //Si ferma per mezzo secondo
+        moveCount = 1;
+        //Poi riparte
         isAttack = false;
-        anim.SetBool("isAttack", isAttack = false);
-        moveCount = moveTime;
+        //Attacco.gameObject.SetActive(true);
 
     }
 
-public void Shoot()
-{
-    shotCounter -= Time.deltaTime;
-    isAttack = true;
-    
-            if (shotCounter <= 0)
-            {
-                shotCounter = timeBetweenShots;
-                //Repeting shooter
-                var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
-                Instantiate(blam, firePoint.position, firePoint.rotation);
-                anim.SetBool("isAttack", isAttack);
-                anim.SetTrigger("isShoot");
-                newBullet.transform.localScale = Enemy.localScale;
-            }
-}
-#endregion
-
-#region Danno
     public void Damage()
     {
         //HitEnemy();
@@ -161,6 +113,7 @@ public void Shoot()
         }
 
     }
+
     /*IEnumerator hurtEnemy()
     {
         anim.SetTrigger("isHurt");

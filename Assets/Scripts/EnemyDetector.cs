@@ -8,7 +8,8 @@ public class EnemyDetector : MonoBehaviour
     [Header("Rilevatore")]
     [SerializeField]
     public Transform Detector;
-    DatabaseEnemy Enemies;
+    //AIEnemyGun enGun;
+    //AIEnemyDefault enDefault;
     [SerializeField]
     public bool shooter;
 
@@ -21,14 +22,14 @@ public class EnemyDetector : MonoBehaviour
             //Se è un nemico che spara attiva le funzioni di sparo come l'animazione
             if(shooter)
             {
-            DatabaseEnemy.instance.Shoot();
+            FindObjectOfType<AIEnemyGun>().Shoot();
+
             }
+            
             if (other.tag == "Test")
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
-            
-            DatabaseEnemy.instance.Attack();
-        
+            FindObjectOfType<AIEnemyDefault>().Attack();
         }
             /*//Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             else if(!shooter)
@@ -43,8 +44,14 @@ private void OnTriggerEnter2D(Collider2D other)
     if (other.tag == "Player")
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
-            
-            DatabaseEnemy.instance.Attack();
+            if(shooter)
+            {
+            FindObjectOfType<AIEnemyGun>().Shoot();
+            } 
+            else
+            {
+            FindObjectOfType<AIEnemyDefault>().Attack();
+            }
         
         }
 
@@ -52,7 +59,7 @@ private void OnTriggerEnter2D(Collider2D other)
         {
             //Se è un nemico che non spara attiva le funzioni di attacco come l'animazione
             
-            DatabaseEnemy.instance.Attack();
+            FindObjectOfType<AIEnemyDefault>().Attack();
         
         }
 }
@@ -63,7 +70,15 @@ private void OnTriggerEnter2D(Collider2D other)
 
         if (other.tag == "Player")
         {
-            DatabaseEnemy.instance.StopAttack();
+            if(shooter)
+            {
+            FindObjectOfType<AIEnemyGun>().StopAttack();
+            } 
+            else 
+            {
+            FindObjectOfType<AIEnemyDefault>().StopAttack();
+            }
+
         }
     }
 }
