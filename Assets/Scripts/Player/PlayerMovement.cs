@@ -187,6 +187,38 @@ void CheckGround()
         
     }
 
+#region WallJump
+void checkWallJump()
+{
+     if(Physics2D.Raycast(transform.position, Vector2.left, 1f, layerMask))
+        {
+            canWallJumpLeft = true;
+            canWallJumpRight = false;
+            isWallJumping = false;
+            UpdateAnimation();
+
+        }
+        else
+        {
+            canWallJumpLeft = false;
+            UpdateAnimation();
+
+        }
+        
+        if(Physics2D.Raycast(transform.position, Vector2.right, 1f, layerMask))
+        {
+            canWallJumpLeft = false;
+            canWallJumpRight = true;
+            isWallJumping = false;
+            UpdateAnimation();
+        }
+        else
+        {
+            canWallJumpRight = false;
+            UpdateAnimation();
+        }
+}
+#endregion
 /*public void OnAir()
 {
     isGround = false;
@@ -323,10 +355,10 @@ public void OnPause(InputValue value)
         {
          AudioManager.instance.StopSFX(2);
         }*/
-        if(isWallJumping)
+        /*if(isWallJumping)
         {
             myRigidbody.velocity = wallJumpDir * jumpSpeed;
-        }
+        }*/
       
     }
 
@@ -370,6 +402,19 @@ public void OnPause(InputValue value)
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             canDoubleJump = false;
         }
+
+        else if(canWallJumpLeft)
+        {
+            isWallJumping = true;
+            wallJumpDir = new Vector2(1, 1);
+        
+        }
+        else if(canWallJumpRight)
+        {
+            isWallJumping = true;
+            wallJumpDir = new Vector2(-1, 1);
+        
+        }
     }
 
 #endregion
@@ -387,6 +432,10 @@ public void OnPause(InputValue value)
         //La variabile assume la formula matematica 
         myAnimator.SetBool("isRunning", playerHasHorizontalSpeed);
         //L'animatore può attivare il bool basandosi sulla variabile
+        if(isWallJumping)
+        {
+            myRigidbody.velocity = wallJumpDir * jumpSpeed; //jumpForce;
+        }
 
     }
 #endregion
@@ -441,35 +490,6 @@ public void OnPause(InputValue value)
         myAnimator.SetBool("isClimbing", playerHasVerticalSpeed);
         //Si attiva l'animazione dell'arrampicata
     }
-#endregion
-
-#region WallJump
-void checkWallJump()
-{
-     if(Physics2D.Raycast(transform.position, Vector2.left, 2f, layerMask))
-        {
-            canWallJumpLeft = true;
-            canWallJumpRight = false;
-            isWallJumping = false;
-
-        }
-        else
-        {
-            canWallJumpLeft = false;
-
-        }
-        
-        if(Physics2D.Raycast(transform.position, Vector2.right, 2f, layerMask))
-        {
-            canWallJumpLeft = false;
-            canWallJumpRight = true;
-            isWallJumping = false;
-        }
-        else
-        {
-            canWallJumpRight = false;
-        }
-}
 #endregion
 
 #region Morte
@@ -529,6 +549,7 @@ private void OnCollisionExit2D(Collision2D other){
 
 #endregion
 
+#region  Danno
 public void Hurt()
 {
     PlayerHealth.instance.removeOneHeart();
@@ -538,5 +559,6 @@ public void Hurt()
     //myRigidbody.velocity = knockBack;
     myAnimator.SetTrigger("Hurt");
 }
+#endregion
 
 }
