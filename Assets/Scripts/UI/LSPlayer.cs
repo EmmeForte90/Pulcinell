@@ -1,26 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//Usa le API di unity di base
+using UnityEngine.InputSystem;
 
 public class LSPlayer : MonoBehaviour
 {
-    public MapPoint currentPoint;
-
-    public float moveSpeed = 10f;
-
+    [SerializeField] public MapPoint currentPoint;
+    [SerializeField] public float moveSpeed = 10f;
     private bool levelLoading;
+    [SerializeField] public LSManager theManager;
+    bool stopInput = false;
+    //Blocca i movimenti
+    [SerializeField] public GameObject PauseMenu;
 
-    public LSManager theManager;
-
-    // Start is called before the first frame update
-    void Start()
+    
+#region Pausa
+public void OnPause(InputValue value)
+//Funzione pausa
+{
+    if (value.isPressed && !stopInput)
     {
-        
+        stopInput = true;
+        PauseMenu.gameObject.SetActive(true);
+        Time.timeScale = 0f;
     }
+    else if(value.isPressed && stopInput)
+    {
+        stopInput = false;
+        Time.timeScale = 1;
+        PauseMenu.gameObject.SetActive(false);
+    }
+}
+#endregion
 
-    // Update is called once per frame
+
     void Update()
     {
+        if(!stopInput)
+        {
         transform.position = Vector3.MoveTowards(transform.position, currentPoint.transform.position, moveSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, currentPoint.transform.position) < .1f && !levelLoading)
@@ -31,6 +49,7 @@ public class LSPlayer : MonoBehaviour
                 if (currentPoint.right != null)
                 {
                     SetNextPoint(currentPoint.right);
+                    AudioManager.instance.PlaySFX(1);
                 }
             }
 
@@ -39,6 +58,8 @@ public class LSPlayer : MonoBehaviour
                 if (currentPoint.left != null)
                 {
                     SetNextPoint(currentPoint.left);
+                    AudioManager.instance.PlaySFX(1);
+
                 }
             }
 
@@ -47,6 +68,8 @@ public class LSPlayer : MonoBehaviour
                 if (currentPoint.up != null)
                 {
                     SetNextPoint(currentPoint.up);
+                    AudioManager.instance.PlaySFX(1);
+
                 }
             }
 
@@ -55,6 +78,7 @@ public class LSPlayer : MonoBehaviour
                 if (currentPoint.down != null)
                 {
                     SetNextPoint(currentPoint.down);
+                    AudioManager.instance.PlaySFX(1);
                 }
             }
 
@@ -65,20 +89,20 @@ public class LSPlayer : MonoBehaviour
                 if(Input.GetButtonDown("Jump"))
                 {
                     levelLoading = true;
-
+                    AudioManager.instance.PlaySFX(2);
                     theManager.LoadLevel();
                 }
             }
         }
 
-
+        }
     }
 
     public void SetNextPoint(MapPoint nextPoint)
     {
         currentPoint = nextPoint;
-        LSUIController.instance.HideInfo();
+        //LSUIController.instance.HideInfo();
 
-        AudioManager.instance.PlaySFX(5);
+        //AudioManager.instance.PlaySFX(5);
     }
 }
