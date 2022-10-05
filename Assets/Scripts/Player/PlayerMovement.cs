@@ -51,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
     //Blocca i movimenti
     bool heShoot = false;
     //Sta sparando
+    bool lookUp = false;
+    bool lookDown = false;
+
     private Vector2 stopMove = new Vector2 (0f, 0f);
     //Blocca il vettore del player
     bool isGround = false;
@@ -140,7 +143,7 @@ private void Awake()
         ClimbLadder();
         Die();
 
-        #region Polvere
+        /*#region Polvere
 
         if (isMoving && isGround)
         {
@@ -159,7 +162,7 @@ private void Awake()
             impactEffect.Play();
         }
 
-        #endregion
+        #endregion*/
     }
 #endregion
 
@@ -183,8 +186,7 @@ void CheckGround()
 
     void UpdateAnimation()
     {
-            myAnimator.SetBool("isGround", isGround);
-        
+            myAnimator.SetBool("isGround", isGround);  
     }
 
 #region WallJump
@@ -238,6 +240,52 @@ public void BumpEnemy()
     isGround = false;
     myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, bounceForce);
 }
+
+#region Guarda in basso/alto
+
+public void OnLookUp(InputValue value)
+//Funzione guarda su
+{
+if (value.isPressed)
+    {
+        stopInput = true;
+        lookUp = true;
+        lookDown = false;
+        myAnimator.SetBool("lookUp", lookUp);
+        myRigidbody.velocity = stopMove;
+    }
+    else
+    {
+        lookUp = false;
+    }
+}
+public void OnLookDown(InputValue value)
+//Funzione guarda su
+{
+if (value.isPressed)
+    {
+        stopInput = true;
+        lookDown = true;
+        lookUp = false;
+        myAnimator.SetBool("lookDown", lookDown);
+        myRigidbody.velocity = stopMove;
+    }
+    else
+    {
+        lookDown = false;
+    }
+}
+
+public void LookNormal()
+{
+    stopInput = false;
+    lookDown = false;
+    myAnimator.SetBool("lookDown", lookDown);
+    lookUp = false;
+    myAnimator.SetBool("lookUp", lookUp);
+
+} 
+#endregion
 
 #region  Cambio skin per arma indossata
 
@@ -314,6 +362,7 @@ public void OnPause(InputValue value)
         if (!isAlive) { return; }
         if(value.isPressed && !stopInput && !heShoot)
         {
+        LookNormal();
         if (Time.time > nextAttackTime && value.isPressed)
         {
         nextAttackTime = Time.time + 1f / attackRate;
@@ -332,11 +381,14 @@ public void OnPause(InputValue value)
     
 #endregion
 
+
+
 #region CambioArma
     public void SetBulletPrefab(GameObject newBullet)
     //Funzione per cambiare arma
     {
        bullet = newBullet;
+       LookNormal();
     }    
     
 #endregion
@@ -378,6 +430,7 @@ public void OnPause(InputValue value)
         if(value.isPressed && !platform && isGround)
         //Se il player sta premendo il tasto
         {
+            LookNormal();
             myAnimator.SetTrigger("Jump");
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
@@ -422,6 +475,7 @@ public void OnPause(InputValue value)
 #region Corsa
     void Run()
     {
+        LookNormal();
         Vector2 playerVelocity = new Vector2 (moveInput.x * runSpeed, myRigidbody.velocity.y);
         //Il vettore si muove su input su coordinate X moltiplicata la velocità, mentre l'asse y si basa 
         //sulla velocità del rigidbody
@@ -466,6 +520,7 @@ public void OnPause(InputValue value)
         if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) 
         //Se il player non si sta arrampicando
         { 
+            LookNormal();
             myRigidbody.gravityScale = gravityScaleAtStart;
             //La gravità del rigidbody viene resettata
             myAnimator.SetBool("isClimbing", false);
@@ -498,6 +553,7 @@ public void OnPause(InputValue value)
         if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask(/*"Enemies",*/ "Fall")))
         //Se il player tocca il nemico
         {
+            LookNormal();
             isAlive = false;
             //Non è più vivo
             myAnimator.SetTrigger("Dying");
@@ -552,6 +608,7 @@ private void OnCollisionExit2D(Collision2D other){
 #region  Danno
 public void Hurt()
 {
+    LookNormal();
     PlayerHealth.instance.removeOneHeart();
     //Vector2 direction;
     //myRigidbody.AddForce(direction * knockBack, ForceMode2D.Impulse);
