@@ -17,6 +17,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     [SerializeField] public BoxCollider2D hitBox;
     [SerializeField] LayerMask playerlayer;
     [SerializeField] float nextAttackTime;
+    [SerializeField] public float attackRange;
     [SerializeField] public float agroRange;
     //Variabile per il tempo d'attacco
 
@@ -119,8 +120,14 @@ else if(disToPlayer < agroRange)
 {           
     //Insegue il player
     ChasePlayer();
+   float disToPlayerToAttack = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+   Debug.Log("disToPlayerToAttack:" +disToPlayerToAttack); 
+
+//Se il player è vicino al nemico parte l'animazione d'attacco
+if(disToPlayerToAttack < attackRange)
+{
+    Attack();
    
-//Se sta attaccando
     if (isAttack)
         {
             if(PunchNow)
@@ -134,9 +141,9 @@ else if(disToPlayer < agroRange)
             }
             
         }
+}   
             
-            
-}
+}//Altrimenti smettere di inseguirlo
 else if(disToPlayer > agroRange)
 {
 StopChasingPlayer();

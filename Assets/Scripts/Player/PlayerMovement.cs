@@ -142,7 +142,7 @@ private void Awake()
         checkWallJump();
         ClimbLadder();
         Die();
-
+       
         /*#region Polvere
 
         if (isMoving && isGround)
@@ -399,7 +399,6 @@ public void OnPause(InputValue value)
     {
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
-        AudioManager.instance.PlaySFX(2);
         isMoving = true;
         moveInput = value.Get<Vector2>();
         //Il vettore assume il valore base
@@ -411,7 +410,6 @@ public void OnPause(InputValue value)
         {
             myRigidbody.velocity = wallJumpDir * jumpSpeed;
         }*/
-      
     }
 
 #endregion
@@ -485,6 +483,15 @@ public void OnPause(InputValue value)
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         //La variabile assume la formula matematica 
         myAnimator.SetBool("isRunning", playerHasHorizontalSpeed);
+        if(playerHasHorizontalSpeed)
+        {        
+            AudioManager.instance.PlaySFX(2);
+        }
+        else if(!playerHasHorizontalSpeed)
+        {
+            AudioManager.instance.StopSFX(2);
+        }
+        
         //L'animatore può attivare il bool basandosi sulla variabile
         if(isWallJumping)
         {

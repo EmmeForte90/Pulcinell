@@ -320,4 +320,4 @@ MonoBehaviour:
   waitAfterSlam: 2
   resetSpeed: 1
   timerValue: 3
-  waitFall: 0
+  waitFall: 2
