@@ -20,23 +20,15 @@ public class Stompbox : MonoBehaviour
            // Debug.Log("We hit");
             IDamegable hit = other.GetComponent<IDamegable>();
             hit.Damage();
-            FindObjectOfType<DatabaseEnemy>().Hurt();           
-            //PlayerMovement.instance.OnAir();
+            //FindObjectOfType<DatabaseEnemy>().Hurt();
+            DatabaseEnemy.instance.Hurt();           
             PlayerMovement.instance.BumpEnemy();
             /*float dropSelect = Random.Range(0, 100f);
 
             if (dropSelect <= chanceToDrop)
             {
                 Instantiate(collectible, Enemy.transform.position, Enemy.transform.rotation);
-            }
-            //PlayerController.instance.Bounce();
-            AudioManager.instance.PlaySFX(3);*/
-        }
-
-        if (other.gameObject.tag == "Ground" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
-        {
-           // Debug.Log("Sei a terra");
-           // PlayerMovement.instance.OnGround();
+            }*/
         }
     }
 }

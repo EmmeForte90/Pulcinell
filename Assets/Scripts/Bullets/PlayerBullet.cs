@@ -121,6 +121,7 @@ public class PlayerBullet : MonoBehaviour
             Destroy(gameObject);
             //Il nemico subisce danno
             //Debug.Log("Hit enemy");
+            CinemachineShake.instance.ShakeCamera(5f, .1f);
             IDamegable hit = other.GetComponent<IDamegable>();
             hit.Damage();
             //DatabaseEnemy.instance.Damage();
@@ -143,6 +144,7 @@ public class PlayerBullet : MonoBehaviour
             {
             //Debug.Log("Hit enemy");
             Destroy(gameObject);
+            CinemachineShake.instance.ShakeCamera(5f, .1f);
             IDamegable hit = other.GetComponent<IDamegable>();
             hit.Damage();
             //DatabaseEnemy.instance.Damage();

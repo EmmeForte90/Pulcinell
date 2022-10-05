@@ -88,7 +88,7 @@ public class BossTankController : BossDatabase
                                 Instantiate(explosion, theBoss.position, theBoss.rotation);
 
                                 winPlatform.SetActive(true);
-                                AudioManager.instance.StopBossMusic();
+                                //AudioManager.instance.StopBossMusic();
                                 currentStates = bossStates.endend;
 
 

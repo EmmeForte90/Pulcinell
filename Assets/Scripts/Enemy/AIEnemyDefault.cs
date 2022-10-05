@@ -12,41 +12,25 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     public Transform LP;
     public Transform RP;
     private float horizontal;
-    //public Transform Detector;
     [Header("parametri d'attacco")]
-    [SerializeField] public Transform hitBox;
     [SerializeField] LayerMask playerlayer;
     [SerializeField] float nextAttackTime;
     [SerializeField] public float attackRange;
     [SerializeField] public float agroRange;
     //Variabile per il tempo d'attacco
 
-    
-    
-
     private void Awake()
     {
-        instance = this;
-
-    }
-    
-    void Start()
-    {
         //Inizializzazione
-        //RB = GetComponent<Rigidbody2D>();
-        //anim = GetComponent<Animator>();
+        instance = this;
         LP.parent = null;
         RP.parent = null;
-        //Detector.parent = null;
         moveCount = moveTime;
-        //hitBox = GetComponent<Transform>();
-        //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
-
     }
+    
 
 void Update()
 {
-
 //Calcolo distanza tra player e nemico
 float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
 
@@ -125,12 +109,13 @@ else if(disToPlayer < agroRange)
     ChasePlayer();
     }
     //Se sta attaccando
-   //Scolpisce il player se si trova nel range d'attacco
+   //Colpisce il player se si trova nel range d'attacco
    float disToPlayerToAttack = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
    //Debug.Log("disToPlayerToAttack:" +disToPlayerToAttack); 
    if(disToPlayerToAttack < attackRange)
    {
     Attack();
+    AudioManager.instance.PlaySFX(3);
     PlayerMovement.instance.Hurt();
     }       
 }//Altrimenti smettere di inseguirlo
@@ -141,8 +126,6 @@ StopChasingPlayer();
 
 #endregion
 } 
-
-
 #region  Insegue il player
 
 private void  ChasePlayer()
@@ -150,18 +133,17 @@ private void  ChasePlayer()
     anim.SetBool("isRunning", true);
 if(transform.position.x < PlayerMovement.instance.transform.position.x)
 {
-    //Left
+    //Sinistra
     RB.velocity = new Vector2(runSpeed, 0);
     movingRight = true;
     transform.localScale = new Vector2(1, transform.localScale.y);
 }
 else if(transform.position.x > PlayerMovement.instance.transform.position.x)
 {
-    //Right
+    //Destra
     RB.velocity = new Vector2(-runSpeed, 0);
     movingRight = false;
     transform.localScale = new Vector2(-1, transform.localScale.y);
-
 }
 }
 
@@ -195,27 +177,10 @@ public void Attack()
     RB.velocity = new Vector2(0, 0);
     anim.SetBool("isMoving", false);
     anim.SetBool("isAttack", true);
-    //StartCoroutine(nextAttackTrue());
     }
-
-/*public IEnumerator nextAttackTrue()
-{
-    PunchNow = true;
-    yield return new WaitForSeconds(nextAttackTime);
-    PunchNow = false;
-}
-public IEnumerator nextAttackFalse()
-{
-    PunchNow = false;
-    anim.SetBool("isAttack", false);
-    yield return new WaitForSeconds(nextAttackTime);
-    PunchNow = true;
-}*/
 
 public void StopAttack()
     {
-        //hitBox.enabled = false;
-        //PunchNow = false;
         isAttack = false;
         anim.SetBool("isAttack", false);
         anim.SetBool("isRunning", false);
@@ -230,24 +195,12 @@ public void StopAttack()
  
 private void OnTriggerEnter2D(Collider2D other)
     {
-        /*if (other.tag == "Player")
-        {
-
-            //anim.SetTrigger("isAttack");
-            //attack = true;
-            //AudioManager.instance.PlaySFX(10);
-            //HitEnemy();
-        }*/
         if(other.tag == "Bullet")
         {
             StartCoroutine(HitEnemy());
             //Quando il nemico collide con il bullet parte la corutine
         }
-
     }
-
-
-
     #endregion
 
 }

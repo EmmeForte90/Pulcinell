@@ -14,21 +14,7 @@ public class DatabaseEnemy : MonoBehaviour
     public int MaxHP;
     [SerializeField]
     public GameObject enemy;
-    //[SerializeField]
-    //public EHealtBar HPBarra;
-    /*[SerializeField]
-    public bool NormalEnemy;
-    [SerializeField]
-    public bool bigEnm;
-    [SerializeField]
-    public bool gigaFat;
-    [SerializeField]
-    public bool rider;
-    [SerializeField]
-    public bool TallE;
-    [SerializeField]
-    public bool GunEnemy;*/
-
+    
     [Header("Fisica")]
     [SerializeField]
     protected Rigidbody2D RB;
@@ -40,7 +26,6 @@ public class DatabaseEnemy : MonoBehaviour
     public Transform Enemy;
     AIEnemyGun enGun;
     AIEnemyDefault enDefault;
-
 
     [Header("Tempo di movimento")]
     [SerializeField]
@@ -57,8 +42,6 @@ public class DatabaseEnemy : MonoBehaviour
     protected bool isDead = false;
     protected bool movingRight = true;
     protected bool isAttack = false;
-    //protected bool PunchNow = false;
-
 
     [Header ("Morte")]
     public GameObject DIE;
@@ -66,10 +49,6 @@ public class DatabaseEnemy : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-
-    void Start()
-    {
         anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody2D>();
         enDefault = GetComponent<AIEnemyDefault>();
@@ -78,7 +57,7 @@ public class DatabaseEnemy : MonoBehaviour
         //HPBarra.SethmaxHP(MaxHP);
     }
 
-#region Morte
+#region Danno e Morte
 
 public void Hurt()
 {
@@ -88,23 +67,20 @@ public void Hurt()
 // Cooldown dell'attacco
 public IEnumerator HitEnemy()
     {
-        //Attacco.gameObject.SetActive(false);
         moveCount = 0;
         //Il nemico si ferma 
         anim.SetTrigger("isHurt");
+        AudioManager.instance.PlaySFX(5);
         RB.AddForce(transform.up * bounceForce);
         yield return new WaitForSeconds(0.5f);
         //Si ferma per mezzo secondo
         moveCount = 1;
         //Poi riparte
         isAttack = false;
-        //Attacco.gameObject.SetActive(true);
-
     }
 
     public void Damage()
     {
-        //HitEnemy();
         HP--;
         //HPBarra.SethHP(HP);
         if (HP <= 0)
@@ -115,17 +91,6 @@ public IEnumerator HitEnemy()
         }
 
     }
-
-    /*IEnumerator hurtEnemy()
-    {
-        anim.SetTrigger("isHurt");
-        RB.AddForce(transform.up * bounceForce);        
-        waitCount = 1;
-        yield return new WaitForSeconds(0.5f);
-        waitCount = 0;
-        //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
-        hit = false;
-    }*/
 
     #endregion
 

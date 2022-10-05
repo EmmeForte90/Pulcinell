@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per la gravità
     [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
     [SerializeField] float knockBack;
-    //[SerializeField] Vector2 knockBack = new Vector2 (20f, 20f);
     //Saltello di morte
     public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
@@ -52,24 +51,29 @@ public class PlayerMovement : MonoBehaviour
     bool heShoot = false;
     //Sta sparando
     bool lookUp = false;
+    //Sta guardando su
     bool lookDown = false;
+    //Sta guardando giù
     bool isInvincible = false;
-
-
+    //è invincibile
     private Vector2 stopMove = new Vector2 (0f, 0f);
     //Blocca il vettore del player
     bool isGround = false;
     //Variabile per identificare il terreno
     bool isMoving = false;
+    //Si sta muovendo
     bool canDoubleJump = false;
+    //Può fare il doppio salto
     private bool platform = false;
     //Variabile per identificare la piattaforma
     [SerializeField] public LayerMask layerMask;
     //Variabile per identificare i vari layer
     float timeInvincible = 1f;
+    //Tempo di invincibilità
     Vector2 wallJumpDir;
-
+    //Vettore del walljump
     bool canWallJumpLeft = false, canWallJumpRight = false, isWallJumping = false;
+    //Variabili per il processo di walljump
     
     [Header("Attacco")]
     [SerializeField] float attackRate = 2f;
@@ -79,15 +83,19 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float nextAttackTime = 0f;
     //Variabile per il tempo d'attacco
     float bounceForce = 7f;
+    //La forza per il knockback
     
     [Header("VFX")]
     [SerializeField] private GameObject bullet;
     // Variabile per il gameobject del proiettile
     [SerializeField] GameObject blam;
     //Variabile per identificare il vfx dell'esplosione
+    [SerializeField] GameObject BAM;
     [SerializeField] public Transform gun;
     //Variabile per spostare o scalare l'oggetto
+    [SerializeField] public Transform stompBox;
     [SerializeField] GameObject Change;
+    //VFX per il cambio arma
     [SerializeField] public ParticleSystem footsteps;
     [SerializeField] public ParticleSystem impactEffect;
     private ParticleSystem.EmissionModule footEmission;
@@ -96,12 +104,6 @@ public class PlayerMovement : MonoBehaviour
 private void Awake()
     {
         instance = this;
-    }
-
-
-#region Start
-    void Start()
-    {
         myRigidbody = GetComponent<Rigidbody2D>();
         //Recupera i componenti del rigidbody
         myAnimator = GetComponent<Animator>();
@@ -117,7 +119,7 @@ private void Awake()
         footEmission = footsteps.emission;
         //Emissione Particle
     }
-#endregion
+
 
 #region SINGLETON
         public static PlayerMovement instance;
@@ -224,25 +226,17 @@ void checkWallJump()
         }
 }
 #endregion
-/*public void OnAir()
-{
-    isGround = false;
-    myAnimator.SetTrigger("Jump");
-    myAnimator.SetBool("isGround", !isGround);
-}
 
-public void OnGround()
-{
-
-    myAnimator.SetBool("isGround", isGround);
-}*/
-
+#region  Risalto sul nemico
 public void BumpEnemy()
 {
     myAnimator.SetTrigger("Jump");
     isGround = false;
+    Instantiate(BAM, stompBox.position, transform.rotation);
+    AudioManager.instance.PlaySFX(3);
     myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, bounceForce);
 }
+#endregion
 
 #region Guarda in basso/alto
 
@@ -384,8 +378,6 @@ public void OnPause(InputValue value)
     
 #endregion
 
-
-
 #region CambioArma
     public void SetBulletPrefab(GameObject newBullet)
     //Funzione per cambiare arma
@@ -405,14 +397,6 @@ public void OnPause(InputValue value)
         isMoving = true;
         moveInput = value.Get<Vector2>();
         //Il vettore assume il valore base
-        /*if(!value.isPressed)
-        {
-         AudioManager.instance.StopSFX(2);
-        }*/
-        /*if(isWallJumping)
-        {
-            myRigidbody.velocity = wallJumpDir * jumpSpeed;
-        }*/
     }
 
 #endregion
@@ -420,14 +404,8 @@ public void OnPause(InputValue value)
 #region Salto
     void OnJump(InputValue value) 
     {
-        /*if (!isAlive) { return; }
-         //Se il player è morto si disattiva la funzione
-        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground","Platforms"))) 
-        { 
-            return;
-        }*/
+        
         //Se il player non sta toccando il suolo il salto(metodo) finisce
-
         if(value.isPressed && !platform && isGround)
         //Se il player sta premendo il tasto
         {
@@ -436,12 +414,8 @@ public void OnPause(InputValue value)
             AudioManager.instance.PlaySFX(0);
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             //Il rigidbody influisce sul vettore sull'asse Y facendo saltare il player
-            /*if(isGround)
-            {
-            isGround = false;
-            }*/
-            
-        } else if (value.isPressed && platform)
+        } 
+        else if (value.isPressed && platform)
         {
             myAnimator.SetTrigger("Jump");
             platform = false;
@@ -456,7 +430,6 @@ public void OnPause(InputValue value)
             myRigidbody.velocity += new Vector2 (0f, jumpSpeed);
             canDoubleJump = false;
         }
-
         else if(canWallJumpLeft)
         {
             isWallJumping = true;
@@ -467,7 +440,6 @@ public void OnPause(InputValue value)
         {
             isWallJumping = true;
             wallJumpDir = new Vector2(-1, 1);
-        
         }
     }
 
@@ -494,11 +466,10 @@ public void OnPause(InputValue value)
         {
             AudioManager.instance.StopSFX(2);
         }
-        
         //L'animatore può attivare il bool basandosi sulla variabile
         if(isWallJumping)
         {
-            myRigidbody.velocity = wallJumpDir * jumpSpeed; //jumpForce;
+            myRigidbody.velocity = wallJumpDir * jumpSpeed; 
         }
 
     }
@@ -539,7 +510,6 @@ public void OnPause(InputValue value)
             //Il metodo ritorna
         }
         //Se il player si sta arrampicando
-
         Vector2 climbVelocity = new Vector2 (myRigidbody.velocity.x, moveInput.y * climbSpeed);
         //La variabilità dell'arrampicata assume un nuovo vettore
         //l'asse X non subisce alterazione, mentre l'asse y moltiplica il
@@ -548,7 +518,6 @@ public void OnPause(InputValue value)
         //La velocità del rigidbody assime quella dell'arrampicata
         myRigidbody.gravityScale = 0f;
         //La gravità del rigidbody diventa 0
-
         bool playerHasVerticalSpeed = Mathf.Abs(myRigidbody.velocity.y) > Mathf.Epsilon;
         //se il player si sta muovendo le sue coordinate x sono maggiori di quelle e
         //di un valore inferiore a 0
@@ -622,11 +591,8 @@ public void Hurt()
     if(!isInvincible)
     {
     PlayerHealth.instance.removeOneHeart();
-    //Vector2 direction;
-    //myRigidbody.AddForce(direction * knockBack, ForceMode2D.Impulse);
     myRigidbody.velocity = new Vector2(2f, 2f);
     StartCoroutine(Invincible());
-    //myRigidbody.velocity = knockBack;
     myAnimator.SetTrigger("Hurt");
     }
     else if(isInvincible)

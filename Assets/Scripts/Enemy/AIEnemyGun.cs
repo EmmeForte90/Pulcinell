@@ -26,27 +26,17 @@ public class AIEnemyGun : DatabaseEnemy, IDamegable
     public float FUOCO;
     [SerializeField]
     public GameObject blam;
+    [SerializeField] public float attackRange;
     
-    
-
     private void Awake()
     {
-        instance = this;
-    }
-    
-    void Start()
-    {
         //Inizializzazione
-        //RB = GetComponent<Rigidbody2D>();
-        //anim = GetComponent<Animator>();
+        instance = this;
         LP.parent = null;
         RP.parent = null;
-        //Detector.parent = null;
         moveCount = moveTime;
-        //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
-
     }
-
+    
 void Update()
 {
 
@@ -116,14 +106,27 @@ if(!isAttack){
 #endregion
 
 #region Se il nemico STA ATTACCANDO
-    //Altrimenti se è un nemico con un fucile
-    else if (isAttack)
+
+
+   //Se sta attaccando
+   //Spara al player se si trova nel range d'attacco
+   float disToPlayerToAttack = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+   //Debug.Log("disToPlayerToAttack:" +disToPlayerToAttack); 
+   if(disToPlayerToAttack < attackRange)
+   {
+    Shoot();
+    if(isAttack)
         {
         if (transform.position.x < PlayerMovement.instance.transform.position.x)
         {horizontal = 1;}
 		else {horizontal = -1;}
         Flip();
         }
+   }
+   else if(disToPlayerToAttack > attackRange)
+   {
+    StopAttack();
+    }
        
 }
 
@@ -146,13 +149,13 @@ public void Shoot()
 {
     shotCounter -= Time.deltaTime;
     isAttack = true;
-    
             if (shotCounter <= 0)
             {
                 shotCounter = timeBetweenShots;
                 //Repeting shooter
                 var newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
                 Instantiate(blam, firePoint.position, firePoint.rotation);
+                AudioManager.instance.PlaySFX(4);
                 anim.SetBool("isAttack", isAttack);
                 anim.SetTrigger("isShoot");
                 newBullet.transform.localScale = Enemy.localScale;
@@ -169,14 +172,7 @@ public void StopAttack()
  
 private void OnTriggerEnter2D(Collider2D other)
     {
-        /*if (other.tag == "Player")
-        {
-
-            //anim.SetTrigger("isAttack");
-            //attack = true;
-            //AudioManager.instance.PlaySFX(10);
-            //HitEnemy();
-        }*/
+    
         if(other.tag == "Bullet")
         {
             StartCoroutine(HitEnemy());
@@ -186,22 +182,21 @@ private void OnTriggerEnter2D(Collider2D other)
     }
 
 // Cooldown dell'attacco
-IEnumerator HitEnemy()
+/*IEnumerator HitEnemy()
     {
-        //Attacco.gameObject.SetActive(false);
         moveCount = 0;
         //Il nemico si ferma 
         anim.SetTrigger("isHurt");
+        AudioManager.instance.PlaySFX(2);
         RB.AddForce(transform.up * bounceForce);
         yield return new WaitForSeconds(0.5f);
         //Si ferma per mezzo secondo
         moveCount = 1;
         //Poi riparte
         isAttack = false;
-        //Attacco.gameObject.SetActive(true);
 
     }
-
+*/
     #endregion
 
 

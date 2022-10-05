@@ -27,7 +27,7 @@ public class BossActivator : MonoBehaviour
             gameObject.SetActive(false);
 
 
-            AudioManager.instance.PlayBossMusic();
+            //AudioManager.instance.PlayBossMusic();
         }
     }
 }
