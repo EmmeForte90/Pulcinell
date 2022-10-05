@@ -53,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     //Sta sparando
     bool lookUp = false;
     bool lookDown = false;
+    bool isInvincible = false;
+
 
     private Vector2 stopMove = new Vector2 (0f, 0f);
     //Blocca il vettore del player
@@ -64,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per identificare la piattaforma
     [SerializeField] public LayerMask layerMask;
     //Variabile per identificare i vari layer
+    float timeInvincible = 1f;
     Vector2 wallJumpDir;
 
     bool canWallJumpLeft = false, canWallJumpRight = false, isWallJumping = false;
@@ -616,12 +619,27 @@ private void OnCollisionExit2D(Collision2D other){
 public void Hurt()
 {
     LookNormal();
+    if(!isInvincible)
+    {
     PlayerHealth.instance.removeOneHeart();
     //Vector2 direction;
     //myRigidbody.AddForce(direction * knockBack, ForceMode2D.Impulse);
-    myRigidbody.velocity = new Vector2(knockBack, knockBack);
+    myRigidbody.velocity = new Vector2(2f, 2f);
+    StartCoroutine(Invincible());
     //myRigidbody.velocity = knockBack;
     myAnimator.SetTrigger("Hurt");
+    }
+    else if(isInvincible)
+    {
+
+    }
+}
+
+IEnumerator Invincible()
+{
+    isInvincible = true;
+    yield return new WaitForSeconds(timeInvincible);
+    isInvincible = false;
 }
 #endregion
 

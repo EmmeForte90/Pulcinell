@@ -17,7 +17,7 @@ public class Stompbox : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
         {
-            Debug.Log("We hit");
+           // Debug.Log("We hit");
             IDamegable hit = other.GetComponent<IDamegable>();
             hit.Damage();
             FindObjectOfType<DatabaseEnemy>().Hurt();           

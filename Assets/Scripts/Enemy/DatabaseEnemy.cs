@@ -34,6 +34,8 @@ public class DatabaseEnemy : MonoBehaviour
     protected Rigidbody2D RB;
     [SerializeField ]
     public float bounceForce = 20f;
+    [SerializeField] 
+    public float timeHurt = 0.5f;
     [SerializeField ]
     public Transform Enemy;
     AIEnemyGun enGun;
@@ -55,7 +57,7 @@ public class DatabaseEnemy : MonoBehaviour
     protected bool isDead = false;
     protected bool movingRight = true;
     protected bool isAttack = false;
-    protected bool PunchNow = false;
+    //protected bool PunchNow = false;
 
 
     [Header ("Morte")]

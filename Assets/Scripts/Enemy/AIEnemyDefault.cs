@@ -14,7 +14,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
     private float horizontal;
     //public Transform Detector;
     [Header("parametri d'attacco")]
-    [SerializeField] public BoxCollider2D hitBox;
+    [SerializeField] public Transform hitBox;
     [SerializeField] LayerMask playerlayer;
     [SerializeField] float nextAttackTime;
     [SerializeField] public float attackRange;
@@ -39,7 +39,7 @@ public class AIEnemyDefault : DatabaseEnemy, IDamegable
         RP.parent = null;
         //Detector.parent = null;
         moveCount = moveTime;
-        hitBox = GetComponent<BoxCollider2D>();
+        //hitBox = GetComponent<Transform>();
         //RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
 
     }
@@ -54,7 +54,7 @@ float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance
 
 if(!isAttack && disToPlayer > agroRange){
 
-    anim.SetBool("isRunning", false);
+    StopAttack();
 
             if (moveCount > 0)
             //Tempo di pausa per far fermare il nemico
@@ -117,32 +117,22 @@ if(!isAttack && disToPlayer > agroRange){
 
 #region Se il nemico STA ATTACCANDO
 else if(disToPlayer < agroRange)
-{           
+{          
+    //Se non sta attaccando 
+    if(!isAttack)
+    {
     //Insegue il player
     ChasePlayer();
+    }
+    //Se sta attaccando
+   //Scolpisce il player se si trova nel range d'attacco
    float disToPlayerToAttack = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
-   Debug.Log("disToPlayerToAttack:" +disToPlayerToAttack); 
-
-//Se il player è vicino al nemico parte l'animazione d'attacco
-if(disToPlayerToAttack < attackRange)
-{
+   //Debug.Log("disToPlayerToAttack:" +disToPlayerToAttack); 
+   if(disToPlayerToAttack < attackRange)
+   {
     Attack();
-   
-    if (isAttack)
-        {
-            if(PunchNow)
-            {
-                StartCoroutine(nextAttackTrue());
-                hitBox.enabled = true;
-            }else if(!PunchNow)
-            {
-                StartCoroutine(nextAttackFalse());
-                hitBox.enabled = false;
-            }
-            
-        }
-}   
-            
+    PlayerMovement.instance.Hurt();
+    }       
 }//Altrimenti smettere di inseguirlo
 else if(disToPlayer > agroRange)
 {
@@ -152,6 +142,8 @@ StopChasingPlayer();
 #endregion
 } 
 
+
+#region  Insegue il player
 
 private void  ChasePlayer()
 {
@@ -180,7 +172,9 @@ private void StopChasingPlayer()
     RB.velocity = new Vector2(moveSpeed, 0);
 }
 
+#endregion
 
+#region  Flippa lo sprite
 private void Flip()
     {
         if (movingRight && horizontal < 0f || !movingRight && horizontal > 0f)
@@ -192,16 +186,19 @@ private void Flip()
         }
     }
 
+#endregion
+
 #region  Attacco
 public void Attack()
     {
     isAttack = true;
+    RB.velocity = new Vector2(0, 0);
     anim.SetBool("isMoving", false);
     anim.SetBool("isAttack", true);
-    StartCoroutine(nextAttackTrue());
+    //StartCoroutine(nextAttackTrue());
     }
 
-public IEnumerator nextAttackTrue()
+/*public IEnumerator nextAttackTrue()
 {
     PunchNow = true;
     yield return new WaitForSeconds(nextAttackTime);
@@ -213,14 +210,15 @@ public IEnumerator nextAttackFalse()
     anim.SetBool("isAttack", false);
     yield return new WaitForSeconds(nextAttackTime);
     PunchNow = true;
-
-}
+}*/
 
 public void StopAttack()
     {
-        hitBox.enabled = false;
+        //hitBox.enabled = false;
+        //PunchNow = false;
         isAttack = false;
         anim.SetBool("isAttack", false);
+        anim.SetBool("isRunning", false);
         moveCount = moveTime;
 
     }
