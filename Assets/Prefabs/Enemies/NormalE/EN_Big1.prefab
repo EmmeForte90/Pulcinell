@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 1884238347747137264}
   - component: {fileID: 1884238347747137265}
   - component: {fileID: 1884238347747137270}
-  - component: {fileID: 1884238347747137271}
   - component: {fileID: 8058083665937741378}
   m_Layer: 10
   m_Name: BrainBIG
@@ -195,8 +194,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.17972851, y: 1.9146805}
-  m_Size: {x: 1.0366383, y: 3.8262138}
+  m_Offset: {x: -0.17972851, y: 1.9589491}
+  m_Size: {x: 1.0366383, y: 3.7376766}
   m_Direction: 0
 --- !u!50 &1884238347747137270
 Rigidbody2D:
@@ -219,41 +218,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1884238347747137271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884238347747137269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84715415e0023ec4b9e85771e993246e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HP: 5
-  MaxHP: 5
-  enemy: {fileID: 1884238347747137269}
-  RB: {fileID: 1884238347747137270}
-  bounceForce: 20
-  timeHurt: 0.5
-  Enemy: {fileID: 1884238347747137268}
-  moveSpeed: 1
-  runSpeed: 0
-  moveTime: 5
-  waitTime: 3
-  moveCount: 5
-  waitCount: 2
-  anim: {fileID: 1884238347747137267}
-  DIE: {fileID: 6258777126171426866, guid: 8aceb5e525489634290de93e60fb5f3a, type: 3}
-  LP: {fileID: 1884238346827308306}
-  RP: {fileID: 1884238348099714539}
-  playerlayer:
-    serializedVersion: 2
-    m_Bits: 64
-  nextAttackTime: 0
-  attackRange: 0
-  agroRange: 0
 --- !u!114 &8058083665937741378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,8 +251,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   nextAttackTime: 1
-  attackRange: 0
+  attackRange: 3
+  crashRange: 3
   agroRange: 5
+  timeBeforeAttack: 1
 --- !u!1 &1884238347931629542
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +278,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884238347931629542}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -53.773857, y: 20.263062, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

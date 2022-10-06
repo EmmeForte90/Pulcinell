@@ -18,6 +18,7 @@ public class AiEnemyBig : DatabaseEnemy, IDamegable
     [SerializeField] public float crashRange;
     [SerializeField] public float agroRange;
     [SerializeField] public float timeBeforeAttack = 1f;
+    [SerializeField] public float frontcheck = 0.51f;
     //Variabile per il tempo d'attacco
     private bool isCrash = false;
 
@@ -36,6 +37,9 @@ void Update()
 //Calcolo distanza tra player e nemico
 float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
 
+//hit = Physics2D.Raycast(new Vector2(transform.position.x + moveSpeed * frontcheck, transform.position.y));
+
+
 Debug.DrawRay(transform.position, new Vector2(agroRange, 0), Color.red);
 Debug.DrawRay(transform.position, new Vector2(attackRange, 0), Color.blue);
 
@@ -44,6 +48,7 @@ Debug.DrawRay(transform.position, new Vector2(attackRange, 0), Color.blue);
 if(!isAttack && disToPlayer > agroRange){
 
     StopAttack();
+
 
             if (moveCount > 0)
             //Tempo di pausa per far fermare il nemico

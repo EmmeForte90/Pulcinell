@@ -27,7 +27,7 @@ TagManager:
   - Bullet
   - Platforms
   - Fall
-  - 'Enemies '
+  - Enemy
   - Traps
   - Bounce
   - Climbing
