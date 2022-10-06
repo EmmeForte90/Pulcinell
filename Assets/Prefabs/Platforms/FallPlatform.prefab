@@ -319,5 +319,6 @@ MonoBehaviour:
   slamSpeed: 10
   waitAfterSlam: 2
   resetSpeed: 1
+  agroRange: 2
   timerValue: 3
   waitFall: 3

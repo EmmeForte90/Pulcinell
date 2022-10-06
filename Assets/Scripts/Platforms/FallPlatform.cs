@@ -9,30 +9,45 @@ public class FallPlatform : MonoBehaviour
     private Vector3 startPoint;
     public float slamSpeed, waitAfterSlam, resetSpeed;
     private float waitCounter;
+    [SerializeField] public float agroRange;
     private bool slamming, resetting;
 	
 	[Header("Time")]
 	[SerializeField] float timerValue;
 	[SerializeField] float waitFall;//Il valore numero del timer
 
-    void Start()
+    void Awake()
     {
         startPoint = thePlatform.position;
 		timerValue = waitFall;
+
     }
 
     void Update()
     {
 #region Targetizzazione
         //Se non sta attaccando
-        if (!slamming && !resetting)
+        Debug.DrawRay(transform.position, new Vector2(0, agroRange), Color.red);
+        Debug.DrawRay(transform.position, new Vector2(agroRange, 0), Color.blue);
+        float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+        if(disToPlayer < agroRange)
         {
-            if (Vector3.Distance(slammerPoint.position, PlayerMovement.instance.transform.position) < 2f)
+            if (!slamming && !resetting)
+        {
+            StartCoroutine(UpdateTimer());
+			//UpdateTimer();
+        }
+        }
+       /* if (!slamming && !resetting)
+        {
+            if (Vector3.Distance(slammerPoint.position, PlayerMovement.instance.transform.position) < 3f)
             {
 				UpdateTimer();
                 
             }
         }
+
+        */
         //Se sta attaccando
         if (slamming)
         {
@@ -69,8 +84,15 @@ public class FallPlatform : MonoBehaviour
         }
     }
 	#endregion
+
+private IEnumerator UpdateTimer()
+{
+    yield return new WaitForSeconds(timerValue);
+    slamming = true;
+    waitCounter = waitAfterSlam;
+}
 	
-void UpdateTimer()
+/*void UpdateTimer()
     {
         timerValue -= Time.deltaTime;
         //Indica quanto valore perde la variabile a frame
@@ -80,5 +102,5 @@ void UpdateTimer()
                 waitCounter = waitAfterSlam;
             }
            
-    }
+    }*/
 }
