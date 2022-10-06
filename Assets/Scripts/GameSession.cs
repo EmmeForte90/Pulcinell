@@ -18,23 +18,18 @@ public class GameSession : MonoBehaviour
     //Variabile del testo della vita
     [SerializeField] TextMeshProUGUI scoreText;
     //Variabile del testo dello money
-    [SerializeField] public GameObject FadeOut;
-    [SerializeField] public GameObject FadeIn;
-
-    private SkeletonGraphic skelGraph;
-    public AnimationReferenceAsset Dissapear;
-    public AnimationReferenceAsset Appear;
+    [SerializeField]  GameObject fade;
+    
     
     void Awake()
     {
-        skelGraph = this.GetComponent<SkeletonGraphic>();
         livesText.text = playerLives.ToString();
         //Il testo assume il valore delle vite del player
         scoreText.text = money.ToString();    
         //Il testo assume il valore dello money
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
-        StartStage();
+        StartCoroutine(StartStage());
         if (numGameSessions > 1)
         //Se la  game session è maggiore di 1
         {
@@ -49,32 +44,6 @@ public class GameSession : MonoBehaviour
         }
     }
 
-    
-    #region Setting animation
-    public void SetAnimation(AnimationReferenceAsset animation, bool loop, float timeScale)
-    {
-        skelGraph.AnimationState.SetAnimation(0, animation, loop).TimeScale = timeScale;
-    }
-
-    public IEnumerator SetAnimationFadeOut()
-    {
-        SetAnimation(Appear, false, 1f);
-
-        yield return new WaitForSeconds(0.9f);
-
-        SetAnimation(Dissapear, true, 1f);
-    }
-
-    public IEnumerator SetAnimationFadeIn()
-    {
-        SetAnimation(Dissapear, false, 1f);
-
-        yield return new WaitForSeconds(0.9f);
-
-        SetAnimation(Appear, true, 1f);
-    }
-    #endregion
-    
 
     public void ProcessPlayerDeath()
     {
@@ -105,19 +74,18 @@ public class GameSession : MonoBehaviour
         //Il player perde 1 vita
         StartCoroutine(Restart());
     }
-
-IEnumerator StartStage()
-{
-    FadeIn.gameObject.SetActive(true);
+    IEnumerator StartStage()
+    {
+    fade.gameObject.SetActive(true);
     PlayerMovement.instance.playerStopInput();
     yield return new WaitForSeconds(3f);
     PlayerMovement.instance.playerActivateInput();
-    FadeIn.gameObject.SetActive(false);
-}
+    fade.gameObject.SetActive(false);
+    }
 
     IEnumerator Restart()
     {
-        FadeOut.gameObject.SetActive(true);
+        fade.gameObject.SetActive(true);
         PlayerMovement.instance.playerStopInput();
         yield return new WaitForSeconds(3f);
         livesText.text = playerLives.ToString();
@@ -127,7 +95,7 @@ IEnumerator StartStage()
         SceneManager.LoadScene(currentSceneIndex);
         //Lo scenario viene ricaricato
         PlayerMovement.instance.playerActivateInput();
-        FadeOut.gameObject.SetActive(false);
+        fade.gameObject.SetActive(false);
     }
 
     void GameOver()
