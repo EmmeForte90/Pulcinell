@@ -210,7 +210,7 @@ private void Crash()
    if(crashAttack < crashRange)
    {
     AudioManager.instance.PlaySFX(3);
-    //PlayerMovement.instance.Hurt();
+    PlayerMovement.instance.Hurt();
 }  
     
 }

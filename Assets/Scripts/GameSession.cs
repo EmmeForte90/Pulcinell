@@ -4,23 +4,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Spine.Unity.AttachmentTools;
+using Spine.Unity;
+using Spine;
 
 public class GameSession : MonoBehaviour
 {
     [SerializeField] int playerLives = 3; 
     // Numero vite del player
-    [SerializeField] int score = 0;
-    // Valore dello score
-
+    [SerializeField] int money = 0;
+    // Valore dello money
     [SerializeField] TextMeshProUGUI livesText;
     //Variabile del testo della vita
     [SerializeField] TextMeshProUGUI scoreText;
-    //Variabile del testo dello score
+    //Variabile del testo dello money
+    [SerializeField] public GameObject FadeOut;
+    [SerializeField] public GameObject FadeIn;
+
+    private SkeletonGraphic skelGraph;
+    public AnimationReferenceAsset Dissapear;
+    public AnimationReferenceAsset Appear;
     
     void Awake()
     {
+        skelGraph = this.GetComponent<SkeletonGraphic>();
+        livesText.text = playerLives.ToString();
+        //Il testo assume il valore delle vite del player
+        scoreText.text = money.ToString();    
+        //Il testo assume il valore dello money
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
+        StartStage();
         if (numGameSessions > 1)
         //Se la  game session è maggiore di 1
         {
@@ -35,13 +49,32 @@ public class GameSession : MonoBehaviour
         }
     }
 
-    void Start() 
+    
+    #region Setting animation
+    public void SetAnimation(AnimationReferenceAsset animation, bool loop, float timeScale)
     {
-        livesText.text = playerLives.ToString();
-        //Il testo assume il valore delle vite del player
-        scoreText.text = score.ToString();    
-        //Il testo assume il valore dello score
+        skelGraph.AnimationState.SetAnimation(0, animation, loop).TimeScale = timeScale;
     }
+
+    public IEnumerator SetAnimationFadeOut()
+    {
+        SetAnimation(Appear, false, 1f);
+
+        yield return new WaitForSeconds(0.9f);
+
+        SetAnimation(Dissapear, true, 1f);
+    }
+
+    public IEnumerator SetAnimationFadeIn()
+    {
+        SetAnimation(Dissapear, false, 1f);
+
+        yield return new WaitForSeconds(0.9f);
+
+        SetAnimation(Appear, true, 1f);
+    }
+    #endregion
+    
 
     public void ProcessPlayerDeath()
     {
@@ -54,33 +87,57 @@ public class GameSession : MonoBehaviour
         else
         //Altrimenti
         {
-            ResetGameSession();
-            //Richiama la funzione di reset
+            GameOver();
         }
     }
 
     public void AddToScore(int pointsToAdd)
     {
-        score += pointsToAdd;
-        //Lo score aumenta
-        scoreText.text = score.ToString(); 
-        //il testo dello score viene aggiornato
+        money += pointsToAdd;
+        //Lo money aumenta
+        scoreText.text = money.ToString(); 
+        //il testo dello money viene aggiornato
     }
 
     void TakeLife()
     {
         playerLives--;
         //Il player perde 1 vita
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        StartCoroutine(Restart());
+    }
+
+IEnumerator StartStage()
+{
+    FadeIn.gameObject.SetActive(true);
+    PlayerMovement.instance.playerStopInput();
+    yield return new WaitForSeconds(3f);
+    PlayerMovement.instance.playerActivateInput();
+    FadeIn.gameObject.SetActive(false);
+}
+
+    IEnumerator Restart()
+    {
+        FadeOut.gameObject.SetActive(true);
+        PlayerMovement.instance.playerStopInput();
+        yield return new WaitForSeconds(3f);
+        livesText.text = playerLives.ToString();
+        //Le vite del player vengono aggiornate
+         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         //Lo scenario assume il valore della build
         SceneManager.LoadScene(currentSceneIndex);
         //Lo scenario viene ricaricato
-        livesText.text = playerLives.ToString();
-        //Le vite del player vengono aggiornate
+        PlayerMovement.instance.playerActivateInput();
+        FadeOut.gameObject.SetActive(false);
     }
 
-    void ResetGameSession()
+    void GameOver()
     {
+        PlayerMovement.instance.GameOver();
+    }
+
+    public void ResetGameSession()
+    {
+
         FindObjectOfType<ScenePersist>().ResetScenePersist();
         //Recupera i componenti dallo script della scena persistente
         //E ne attiva la funzione

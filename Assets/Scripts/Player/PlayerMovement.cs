@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Abilitazioni")]
     [SerializeField] public GameObject PauseMenu;
+    [SerializeField] public GameObject gameOver;
     //Variabile per identificare il menu
     [SerializeField] GameObject Player;
     //Variabile per identificare il player
@@ -58,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     //è invincibile
     private Vector2 stopMove = new Vector2 (0f, 0f);
     //Blocca il vettore del player
+    //[HideInInspector]
     bool isGround = false;
     //Variabile per identificare il terreno
     bool isMoving = false;
@@ -66,6 +68,10 @@ public class PlayerMovement : MonoBehaviour
     //Può fare il doppio salto
     private bool platform = false;
     //Variabile per identificare la piattaforma
+    [SerializeField] bool wallJumpSkill = false;
+    //Variabile per verificare se è sbloccato il walljump
+    [SerializeField] bool doubleJumpSkill = false;
+    //Variabile per verificare se è sbloccato il doppio salto
     [SerializeField] public LayerMask layerMask;
     //Variabile per identificare i vari layer
     float timeInvincible = 1f;
@@ -74,6 +80,9 @@ public class PlayerMovement : MonoBehaviour
     //Vettore del walljump
     bool canWallJumpLeft = false, canWallJumpRight = false, isWallJumping = false;
     //Variabili per il processo di walljump
+    
+    [Header("Gizmo per l'engine")]
+    [SerializeField] float wallJumpDistance = 1f;
     
     [Header("Attacco")]
     [SerializeField] float attackRate = 2f;
@@ -120,7 +129,6 @@ private void Awake()
         //Emissione Particle
     }
 
-
 #region SINGLETON
         public static PlayerMovement instance;
         public static PlayerMovement Instance
@@ -141,10 +149,17 @@ private void Awake()
         if (!isAlive) { return; }
         //Se il player è morto si disattiva la funzione
         //Altrimenti si attivano le funzioni
+
+        Debug.DrawRay(transform.position, new Vector2(wallJumpDistance, 0), Color.red);
+
         Run();
         FlipSprite();
         CheckGround();
+        if(wallJumpSkill)
+        //Se l'abilità walljump non è sbloccato non puoi usare questa abilità
+        {
         checkWallJump();
+        }
         ClimbLadder();
         Die();
        
@@ -171,6 +186,11 @@ private void Awake()
     }
 #endregion
 
+void UpdateAnimation()
+    {
+            myAnimator.SetBool("isGround", isGround);  
+    }
+
 #region CheckGround
 void CheckGround()
     {
@@ -178,7 +198,11 @@ void CheckGround()
         {
             isGround = true;
             UpdateAnimation();
+            if(doubleJumpSkill)
+            //Se l'abilità doppio salto non è sbloccato non puoi usare questa abilità
+            {
             canDoubleJump = true;
+            }
         }
         else
         {
@@ -189,14 +213,10 @@ void CheckGround()
     }
 #endregion
 
-    void UpdateAnimation()
-    {
-            myAnimator.SetBool("isGround", isGround);  
-    }
-
 #region WallJump
 void checkWallJump()
 {
+
      if(Physics2D.Raycast(transform.position, Vector2.left, 1f, layerMask))
         {
             canWallJumpLeft = true;
@@ -352,6 +372,31 @@ public void OnPause(InputValue value)
 }
 #endregion
 
+#region Fine Partita
+
+public void GameOver()
+{
+    stopInput = true;
+    gameOver.gameObject.SetActive(true);
+    myAnimator.SetTrigger("Die");
+    //SFX.Play(0);
+    myRigidbody.velocity = stopMove;
+}
+#endregion
+
+#region Disabilità comandi
+
+public void playerStopInput()
+{
+    stopInput = true;
+}
+public void playerActivateInput()
+{
+    stopInput = false;
+}
+
+#endregion
+
 #region Sparo
     void OnFire(InputValue value)
     //Funzione per sparare
@@ -441,6 +486,12 @@ public void OnPause(InputValue value)
             isWallJumping = true;
             wallJumpDir = new Vector2(-1, 1);
         }
+    }
+
+    public void OnAir()
+    {
+        isGround = false;
+        myAnimator.SetTrigger("Jump");
     }
 
 #endregion
