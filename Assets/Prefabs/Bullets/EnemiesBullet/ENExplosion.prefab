@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4496874952162696499}
   - component: {fileID: 4627040134118840736}
   m_Layer: 6
-  m_Name: Explosion
+  m_Name: ENExplosion
   m_TagString: ExplosionFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 9f69f3c975134614fa3561d2b8d706e4, type: 2}
-  initialSkinName: Blu
+  initialSkinName: Yellow
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0

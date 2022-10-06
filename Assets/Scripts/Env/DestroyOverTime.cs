@@ -9,14 +9,8 @@ public class DestroyOverTime : MonoBehaviour
 
     [Header("Se è un esplosione")]
     [SerializeField] public bool isExplosion;
-    [SerializeField] public float intensity;
-    [SerializeField] public float time;
-
-
-
-
-
-
+    [SerializeField] public float intensity = 5f;
+    [SerializeField] public float time = .1f;
 
     void Update()
     {

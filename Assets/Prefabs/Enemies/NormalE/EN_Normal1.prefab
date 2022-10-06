@@ -262,7 +262,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   nextAttackTime: 1
-  attackRange: 0
+  attackRange: 2
   agroRange: 5
 --- !u!50 &6902103826205728541
 Rigidbody2D:

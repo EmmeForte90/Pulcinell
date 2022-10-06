@@ -54,7 +54,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 386504652861728737}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -53.773857, y: 20.263062, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -347,5 +347,5 @@ MonoBehaviour:
   timeBetweenShots: 2
   shotCounter: 1
   FUOCO: 5
-  blam: {fileID: 6379835380598871280, guid: 0c035402a7541294ca9f1688f1f523fc, type: 3}
-  attackRange: 0
+  blam: {fileID: 6379835380598871280, guid: 0d9d57637b624e3438d02d86fa08d869, type: 3}
+  attackRange: 6

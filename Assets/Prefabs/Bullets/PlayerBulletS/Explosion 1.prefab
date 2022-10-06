@@ -137,5 +137,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 1.5
   isExplosion: 1
-  intensity: 6
-  time: 1.5
+  intensity: 5
+  time: 1
