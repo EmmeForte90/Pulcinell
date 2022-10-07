@@ -5,11 +5,11 @@ using Spine.Unity.AttachmentTools;
 using Spine.Unity;
 using Spine;
 
-public class HP_Animation : MonoBehaviour
+public class HPAnimation : MonoBehaviour
 {
     private SkeletonGraphic skelGraph;
-    public AnimationReferenceAsset full;
-    public AnimationReferenceAsset broke;
+    [SerializeField] public AnimationReferenceAsset full;
+    [SerializeField] public AnimationReferenceAsset broke;
 
     private void Awake()
     {

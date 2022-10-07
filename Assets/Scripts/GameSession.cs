@@ -20,7 +20,7 @@ public class GameSession : MonoBehaviour
     //Variabile del testo dello money
     [SerializeField]  GameObject fade;
     
-    
+
     void Awake()
     {
         livesText.text = playerLives.ToString();
@@ -29,7 +29,6 @@ public class GameSession : MonoBehaviour
         //Il testo assume il valore dello money
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
-        StartCoroutine(StartStage());
         if (numGameSessions > 1)
         //Se la  game session è maggiore di 1
         {
@@ -39,6 +38,7 @@ public class GameSession : MonoBehaviour
         else
         //Altrimenti
         {
+            StartCoroutine(StartStage());
             DontDestroyOnLoad(gameObject);
             //Preserva quest'oggetto
         }
@@ -74,11 +74,13 @@ public class GameSession : MonoBehaviour
         //Il player perde 1 vita
         StartCoroutine(Restart());
     }
+    
     IEnumerator StartStage()
     {
     fade.gameObject.SetActive(true);
+    FadeAnimation.instance.OnFadeOut();
     PlayerMovement.instance.playerStopInput();
-    yield return new WaitForSeconds(3f);
+    yield return new WaitForSeconds(5f);
     PlayerMovement.instance.playerActivateInput();
     fade.gameObject.SetActive(false);
     }
@@ -86,15 +88,15 @@ public class GameSession : MonoBehaviour
     IEnumerator Restart()
     {
         fade.gameObject.SetActive(true);
+        FadeAnimation.instance.OnFadeIn();
         PlayerMovement.instance.playerStopInput();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         livesText.text = playerLives.ToString();
         //Le vite del player vengono aggiornate
          int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         //Lo scenario assume il valore della build
         SceneManager.LoadScene(currentSceneIndex);
         //Lo scenario viene ricaricato
-        PlayerMovement.instance.playerActivateInput();
         fade.gameObject.SetActive(false);
     }
 
@@ -105,7 +107,7 @@ public class GameSession : MonoBehaviour
 
     public void ResetGameSession()
     {
-
+        
         FindObjectOfType<ScenePersist>().ResetScenePersist();
         //Recupera i componenti dallo script della scena persistente
         //E ne attiva la funzione

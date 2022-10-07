@@ -129,7 +129,7 @@ private void Awake()
         //Emissione Particle
     }
 
-#region SINGLETON
+#region Singleton
         public static PlayerMovement instance;
         public static PlayerMovement Instance
         {
@@ -388,6 +388,7 @@ public void GameOver()
 
 public void playerStopInput()
 {
+    myRigidbody.velocity = stopMove;
     stopInput = true;
 }
 public void playerActivateInput()

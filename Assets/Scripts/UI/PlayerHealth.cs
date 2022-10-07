@@ -41,7 +41,7 @@ using UnityEngine.SceneManagement;
         {
             if (!healthIsFull())
             {
-                heartsNumber[heartsRemain].GetComponent<HP_Animation>().restoreHP();
+                heartsNumber[heartsRemain].GetComponent<HPAnimation>().restoreHP();
                 heartsRemain += 1;
             }
         }
@@ -56,7 +56,7 @@ using UnityEngine.SceneManagement;
                 playerDeath();
             else
             {
-                heartsNumber[heartsRemain - 1].GetComponent<HP_Animation>().removeHP();
+                heartsNumber[heartsRemain - 1].GetComponent<HPAnimation>().removeHP();
                 heartsRemain -= 1;
             }
         }
