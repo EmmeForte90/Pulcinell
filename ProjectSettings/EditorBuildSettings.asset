@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading_Start.unity
     guid: 458fb91d94582c14b965e0ee2a067200
   - enabled: 1
+    path: Assets/Scenes/WorldMap.unity
+    guid: 3798b1253119ee043b848c1a3099e115
+  - enabled: 1
     path: Assets/Scenes/Naples/Level_Tutorial.unity
     guid: 0a5986d633a71a04f9514201d2ae6fbe
   m_configObjects: {}
