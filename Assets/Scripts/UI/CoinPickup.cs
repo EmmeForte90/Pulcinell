@@ -33,7 +33,7 @@ void Start()
         {
             wasCollected = true;
             //La moneta è collezionata
-            FindObjectOfType<GameSession>().AddToScore(pointsForCoinPickup);
+            FindObjectOfType<GameSession>().AddTomoney(pointsForCoinPickup);
             //Richiama la funzione dello script GameSessione e aumenta lo score
             AudioSource.PlayClipAtPoint(coinPickupSFX, Camera.main.transform.position);
             //Avvia l'audio

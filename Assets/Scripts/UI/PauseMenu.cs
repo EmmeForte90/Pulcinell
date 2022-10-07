@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
     public void LevelSelect()
     {
         SceneManager.LoadScene(levelSelect);
+        FindObjectOfType<ScenePersist>().ResetScenePersist();
         Time.timeScale = 1;
     }
 

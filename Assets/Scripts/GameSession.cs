@@ -10,18 +10,26 @@ using Spine;
 
 public class GameSession : MonoBehaviour
 {
-[SerializeField] int playerLives = 3; 
+
+    
+    [Header("money")]
+    [SerializeField] int playerLives = 3; 
     // Numero vite del player
-    [SerializeField] int score = 0;
-    // Valore dello score
+    [SerializeField] int money = 0;
+    // Valore dello money
 
     [SerializeField] TextMeshProUGUI livesText;
     //Variabile del testo della vita
-    [SerializeField] TextMeshProUGUI scoreText;
-    //Variabile del testo dello score
+    [SerializeField] TextMeshProUGUI moneyText;
+    //Variabile del testo dello money
+    
+    [Header("Fade")]
     [SerializeField] GameObject callFadeIn;
     [SerializeField] GameObject callFadeOut;
     [SerializeField] GameObject centerCanvas;
+    
+    [Header("GameOver")]
+    [SerializeField] public GameObject gameOver;
 
     
     
@@ -50,14 +58,12 @@ public class GameSession : MonoBehaviour
         //StartCoroutine(StartStage());
         livesText.text = playerLives.ToString();
         //Il testo assume il valore delle vite del player
-        scoreText.text = score.ToString();    
-        //Il testo assume il valore dello score
+        moneyText.text = money.ToString();    
+        //Il testo assume il valore dello money
     }
 
     public void ProcessPlayerDeath()
     {
-
-
         if (playerLives > 1)
         //Se le vita del player sono maggiori di 1
         {
@@ -67,7 +73,8 @@ public class GameSession : MonoBehaviour
         else
         //Altrimenti
         {
-            ResetGameSession();
+            StartCoroutine(AfterDie());
+            //ResetGameSession();
             //Richiama la funzione di reset
         }
     }
@@ -91,12 +98,13 @@ public class GameSession : MonoBehaviour
 
 #endregion
 
-    public void AddToScore(int pointsToAdd)
+
+    public void AddTomoney(int pointsToAdd)
     {
-        score += pointsToAdd;
-        //Lo score aumenta
-        scoreText.text = score.ToString(); 
-        //il testo dello score viene aggiornato
+        money += pointsToAdd;
+        //Lo money aumenta
+        moneyText.text = money.ToString(); 
+        //il testo dello money viene aggiornato
     }
 
     void TakeLife()
@@ -106,7 +114,7 @@ public class GameSession : MonoBehaviour
         StartCoroutine(Restart());
     }
 
-    void ResetGameSession()
+    public void ResetGameSession()
     {
         FindObjectOfType<ScenePersist>().ResetScenePersist();
         //Recupera i componenti dallo script della scena persistente
@@ -115,7 +123,23 @@ public class GameSession : MonoBehaviour
         //Il gioco riparte dallo scenario 0 indicato nella build manager
         Destroy(gameObject);
         //L'oggetto viene distrutto
+    }
 
+    public void DeactiveGameOver()
+    {
+        gameOver.gameObject.SetActive(false);
+        playerLives = 3;
+        Time.timeScale = 1;
+        StartCoroutine(Restart());
+    }
+
+
+    IEnumerator AfterDie()
+    {
+        //FadeAnimation.instance.OnFadeIn();
+        yield return new WaitForSeconds(2f);
+        gameOver.gameObject.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     IEnumerator Restart()
@@ -131,6 +155,7 @@ public class GameSession : MonoBehaviour
         //fade.gameObject.SetActive(false);
         //Lo scenario viene ricaricato
     }
+
 
     IEnumerator StartStage()
     {

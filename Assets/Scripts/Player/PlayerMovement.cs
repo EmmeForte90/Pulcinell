@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Abilitazioni")]
     [SerializeField] public GameObject PauseMenu;
-    [SerializeField] public GameObject gameOver;
     //Variabile per identificare il menu
     [SerializeField] GameObject Player;
     //Variabile per identificare il player
@@ -377,18 +376,6 @@ public void OnPause(InputValue value)
         //SFX.Play(0);
         PauseMenu.gameObject.SetActive(false);
     }
-}
-#endregion
-
-#region Fine Partita
-
-public void GameOver()
-{
-    stopInput = true;
-    gameOver.gameObject.SetActive(true);
-    myAnimator.SetTrigger("Die");
-    //SFX.Play(0);
-    myRigidbody.velocity = stopMove;
 }
 #endregion
 
