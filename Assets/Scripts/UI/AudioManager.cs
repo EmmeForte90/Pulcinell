@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
     [SerializeField] public AudioSource[] soundEffects;
 
-    [SerializeField] public AudioSource bgm, levelEndMusic, bossMusic, dieMusic;
+    [SerializeField] public AudioSource bgm, levelEndMusic, dieMusic;
 
     private void Awake()
     {
@@ -47,18 +47,6 @@ public class AudioManager : MonoBehaviour
     {
         bgm.Stop();
         levelEndMusic.Play();
-    }
-
-    public void PlayBossMusic()
-    {
-        bgm.Stop();
-        bossMusic.Play();
-    }
-
-    public void StopBossMusic()
-    {
-        bossMusic.Stop();
-        bgm.Play();
     }
 
     #endregion

@@ -8,21 +8,21 @@ using Spine.Unity;
 
 public class Baloon : MonoBehaviour
 {
-	[SerializeField] private string[] testi;
-	private int index_posizioni;
-	public TMPro.TextMeshProUGUI testo_cartello;
-	private bool bool_apribile=false;
-	private bool bool_in_scrittura=false;
-	public GameObject cartello_toon;
+	[SerializeField] private string[] texts;
+	private int indPos;
+	public TMPro.TextMeshProUGUI textSign;
+	private bool isOpen=false;
+	private bool textCont=false;
+	public GameObject signToon;
         
 	
 	private void OnTriggerEnter2D(Collider2D other){
 		if (other.tag == "Player")
         {
 			//anim.SetTrigger("appear)");
-            cartello_toon.SetActive(true);
-			bool_apribile = true;
-            attiva_testo(index_posizioni);
+            signToon.SetActive(true);
+			isOpen = true;
+            attiva_testo(indPos);
             //FindObjectOfType<anmBal>().Appear();	
             }
 	}
@@ -32,29 +32,29 @@ public class Baloon : MonoBehaviour
         {
             //anim.SetTrigger("disappear)");
             //FindObjectOfType<anmBal>().Disappear();
-             cartello_toon.SetActive(false);
-			bool_apribile = false;
+             signToon.SetActive(false);
+			isOpen = false;
             
 		}
 	}
 
     IEnumerator scrivi_testo(string testo){
-		testo_cartello.SetText("");
-		string testo_temp="";
-		foreach (char lettera in testo.ToCharArray()){
-			testo_temp += lettera;
-			testo_cartello.SetText(testo_temp);
+		textSign.SetText("");
+		string textTemp="";
+		foreach (char letter in testo.ToCharArray()){
+			textTemp += letter;
+			textSign.SetText(textTemp);
 			yield return null;
 		}
-		bool_in_scrittura=false;
+		textCont=false;
 	}
 	
-	private void attiva_testo(int posizione){
-		bool_in_scrittura=true;
-		testo_cartello.SetText(testi[posizione]);
+	private void attiva_testo(int position){
+		textCont=true;
+		textSign.SetText(texts[position]);
 		StopAllCoroutines();
-		StartCoroutine(scrivi_testo(testi[posizione]));
-		index_posizioni++;
+		StartCoroutine(scrivi_testo(texts[position]));
+		indPos++;
 	}
    
 }

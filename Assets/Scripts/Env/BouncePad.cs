@@ -23,6 +23,7 @@ public class BouncePad : MonoBehaviour
             PlayerMovement.instance.OnAir();
             PlayerMovement.instance.myRigidbody.velocity = new Vector2(PlayerMovement.instance.myRigidbody.velocity.x, bounceForce);
             anim.SetTrigger("bounce");
+            AudioManager.instance.StopSFX(9);
         }
     }
     
@@ -34,6 +35,7 @@ public class BouncePad : MonoBehaviour
             PlayerMovement.instance.OnAir();
             PlayerMovement.instance.myRigidbody.velocity = new Vector2(PlayerMovement.instance.myRigidbody.velocity.x, bounceForce);
             anim.SetTrigger("bounce");
+            AudioManager.instance.StopSFX(9);
         }
     }
 

@@ -107,7 +107,6 @@ if(!isAttack){
 
 #region Se il nemico STA ATTACCANDO
 
-
    //Se sta attaccando
    //Spara al player se si trova nel range d'attacco
    float disToPlayerToAttack = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);

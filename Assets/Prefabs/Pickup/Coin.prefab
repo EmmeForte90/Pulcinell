@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da4e814a0ead0b4b8098f07d6dead2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinPickupSFX: {fileID: 8300000, guid: b7af5163b49e11343b124078f9bc888a, type: 3}
+  coinPickupSFX: {fileID: 8300000, guid: 6deedb0986fc4b746a1f61a8cc447124, type: 3}
   pointsForCoinPickup: 2
   loadDelay: 1
   myAnimator: {fileID: 6971545296040764932}

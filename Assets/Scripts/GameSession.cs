@@ -12,11 +12,12 @@ public class GameSession : MonoBehaviour
 {
 
     
-    [Header("money")]
+    [Header("Money")]
     [SerializeField] int playerLives = 3; 
     // Numero vite del player
     [SerializeField] int money = 0;
     // Valore dello money
+    [SerializeField] bool isTImeline;
 
     [SerializeField] TextMeshProUGUI livesText;
     //Variabile del testo della vita
@@ -27,14 +28,18 @@ public class GameSession : MonoBehaviour
     [SerializeField] GameObject callFadeIn;
     [SerializeField] GameObject callFadeOut;
     [SerializeField] GameObject centerCanvas;
+
+    [Header("Fade")]
+    [SerializeField] public AudioSource bgm, dieMusic;
     
     [Header("GameOver")]
     [SerializeField] public GameObject gameOver;
 
     
-    
     void Awake()
     {
+    
+        playMusic();
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
         if (numGameSessions > 1)
@@ -52,6 +57,7 @@ public class GameSession : MonoBehaviour
 
         }
     }
+    
 
     void Start() 
     {
@@ -130,6 +136,7 @@ public class GameSession : MonoBehaviour
         gameOver.gameObject.SetActive(false);
         playerLives = 3;
         Time.timeScale = 1;
+        AudioManager.instance.playMusic();
         StartCoroutine(Restart());
     }
 
@@ -147,6 +154,7 @@ public class GameSession : MonoBehaviour
         //FadeAnimation.instance.OnFadeIn();
         Instantiate(callFadeIn, centerCanvas.transform.position, centerCanvas.transform.rotation);
         yield return new WaitForSeconds(5f);
+        AudioManager.instance.playMusic();
         livesText.text = playerLives.ToString();
         //Le vite del player vengono aggiornate
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -154,6 +162,8 @@ public class GameSession : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
         //fade.gameObject.SetActive(false);
         //Lo scenario viene ricaricato
+        AudioManager.instance.playMusic();
+
     }
 
 
@@ -169,6 +179,26 @@ public class GameSession : MonoBehaviour
         PlayerMovement.instance.playerActivateInput();
         //fade.gameObject.SetActive(false);
     }
+
+
+#region Music
+
+    public void stopMusic()
+    {
+        bgm.Stop();
+    }
+     public void playMusic()
+    {
+        bgm.Play();
+    }
+    
+    public void DieMusic()
+    {
+        bgm.Stop();
+        dieMusic.Play();
+    }
+
+    #endregion
 
 }
 
