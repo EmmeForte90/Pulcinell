@@ -10,23 +10,21 @@ using Spine;
 
 public class GameSession : MonoBehaviour
 {
-    [SerializeField] int playerLives = 3; 
+[SerializeField] int playerLives = 3; 
     // Numero vite del player
-    [SerializeField] int money = 0;
-    // Valore dello money
+    [SerializeField] int score = 0;
+    // Valore dello score
+
     [SerializeField] TextMeshProUGUI livesText;
     //Variabile del testo della vita
     [SerializeField] TextMeshProUGUI scoreText;
-    //Variabile del testo dello money
+    //Variabile del testo dello score
     [SerializeField]  GameObject fade;
-    
 
+    
+    
     void Awake()
     {
-        livesText.text = playerLives.ToString();
-        //Il testo assume il valore delle vite del player
-        scoreText.text = money.ToString();    
-        //Il testo assume il valore dello money
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
         if (numGameSessions > 1)
@@ -38,15 +36,26 @@ public class GameSession : MonoBehaviour
         else
         //Altrimenti
         {
-            StartCoroutine(StartStage());
             DontDestroyOnLoad(gameObject);
             //Preserva quest'oggetto
+            StartCoroutine(StartStage());
+
         }
     }
 
+    void Start() 
+    {
+        //StartCoroutine(StartStage());
+        livesText.text = playerLives.ToString();
+        //Il testo assume il valore delle vite del player
+        scoreText.text = score.ToString();    
+        //Il testo assume il valore dello score
+    }
 
     public void ProcessPlayerDeath()
     {
+
+
         if (playerLives > 1)
         //Se le vita del player sono maggiori di 1
         {
@@ -56,16 +65,36 @@ public class GameSession : MonoBehaviour
         else
         //Altrimenti
         {
-            GameOver();
+            ResetGameSession();
+            //Richiama la funzione di reset
         }
     }
 
+#region Ricalcolo Morte
+
+    public void StartDie()
+    {
+        StartCoroutine(CallGameSession());
+        AudioManager.instance.DieMusic();
+    }
+
+    IEnumerator CallGameSession()
+    {
+        yield return new WaitForSeconds(2f);
+        ProcessPlayerDeath();
+        //Richiama i componenti dello script gamesessione e 
+        //ne attiva la funzione di processo di morte 
+
+    }
+
+#endregion
+
     public void AddToScore(int pointsToAdd)
     {
-        money += pointsToAdd;
-        //Lo money aumenta
-        scoreText.text = money.ToString(); 
-        //il testo dello money viene aggiornato
+        score += pointsToAdd;
+        //Lo score aumenta
+        scoreText.text = score.ToString(); 
+        //il testo dello score viene aggiornato
     }
 
     void TakeLife()
@@ -74,40 +103,9 @@ public class GameSession : MonoBehaviour
         //Il player perde 1 vita
         StartCoroutine(Restart());
     }
-    
-    IEnumerator StartStage()
-    {
-    fade.gameObject.SetActive(true);
-    FadeAnimation.instance.OnFadeOut();
-    PlayerMovement.instance.playerStopInput();
-    yield return new WaitForSeconds(5f);
-    PlayerMovement.instance.playerActivateInput();
-    fade.gameObject.SetActive(false);
-    }
 
-    IEnumerator Restart()
+    void ResetGameSession()
     {
-        fade.gameObject.SetActive(true);
-        FadeAnimation.instance.OnFadeIn();
-        PlayerMovement.instance.playerStopInput();
-        yield return new WaitForSeconds(5f);
-        livesText.text = playerLives.ToString();
-        //Le vite del player vengono aggiornate
-         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        //Lo scenario assume il valore della build
-        SceneManager.LoadScene(currentSceneIndex);
-        //Lo scenario viene ricaricato
-        fade.gameObject.SetActive(false);
-    }
-
-    void GameOver()
-    {
-        PlayerMovement.instance.GameOver();
-    }
-
-    public void ResetGameSession()
-    {
-        
         FindObjectOfType<ScenePersist>().ResetScenePersist();
         //Recupera i componenti dallo script della scena persistente
         //E ne attiva la funzione
@@ -117,4 +115,31 @@ public class GameSession : MonoBehaviour
         //L'oggetto viene distrutto
 
     }
+
+    IEnumerator Restart()
+    {
+        FadeAnimation.instance.OnFadeIn();
+        yield return new WaitForSeconds(5f);
+        livesText.text = playerLives.ToString();
+        //Le vite del player vengono aggiornate
+         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        //Lo scenario assume il valore della build
+        SceneManager.LoadScene(currentSceneIndex);
+        //fade.gameObject.SetActive(false);
+        //Lo scenario viene ricaricato
+    }
+
+    IEnumerator StartStage()
+    {
+        //fade.gameObject.SetActive(true);
+        AudioManager.instance.playMusic();
+        FadeAnimation.instance.OnFadeOut();
+        PlayerMovement.instance.ReactivatePlayer();
+        PlayerMovement.instance.playerStopInput();
+        yield return new WaitForSeconds(5f);
+        PlayerMovement.instance.playerActivateInput();
+        //fade.gameObject.SetActive(false);
+    }
+
 }
+

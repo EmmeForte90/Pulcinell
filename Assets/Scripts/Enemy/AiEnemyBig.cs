@@ -29,17 +29,13 @@ public class AiEnemyBig : DatabaseEnemy, IDamegable
         LP.parent = null;
         RP.parent = null;
         moveCount = moveTime;
-    }
-    
+    }   
 
 void Update()
 {
 //Calcolo distanza tra player e nemico
 float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
-
 //hit = Physics2D.Raycast(new Vector2(transform.position.x + moveSpeed * frontcheck, transform.position.y));
-
-
 Debug.DrawRay(transform.position, new Vector2(agroRange, 0), Color.red);
 Debug.DrawRay(transform.position, new Vector2(attackRange, 0), Color.blue);
 

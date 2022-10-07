@@ -21,8 +21,8 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per la velocità di arrampicata
      float gravityScaleAtStart;
     //Variabile per la gravità
-    [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
-    [SerializeField] float knockBack;
+    [SerializeField] Vector2 knockBack = new Vector2 (5f, 5f);
+    //[SerializeField] float knockBack;
     //Saltello di morte
     public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
@@ -109,6 +109,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public ParticleSystem impactEffect;
     private ParticleSystem.EmissionModule footEmission;
     //Particle system interact  
+     [Header ("Morte")]
+    public GameObject callDie;
 
 private void Awake()
     {
@@ -188,8 +190,12 @@ private void Awake()
 
 void UpdateAnimation()
     {
-            myAnimator.SetBool("isGround", isGround);  
+            myAnimator.SetBool("isGround", isGround);
+            myAnimator.SetBool("wallJump", isWallJumping);
+            myAnimator.SetBool("lookDown", lookDown);
+            myAnimator.SetBool("lookUp", lookUp);
     }
+
 
 #region CheckGround
 void CheckGround()
@@ -247,7 +253,7 @@ void checkWallJump()
 }
 #endregion
 
-#region  Risalto sul nemico
+#region Risalto sul nemico
 public void BumpEnemy()
 {
     myAnimator.SetTrigger("Jump");
@@ -284,7 +290,8 @@ if (value.isPressed)
         stopInput = true;
         lookDown = true;
         lookUp = false;
-        myAnimator.SetBool("lookDown", lookDown);
+        UpdateAnimation();
+        //myAnimator.SetBool("lookDown", lookDown);
         myRigidbody.velocity = stopMove;
     }
     else
@@ -297,14 +304,15 @@ public void LookNormal()
 {
     stopInput = false;
     lookDown = false;
-    myAnimator.SetBool("lookDown", lookDown);
+    //myAnimator.SetBool("lookDown", lookDown);
     lookUp = false;
-    myAnimator.SetBool("lookUp", lookUp);
+    UpdateAnimation();
+    //myAnimator.SetBool("lookUp", lookUp);
 
 } 
 #endregion
 
-#region  Cambio skin per arma indossata
+#region Cambio skin per arma indossata
 
 public void ChangeWeaponSkin(int id)
     {
@@ -527,7 +535,7 @@ public void playerActivateInput()
     }
 #endregion
 
-#region  FlipSprite
+#region FlipSprite
     void FlipSprite()
     {
         if(!stopInput && !heShoot)
@@ -581,21 +589,30 @@ public void playerActivateInput()
 #region Morte
     void Die()
     {
-        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask(/*"Enemies",*/ "Fall")))
+        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Fall")))
         //Se il player tocca il nemico
         {
             LookNormal();
             isAlive = false;
+            stopInput = true;
             //Non è più vivo
-            myAnimator.SetTrigger("Dying");
+            AudioManager.instance.StopSFX(2);
+            //GameSession.instance.ProcessPlayerDeath();
+            FindObjectOfType<GameSession>().StartDie();
+            Player.gameObject.SetActive(false);
+            Instantiate(callDie, Player.transform.position, Player.transform.rotation);
             //Parte l'animazione di morte
-            myRigidbody.velocity = deathKick;
-            //Il rigidbody assume il valore deathKick 
-            FindObjectOfType<GameSession>().ProcessPlayerDeath();
-            //Richiama i componenti dello script gamesessione e 
-            //ne attiva la funzione di processo di morte 
+            //myRigidbody.velocity = knockBack;
+            //Il rigidbody assume il valore knockBack 
+           
         }
     }
+
+    public void ReactivatePlayer()
+    {
+        Player.gameObject.SetActive(true);
+    }
+
 #endregion
 
 #region Collisioni
@@ -636,14 +653,15 @@ private void OnCollisionExit2D(Collision2D other){
 
 #endregion
 
-#region  Danno
+#region Danno
 public void Hurt()
 {
     LookNormal();
     if(!isInvincible)
     {
     PlayerHealth.instance.removeOneHeart();
-    myRigidbody.velocity = new Vector2(2f, 2f);
+    AudioManager.instance.PlaySFX(5);
+    myRigidbody.velocity = knockBack;
     StartCoroutine(Invincible());
     myAnimator.SetTrigger("Hurt");
     }

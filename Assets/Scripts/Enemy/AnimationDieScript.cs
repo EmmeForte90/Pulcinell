@@ -6,7 +6,7 @@ public class AnimationDieScript : MonoBehaviour
 {
     Rigidbody2D rb;
     public Animator anim;
-    public bool isPlayer;
+    //public bool isPlayer;
     public float speed;
     public float Delay;
     public float destroyTime;
@@ -20,33 +20,31 @@ public class AnimationDieScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         anim.SetTrigger("isDead");
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
+            trackMovement();
 
-        if (isPlayer)
+        /*if (isPlayer)
         {
             PlayerDie();
         }
         else
         {
             trackMovement();
-        }
+        }*/
 
 
     }
 
-    void PlayerDie()
+    /*void PlayerDie()
     {
         Vector2 direction = rb.velocity;
         //anim.SetBool("isDead", isDead);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-    }
-
+    }*/
 
     void trackMovement()
     {
@@ -55,7 +53,6 @@ public class AnimationDieScript : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         StartCoroutine(Destroy());
         //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
     }
 
 IEnumerator Destroy()
@@ -64,17 +61,5 @@ IEnumerator Destroy()
     Destroy(gameObject);
 
 }
-    //IEnumerator Scaletime()
-    //{
-      //  PDIE.transform.localScale += new Vector3(1, 1, 0) * Delay * Time.deltaTime;
-        //CameraShake.Shake(0.2f, 1f);
-        //yield return new WaitForSeconds(0.2f);
-        //PDIE.transform.localScale = new Vector3(13, 10, 0);
-        //yield return new WaitForSeconds(1);
-
-        //yield return null;
-
-    //}
-
-
+   
 }
