@@ -19,7 +19,9 @@ public class GameSession : MonoBehaviour
     //Variabile del testo della vita
     [SerializeField] TextMeshProUGUI scoreText;
     //Variabile del testo dello score
-    [SerializeField]  GameObject fade;
+    [SerializeField] GameObject callFadeIn;
+    [SerializeField] GameObject callFadeOut;
+    [SerializeField] GameObject centerCanvas;
 
     
     
@@ -118,11 +120,12 @@ public class GameSession : MonoBehaviour
 
     IEnumerator Restart()
     {
-        FadeAnimation.instance.OnFadeIn();
+        //FadeAnimation.instance.OnFadeIn();
+        Instantiate(callFadeIn, centerCanvas.transform.position, centerCanvas.transform.rotation);
         yield return new WaitForSeconds(5f);
         livesText.text = playerLives.ToString();
         //Le vite del player vengono aggiornate
-         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         //Lo scenario assume il valore della build
         SceneManager.LoadScene(currentSceneIndex);
         //fade.gameObject.SetActive(false);
@@ -133,7 +136,8 @@ public class GameSession : MonoBehaviour
     {
         //fade.gameObject.SetActive(true);
         AudioManager.instance.playMusic();
-        FadeAnimation.instance.OnFadeOut();
+        //FadeAnimation.instance.OnFadeOut();
+        Instantiate(callFadeOut, centerCanvas.transform.position, centerCanvas.transform.rotation);
         PlayerMovement.instance.ReactivatePlayer();
         PlayerMovement.instance.playerStopInput();
         yield return new WaitForSeconds(5f);
