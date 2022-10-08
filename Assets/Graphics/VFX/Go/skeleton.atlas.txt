@@ -1,0 +1,10 @@
+skeleton.png
+size:1024,256
+filter:Linear,Linear
+pma:true
+indicatore
+bounds:2,2,250,250
+indicatore2
+bounds:254,2,250,250
+sorgente3
+bounds:506,2,250,250
