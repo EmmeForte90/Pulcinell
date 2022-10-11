@@ -33,7 +33,8 @@ void Update()
 {
 //Calcolo distanza tra player e nemico
 float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
-
+Debug.DrawRay(transform.position, new Vector2(agroRange, 0), Color.red);
+Debug.DrawRay(transform.position, new Vector2(attackRange, 0), Color.blue);
 #region Se il nemico NON sta attaccando...
 
 if(!isAttack && disToPlayer > agroRange){

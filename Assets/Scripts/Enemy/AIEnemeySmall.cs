@@ -4,176 +4,220 @@ using UnityEngine;
 
 public class AIEnemeySmall : DatabaseEnemy, IDamegable
 {
-    public new int HP { get; set; }
-
-
-
-    [Header("Sprite e animazione")]
-    [SerializeField]
-    protected Rigidbody2D theRB;
-    [SerializeField]
-    protected SpriteRenderer theSR;
-
+    //public int HP { get; set; }
     [Header("Movimenti")]
     [SerializeField]
-    public Transform leftPoint, rightPoint;
-    [SerializeField]
-    protected bool movingRight;
-    [SerializeField]
-    protected bool attack = false;
+    public Transform LP;
+    public Transform RP;
+    private float horizontal;
+    [Header("parametri d'attacco")]
+    [SerializeField] LayerMask playerlayer;
+    [SerializeField] float nextAttackTime;
+    [SerializeField] public float agroRange;
+    [SerializeField] public float distaceRange;
+
+    //Variabile per il tempo d'attacco
+
+	[Header("Calcoli distanza")]
+    public Transform agroGizmo;
+	public Transform rangeGizmo;
 
     private void Awake()
     {
+        //Inizializzazione
         instance = this;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-
-        leftPoint.parent = null;
-        rightPoint.parent = null;
-
-        movingRight = false;
-
+        LP.parent = null;
+        RP.parent = null;
         moveCount = moveTime;
     }
+    
 
+void Update()
+{
+//Calcolo distanza tra player e nemico
+float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+Debug.DrawRay(agroGizmo.transform.position, new Vector2(agroRange, 0), Color.blue);
+Debug.DrawRay(rangeGizmo.transform.position, new Vector2(distaceRange, 0), Color.yellow);
 
+#region Se il nemico NON sta attaccando...
 
+if(!isAttack && disToPlayer > agroRange){
 
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        theRB = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-
-
-
-        if (!hit || !attack)
-        {
-
-            #region movimenti nemici
+    StopAttack();
 
             if (moveCount > 0)
+            //Tempo di pausa per far fermare il nemico
             {
                 moveCount -= Time.deltaTime;
+                //MovimentoPer deltatime
 
                 if (movingRight)
+                //Se si muove a destra
                 {
-                    theRB.velocity = new Vector2(moveSpeed, theRB.velocity.y);
-
-
-
-                    if (transform.position.x > rightPoint.position.x)
+                    RB.velocity = new Vector2(moveSpeed, RB.velocity.y);
+                    //Un vettore lo fa muovere a destra
+                    if (transform.position.x > RP.transform.position.x)
+                    //Se la posizione è maggiore del RightPoint
                     {
                         movingRight = false;
-
-                        transform.localScale = new Vector2(1, transform.localScale.y);
+                        //Non si muove più a destra
+                        transform.localScale = new Vector2(-1, transform.localScale.y);
+                        //Si volta dall'altra parte e inizia a muoversi
                     }
                 }
                 else
                 {
-                    theRB.velocity = new Vector2(-moveSpeed, theRB.velocity.y);
-
-
-
-                    if (transform.position.x < leftPoint.position.x)
+                    RB.velocity = new Vector2(-moveSpeed, RB.velocity.y);
+                    //Il vettore lo fa muovere a sinistra
+                    if (transform.position.x < LP.transform.position.x)
                     {
                         movingRight = true;
-
-                        transform.localScale = new Vector2(-1, transform.localScale.y);
+                        //Si muove a destra
+                        transform.localScale = new Vector2(1, transform.localScale.y);
+                        //Si volta dall'altra parte e inizia a muoversi
                     }
                 }
 
                 if (moveCount <= 0)
+                //Se il conteggio del movimento è uguale o inferiore a zero
                 {
                     waitCount = Random.Range(waitTime * .75f, waitTime * 1.25f);
+                    //Il tempo di attesa diventa randomico
                 }
 
                 anim.SetBool("isMoving", true);
             }
             else if (waitCount > 0)
+            //Se il conteggio del movimento è maggiore di zero
             {
                 waitCount -= Time.deltaTime;
-                theRB.velocity = new Vector2(0f, theRB.velocity.y);
-
+                RB.velocity = new Vector2(0f, RB.velocity.y);
+                //Il personaggio si muove
                 if (waitCount <= 0)
+                //Se il conteggio del movimento è uguale o inferiore a zero
                 {
                     moveCount = Random.Range(moveTime * .75f, waitTime * .75f);
+                    //Il tempo di movimento diventa randomico
                 }
                 anim.SetBool("isMoving", false);
             }
-        }
-        else if (hit || attack)
+        } 
+#endregion
+
+#region Se il nemico STA ATTACCANDO
+else if(disToPlayer < agroRange)
+{        
+    /*  
+    //Se non sta attaccando 
+    if(!isAttack)
+    {
+    //Insegue il player
+    ChasePlayer();
+    }*/
+
+        ChasePlayer();
+
+    //Se sta attaccando parte l'animazione
+   float disToPlayerToAttack = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+   //Debug.Log("disToPlayerToAttack:" +disToPlayerToAttack); 
+   if(disToPlayerToAttack < distaceRange)
+   {
+    Attack();
+    //AudioManager.instance.PlaySFX(3);
+
+    //Colpisce il player se si trova nel range d'attacco
+       
+    }       
+}//Altrimenti smettere di inseguirlo
+else if(disToPlayer > agroRange)
+{
+StopChasingPlayer();
+}
+
+#endregion
+} 
+#region  Insegue il player
+
+private void  ChasePlayer()
+{
+    anim.SetBool("isRunning", true);
+if(transform.position.x < PlayerMovement.instance.transform.position.x)
+{
+    //Sinistra
+    RB.velocity = new Vector2(runSpeed, 0);
+    movingRight = true;
+    transform.localScale = new Vector2(1, transform.localScale.y);
+}
+else if(transform.position.x > PlayerMovement.instance.transform.position.x)
+{
+    //Destra
+    RB.velocity = new Vector2(-runSpeed, 0);
+    movingRight = false;
+    transform.localScale = new Vector2(-1, transform.localScale.y);
+}
+}
+
+private void StopChasingPlayer()
+{
+    StopAttack();
+    anim.SetBool("isRunning", false);
+    RB.velocity = new Vector2(moveSpeed, 0);
+}
+
+#endregion
+
+#region  Flippa lo sprite
+private void Flip()
+    {
+        if (movingRight && horizontal < 0f || !movingRight && horizontal > 0f)
         {
-
+            movingRight = !movingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
         }
-        #endregion
+    }
 
+#endregion
 
+#region  Attacco
+public void Attack()
+    {
+    isAttack = true;
+    //RB.velocity = new Vector2(0, 0);
+    anim.SetBool("isMoving", false);
+    anim.SetBool("isAttack", true);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-#if UNITY_EDITOR
-
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Damage();
-
-
-        }
-#endif
-
+public void StopAttack()
+    {
+        isAttack = false;
+        anim.SetBool("isAttack", false);
+        anim.SetBool("isRunning", false);
+        moveCount = moveTime;
 
     }
 
 
+#endregion
 
-
-
-
-    #region Attacco
-    private void OnTriggerEnter2D(Collider2D other)
+#region Danno
+ 
+private void OnTriggerEnter2D(Collider2D other)
     {
-
-        if (other.tag == "Player")
+        if(other.tag == "Bullet")
         {
-
-            anim.SetTrigger("isAttacking");
-
-            attack = true;
-            //HitEnemy();
+            StartCoroutine(HitEnemy());
+            //Quando il nemico collide con il bullet parte la corutine
         }
-    }// Cooldown dell'attacco
-    /*IEnumerator HitEnemy()
-    {
-        Attacco.gameObject.SetActive(false);
-        waitCount = 1;
 
-        yield return new WaitForSeconds(0.5f);
-        waitCount = 0;
-        attack = false;
-        Attacco.gameObject.SetActive(true);
-
-    }*/
+        if(other.tag == "Player")
+        {
+            PlayerMovement.instance.Hurt();
+            //Quando il nemico collide con il bullet parte la corutine
+        }
+    }
     #endregion
-
-
 
 
 }

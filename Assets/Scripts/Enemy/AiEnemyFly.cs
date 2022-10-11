@@ -9,7 +9,6 @@ public class AiEnemyFly : DatabaseEnemy, IDamegable
     	
 	[Header("Movimenti")]
 	public Transform[] points;
-    public float moveSpeed;
     public int currentPoint;
     public Transform platform;
 	private float horizontal;
@@ -27,8 +26,11 @@ public class AiEnemyFly : DatabaseEnemy, IDamegable
     public float FUOCO;
     [SerializeField]
     public GameObject blam;
+
+	[Header("Calcoli distanza")]
 	[SerializeField] public float targetRange;
-    
+  
+
     private void Awake()
     {
         //Inizializzazione

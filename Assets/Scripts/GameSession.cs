@@ -29,8 +29,8 @@ public class GameSession : MonoBehaviour
     [SerializeField] GameObject callFadeOut;
     [SerializeField] GameObject centerCanvas;
 
-    [Header("Fade")]
-    [SerializeField] public AudioSource bgm, dieMusic;
+    /*[Header("Music")]
+    [SerializeField] public AudioSource bgm, dieMusic;*/
     
     [Header("GameOver")]
     [SerializeField] public GameObject gameOver;
@@ -39,7 +39,7 @@ public class GameSession : MonoBehaviour
     void Awake()
     {
     
-        playMusic();
+        //playMusic();
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
         if (numGameSessions > 1)
@@ -90,7 +90,7 @@ public class GameSession : MonoBehaviour
     public void StartDie()
     {
         StartCoroutine(CallGameSession());
-        AudioManager.instance.DieMusic();
+       // DieMusic();
     }
 
     IEnumerator CallGameSession()
@@ -136,7 +136,7 @@ public class GameSession : MonoBehaviour
         gameOver.gameObject.SetActive(false);
         playerLives = 3;
         Time.timeScale = 1;
-        AudioManager.instance.playMusic();
+        //playMusic();
         StartCoroutine(Restart());
     }
 
@@ -154,7 +154,7 @@ public class GameSession : MonoBehaviour
         //FadeAnimation.instance.OnFadeIn();
         Instantiate(callFadeIn, centerCanvas.transform.position, centerCanvas.transform.rotation);
         yield return new WaitForSeconds(5f);
-        AudioManager.instance.playMusic();
+        //playMusic();
         livesText.text = playerLives.ToString();
         //Le vite del player vengono aggiornate
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -162,7 +162,7 @@ public class GameSession : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
         //fade.gameObject.SetActive(false);
         //Lo scenario viene ricaricato
-        AudioManager.instance.playMusic();
+        //playMusic();
 
     }
 
@@ -170,7 +170,7 @@ public class GameSession : MonoBehaviour
     IEnumerator StartStage()
     {
         //fade.gameObject.SetActive(true);
-        AudioManager.instance.playMusic();
+        //playMusic();
         //FadeAnimation.instance.OnFadeOut();
         Instantiate(callFadeOut, centerCanvas.transform.position, centerCanvas.transform.rotation);
         PlayerMovement.instance.ReactivatePlayer();
@@ -183,7 +183,7 @@ public class GameSession : MonoBehaviour
 
 #region Music
 
-    public void stopMusic()
+   /* public void stopMusic()
     {
         bgm.Stop();
     }
@@ -197,7 +197,7 @@ public class GameSession : MonoBehaviour
         bgm.Stop();
         dieMusic.Play();
     }
-
+*/
     #endregion
 
 }
