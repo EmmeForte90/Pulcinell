@@ -71,6 +71,9 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per verificare se è sbloccato il walljump
     [SerializeField] bool doubleJumpSkill = false;
     //Variabile per verificare se è sbloccato il doppio salto
+    [SerializeField] bool movingRight;
+    private float directionScale;
+
     [SerializeField] public LayerMask layerMask;
     //Variabile per identificare i vari layer
     float timeInvincible = 1f;
@@ -102,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public Transform gun;
     //Variabile per spostare o scalare l'oggetto
     [SerializeField] public Transform stompBox;
+    [SerializeField] public GameObject dust;
     [SerializeField] GameObject Change;
     //VFX per il cambio arma
     [SerializeField] public ParticleSystem footsteps;
@@ -164,27 +168,20 @@ private void Awake()
         }
         ClimbLadder();
         Die();
-       
-        /*#region Polvere
-
-        if (isMoving && isGround)
+       {
+       if (isMoving && isGround)
         {
+            dust.gameObject.SetActive(true);
             footEmission.rateOverTime = 35f;
             
         } else if (!isMoving && isGround)
         {
             footEmission.rateOverTime = 0f;
+            dust.gameObject.SetActive(false);
         }
+    }
+       
 
-        if (!isGround)
-        {
-            impactEffect.gameObject.SetActive(true);
-            impactEffect.Stop();
-            impactEffect.transform.position = footsteps.transform.position;
-            impactEffect.Play();
-        }
-
-        #endregion*/
     }
 #endregion
 
@@ -438,6 +435,9 @@ public void playerActivateInput()
          //Se il player è morto si disattiva la funzione
         isMoving = true;
         moveInput = value.Get<Vector2>();
+        
+
+        //Dust();
         //Il vettore assume il valore base
     }
 
@@ -531,12 +531,13 @@ public void playerActivateInput()
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         //se il player si sta muovendo le sue coordinate x sono maggiori di quelle e
         //di un valore inferiore a 0
-
+        
         if (playerHasHorizontalSpeed) //Se il player si sta muovendo
         {
             transform.localScale = new Vector2 (Mathf.Sign(myRigidbody.velocity.x), 1f);
             //La scala assume un nuovo vettore e il rigidbody sull'asse x 
             //viene modificato mentre quello sull'asse y no. 
+           
         }
         }
     }
@@ -667,4 +668,7 @@ IEnumerator Invincible()
 }
 #endregion
 
+
+
 }
+

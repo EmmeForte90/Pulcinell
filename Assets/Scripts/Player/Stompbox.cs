@@ -5,6 +5,8 @@ using UnityEngine;
 public class Stompbox : MonoBehaviour
 {
     public GameObject stompBox;
+    [SerializeField] public GameObject stompDust;
+
     //public Transform attackPoint;
     //public float attackrange;
     //public GameObject collectible;
@@ -29,6 +31,10 @@ public class Stompbox : MonoBehaviour
             {
                 Instantiate(collectible, Enemy.transform.position, Enemy.transform.rotation);
             }*/
+        }
+        if (other.gameObject.tag == "ground" )//&& PlayerController.instance.m_Rigidbody2D.position.y > transform.position.y)
+        {
+            Instantiate(stompDust, stompBox.transform.position, transform.rotation); 
         }
     }
 }
