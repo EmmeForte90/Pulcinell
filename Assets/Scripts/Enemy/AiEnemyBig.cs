@@ -18,9 +18,15 @@ public class AiEnemyBig : DatabaseEnemy, IDamegable
     [SerializeField] public float crashRange;
     [SerializeField] public float agroRange;
     [SerializeField] public float timeBeforeAttack = 1f;
-    [SerializeField] public float frontcheck = 0.51f;
+    //[SerializeField] public float frontcheck = 0.51f;
     //Variabile per il tempo d'attacco
     private bool isCrash = false;
+    [Header("Calcoli distanza")]
+    public Transform agroGizmo;
+	public Transform rangeGizmo;
+    
+    [SerializeField] bool fatEnemy;
+
 
     private void Awake()
     {
@@ -36,8 +42,8 @@ void Update()
 //Calcolo distanza tra player e nemico
 float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
 //hit = Physics2D.Raycast(new Vector2(transform.position.x + moveSpeed * frontcheck, transform.position.y));
-Debug.DrawRay(transform.position, new Vector2(agroRange, 0), Color.red);
-Debug.DrawRay(transform.position, new Vector2(attackRange, 0), Color.blue);
+Debug.DrawRay(agroGizmo.transform.position, new Vector2(agroRange, 0), Color.red);
+Debug.DrawRay(rangeGizmo.transform.position, new Vector2(attackRange, 0), Color.blue);
 
 #region Se il nemico NON sta attaccando...
 
@@ -207,6 +213,14 @@ private void Crash()
    {
     AudioManager.instance.PlaySFX(3);
     PlayerMovement.instance.Hurt();
+    if(fatEnemy)
+    {
+        PlayerMovement.instance.knockBackBig();
+    }
+    else if(!fatEnemy)
+    {
+        PlayerMovement.instance.knockBack();
+    }
 }  
     
 }

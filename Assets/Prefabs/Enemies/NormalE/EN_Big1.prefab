@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1884238346827308306}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LP
   m_TagString: RP
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -255,6 +255,9 @@ MonoBehaviour:
   crashRange: 3
   agroRange: 5
   timeBeforeAttack: 1
+  agroGizmo: {fileID: 0}
+  rangeGizmo: {fileID: 0}
+  fatEnemy: 0
 --- !u!1 &1884238347931629542
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1884238347931629537}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: EN_Big1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1884238348099714539}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RP
   m_TagString: LP
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}

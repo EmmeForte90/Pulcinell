@@ -19,13 +19,19 @@ public class PlayerMovement : MonoBehaviour
     // Variabile per il valore della velocità del salto
     [SerializeField] float climbSpeed = 5f;
     //Variabile per la velocità di arrampicata
-     float gravityScaleAtStart;
+    float gravityScaleAtStart;
     //Variabile per la gravità
-    [SerializeField] Vector2 knockBack = new Vector2 (5f, 5f);
+    Vector2 knockBackRight = new Vector2 (-5f, 5f);
+    Vector2 knockBackLeft = new Vector2 (5f, 5f);
+    
+    Vector2 knockBackRightBig = new Vector2 (-10f, 10f);
+    Vector2 knockBackLeftBig = new Vector2 (10f, 10f);
+
     //[SerializeField] float knockBack;
     //Saltello di morte
     public Rigidbody2D myRigidbody;
     //Variabile per il rigidbody
+    protected bool m_FacingRight = true;
 
     private SkeletonMecanim skelGraph;
 
@@ -72,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool doubleJumpSkill = false;
     //Variabile per verificare se è sbloccato il doppio salto
     [SerializeField] bool isKnockBack = false;
-    [SerializeField] float timeKnockBack;
+    //[SerializeField] float timeKnockBack;
 
     [SerializeField] public LayerMask layerMask;
     //Variabile per identificare i vari layer
@@ -435,11 +441,9 @@ public void playerActivateInput()
          //Se il player è morto si disattiva la funzione
         isMoving = true;
         if(!isKnockBack)
-        {
+        {    
         moveInput = value.Get<Vector2>();
-        }
-        
-
+        }      
         //Dust();
         //Il vettore assume il valore base
     }
@@ -531,8 +535,27 @@ public void playerActivateInput()
     {
         if(!stopInput && !heShoot)
         {
-            
-        bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
+            //Lo sprite e tutti i parenti si girano dall'altro lato.
+            if (myRigidbody.velocity.x < 0)  
+            {
+                m_FacingRight = true;
+                transform.localScale = new Vector2(-1, transform.localScale.y);
+                Vector3 theScale = transform.localScale;
+                theScale.z = 1;
+                transform.localScale = theScale;
+
+
+            }
+            else if (myRigidbody.velocity.x > 0 && m_FacingRight)
+            {
+               m_FacingRight = false;
+               transform.localScale = new Vector2(1, transform.localScale.y);
+                Vector3 theScale = transform.localScale;
+                theScale.z = 1;
+                transform.localScale = theScale;
+            }
+
+        /*bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         //se il player si sta muovendo le sue coordinate x sono maggiori di quelle e
         //di un valore inferiore a 0
         
@@ -543,8 +566,9 @@ public void playerActivateInput()
             //viene modificato mentre quello sull'asse y no. 
            
         }
-            }
+        }*/
         
+    }
     }
 
 #endregion
@@ -636,13 +660,39 @@ void OnCollisionEnter2D(Collision2D other)
             Hurt();
 		}
     //Testando il knock back    
-        if (other.gameObject.tag == "Test")
+        /*if (other.gameObject.tag == "Test")
         {
+
+            //Debug.Log("colpito");
+            isKnockBack = true;
+            if(m_FacingRight)
+            {
+            moveInput = knockBackLeft;
+            }
+            else if(!m_FacingRight)
+            {
+                moveInput = knockBackRight;
+            }
+            StartCoroutine(stopKnockback());*/
+
+
+
+            //Da usare per teletrasportare il player
+            /*
             Debug.Log("colpito");
             isKnockBack = true;
-            myRigidbody.velocity = new Vector2(-10, 10);
-           StartCoroutine(stopKnockback());
-		}
+            if(m_FacingRight)
+            {
+            moveInput = -knockBack;
+            }
+            else if(!m_FacingRight)
+            {
+                moveInput = knockBack;
+            }
+            //myRigidbody.velocity = new Vector2(-10, 10);
+            StartCoroutine(stopKnockback());
+            }*/
+		
 	}
 
     
@@ -654,11 +704,40 @@ private void OnCollisionExit2D(Collision2D other){
 			Player.transform.parent = null;
 		}
 	}
+
+public void knockBack()
+{
+            isKnockBack = true;
+            if(m_FacingRight)
+            {
+            moveInput = knockBackLeft;
+            }
+            else if(!m_FacingRight)
+            {
+            moveInput = knockBackRight;
+            }
+            StartCoroutine(stopKnockback());
+}
+
+public void knockBackBig()
+{
+            isKnockBack = true;
+            if(m_FacingRight)
+            {
+            moveInput = knockBackLeftBig;
+            }
+            else if(!m_FacingRight)
+            {
+            moveInput = knockBackRightBig;
+            }
+            StartCoroutine(stopKnockback());
+}
+
 private IEnumerator stopKnockback()
 {
-        yield return new WaitForSeconds(timeKnockBack);
+        yield return new WaitForSeconds(0.2f);
         isKnockBack = false;
-        myRigidbody.velocity = stopMove;
+        moveInput = stopMove;
 
 }
 
@@ -673,7 +752,6 @@ public void Hurt()
     {
     PlayerHealth.instance.removeOneHeart();
     AudioManager.instance.PlaySFX(5);
-    myRigidbody.velocity = knockBack;
     StartCoroutine(Invincible());
     myAnimator.SetTrigger("Hurt");
     }
