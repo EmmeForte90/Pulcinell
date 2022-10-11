@@ -31,6 +31,8 @@ public class GameSession : MonoBehaviour
 
     [Header("Music")]
     [SerializeField] public AudioSource bgm, dieMusic;
+    [SerializeField] bool isStartGame;
+
     
     [Header("GameOver")]
     [SerializeField] public GameObject gameOver;
@@ -51,8 +53,10 @@ public class GameSession : MonoBehaviour
     
     void Awake()
     {
-    
-        playMusic();
+        if(!isStartGame)
+        {
+            playMusic();
+        }
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
         if (numGameSessions > 1)
@@ -191,7 +195,10 @@ public class GameSession : MonoBehaviour
         //fade.gameObject.SetActive(true);
         playMusic();
         //FadeAnimation.instance.OnFadeOut();
+        if(!isStartGame)
+        {
         Instantiate(callFadeOut, centerCanvas.transform.position, centerCanvas.transform.rotation);
+        }
         FindObjectOfType<PlayerMovement>().ReactivatePlayer();
         yield return new WaitForSeconds(5f);
         //FindObjectOfType<PlayerMovement>().playerStopInput();
