@@ -250,7 +250,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: Fall
+  _animationName: animation
   loop: 1
   timeScale: 1
 --- !u!61 &8009027982624581727

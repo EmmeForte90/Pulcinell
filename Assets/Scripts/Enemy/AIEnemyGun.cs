@@ -41,6 +41,9 @@ void Update()
 {
 
 //Calcolo distanza tra player e nemico
+float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+//hit = Physics2D.Raycast(new Vector2(transform.position.x + moveSpeed * frontcheck, transform.position.y));
+Debug.DrawRay(transform.position, new Vector2(attackRange, 0), Color.blue);
 
 #region Se il nemico NON sta attaccando...
 

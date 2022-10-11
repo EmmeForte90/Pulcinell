@@ -4,6 +4,34 @@ using UnityEngine;
 
 public class Platforms : MonoBehaviour
 {
+public Transform[] points;
+
+    [SerializeField]  float moveSpeed;
+    [SerializeField]  int currentPoint;
+    [SerializeField]  Transform platform;
+
+    // Update is called once per frame
+    void Update()
+    {
+        //La piattaforma si muove nei punti e nella velocità stabiliti
+        platform.position = Vector3.MoveTowards(platform.position, points[currentPoint].position, moveSpeed * Time.deltaTime);
+
+        //Conteggio dei puntidi locazione
+        if(Vector3.Distance(platform.position, points[currentPoint].position) <.05f)
+        {
+            currentPoint++;
+
+            if(currentPoint >= points.Length)
+            {
+                currentPoint = 0;
+
+            }
+
+        }
+    }
+
+/*
+
 	[SerializeField] private Vector3[] posizioni;
 	private int index_posizioni;
 	
@@ -17,5 +45,5 @@ public class Platforms : MonoBehaviour
 				index_posizioni=0;
 			} else {index_posizioni++;}
 		}
-    }
+    }*/
 }

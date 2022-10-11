@@ -993,7 +993,7 @@ GameObject:
   - component: {fileID: 4345435097271187364}
   - component: {fileID: 4345435097271187378}
   m_Layer: 6
-  m_Name: Brain
+  m_Name: PBrain
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11389,7 +11389,6 @@ MonoBehaviour:
   - {fileID: 1392598757050419429}
   bgm: {fileID: 0}
   levelEndMusic: {fileID: 0}
-  bossMusic: {fileID: 0}
   dieMusic: {fileID: 8525194693646107102}
 --- !u!1 &8746106318238942985
 GameObject:
