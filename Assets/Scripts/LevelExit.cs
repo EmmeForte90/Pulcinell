@@ -5,19 +5,44 @@ using UnityEngine.SceneManagement;
 
 public class LevelExit : MonoBehaviour
 {
-    [SerializeField] float levelLoadDelay = 1f;
+    //[SerializeField] float levelLoadDelay = 1f;
     //Variabile del ritardo
-    
+    [Header("Fade")]
+    [SerializeField] GameObject callFadeIn;
+    [SerializeField] GameObject callFadeOut;
+    [SerializeField] GameObject centerCanvas;
+    [SerializeField] string startScene;
+    [SerializeField] float Timelife;
+
+
+    public void SceneLoad()
+    {       
+        StartCoroutine(Finishstage());
+    }
+
+    IEnumerator Finishstage()
+    {
+        Instantiate(callFadeIn, centerCanvas.transform.position, centerCanvas.transform.rotation);
+        FindObjectOfType<PlayerMovement>().playerStopInput();
+        yield return new WaitForSeconds(Timelife);
+        FindObjectOfType<ScenePersist>().ResetScenePersist();
+        SceneManager.LoadScene(startScene);
+        FindObjectOfType<PlayerMovement>().playerActivateInput();
+
+    }
+
+
     void OnTriggerEnter2D(Collider2D other) 
     {        
         if (other.tag == "Player")
         //Se l'elemento tocca il player
         {
-            StartCoroutine(LoadNextLevel());
+            StartCoroutine(Finishstage());
+            //StartCoroutine(LoadNextLevel());
             //Parte il conteggio
         }
     }
-
+/*
     IEnumerator LoadNextLevel()
     {
         yield return new WaitForSecondsRealtime(levelLoadDelay);
@@ -38,4 +63,5 @@ public class LevelExit : MonoBehaviour
         SceneManager.LoadScene(nextSceneIndex);
         //Carica lo scenario in base al valore della variabile
     }
+    */
 }

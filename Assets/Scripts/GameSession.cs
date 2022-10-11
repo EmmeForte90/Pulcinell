@@ -194,7 +194,7 @@ public class GameSession : MonoBehaviour
         Instantiate(callFadeOut, centerCanvas.transform.position, centerCanvas.transform.rotation);
         FindObjectOfType<PlayerMovement>().ReactivatePlayer();
         yield return new WaitForSeconds(5f);
-        //FindObjectOfType<PlayerMovement>().playerActivateInput();
+        //FindObjectOfType<PlayerMovement>().playerStopInput();
         //fade.gameObject.SetActive(false);
     }
 
