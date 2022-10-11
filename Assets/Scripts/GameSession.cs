@@ -29,17 +29,30 @@ public class GameSession : MonoBehaviour
     [SerializeField] GameObject callFadeOut;
     [SerializeField] GameObject centerCanvas;
 
-    /*[Header("Music")]
-    [SerializeField] public AudioSource bgm, dieMusic;*/
+    [Header("Music")]
+    [SerializeField] public AudioSource bgm, dieMusic;
     
     [Header("GameOver")]
     [SerializeField] public GameObject gameOver;
 
+#region Singleton
+        public static GameSession instance;
+        public static GameSession Instance
+        {
+            //Se non trova il componente lo trova in automatico
+            get
+            {
+                if (instance == null)
+                    instance = GameObject.FindObjectOfType<GameSession>();
+                return instance;
+            }
+        }
+        #endregion
     
     void Awake()
     {
     
-        //playMusic();
+        playMusic();
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         //Preparazione Singleton della game session
         if (numGameSessions > 1)
@@ -53,7 +66,7 @@ public class GameSession : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
             //Preserva quest'oggetto
-            StartCoroutine(StartStage());
+            StartPlay();
 
         }
     }
@@ -66,6 +79,11 @@ public class GameSession : MonoBehaviour
         //Il testo assume il valore delle vite del player
         moneyText.text = money.ToString();    
         //Il testo assume il valore dello money
+    }
+
+    public void StartPlay()
+    {
+        StartCoroutine(StartStage());
     }
 
     public void ProcessPlayerDeath()
@@ -90,7 +108,7 @@ public class GameSession : MonoBehaviour
     public void StartDie()
     {
         StartCoroutine(CallGameSession());
-       // DieMusic();
+        DieMusic();
     }
 
     IEnumerator CallGameSession()
@@ -116,6 +134,7 @@ public class GameSession : MonoBehaviour
     void TakeLife()
     {
         playerLives--;
+        livesText.text = playerLives.ToString();
         //Il player perde 1 vita
         StartCoroutine(Restart());
     }
@@ -162,7 +181,7 @@ public class GameSession : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
         //fade.gameObject.SetActive(false);
         //Lo scenario viene ricaricato
-        //playMusic();
+        playMusic();
 
     }
 
@@ -170,20 +189,19 @@ public class GameSession : MonoBehaviour
     IEnumerator StartStage()
     {
         //fade.gameObject.SetActive(true);
-        //playMusic();
+        playMusic();
         //FadeAnimation.instance.OnFadeOut();
         Instantiate(callFadeOut, centerCanvas.transform.position, centerCanvas.transform.rotation);
-        PlayerMovement.instance.ReactivatePlayer();
-        PlayerMovement.instance.playerStopInput();
+        FindObjectOfType<PlayerMovement>().ReactivatePlayer();
         yield return new WaitForSeconds(5f);
-        PlayerMovement.instance.playerActivateInput();
+        //FindObjectOfType<PlayerMovement>().playerActivateInput();
         //fade.gameObject.SetActive(false);
     }
 
 
 #region Music
 
-   /* public void stopMusic()
+    public void stopMusic()
     {
         bgm.Stop();
     }
@@ -197,7 +215,7 @@ public class GameSession : MonoBehaviour
         bgm.Stop();
         dieMusic.Play();
     }
-*/
+
     #endregion
 
 }

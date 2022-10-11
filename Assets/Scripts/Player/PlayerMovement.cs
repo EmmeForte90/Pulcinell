@@ -134,6 +134,7 @@ private void Awake()
         public static PlayerMovement instance;
         public static PlayerMovement Instance
         {
+            //Se non trova il componente lo trova in automatico
             get
             {
                 if (instance == null)
