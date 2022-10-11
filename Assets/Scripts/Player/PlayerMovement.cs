@@ -71,8 +71,8 @@ public class PlayerMovement : MonoBehaviour
     //Variabile per verificare se è sbloccato il walljump
     [SerializeField] bool doubleJumpSkill = false;
     //Variabile per verificare se è sbloccato il doppio salto
-    [SerializeField] bool movingRight;
-    private float directionScale;
+    [SerializeField] bool isKnockBack = false;
+    [SerializeField] float timeKnockBack;
 
     [SerializeField] public LayerMask layerMask;
     //Variabile per identificare i vari layer
@@ -434,7 +434,10 @@ public void playerActivateInput()
         if (!isAlive) { return; }
          //Se il player è morto si disattiva la funzione
         isMoving = true;
+        if(!isKnockBack)
+        {
         moveInput = value.Get<Vector2>();
+        }
         
 
         //Dust();
@@ -528,6 +531,7 @@ public void playerActivateInput()
     {
         if(!stopInput && !heShoot)
         {
+            
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         //se il player si sta muovendo le sue coordinate x sono maggiori di quelle e
         //di un valore inferiore a 0
@@ -539,7 +543,8 @@ public void playerActivateInput()
             //viene modificato mentre quello sull'asse y no. 
            
         }
-        }
+            }
+        
     }
 
 #endregion
@@ -630,7 +635,17 @@ void OnCollisionEnter2D(Collision2D other)
             //Debug.Log("Hai ricevuto il danno");
             Hurt();
 		}
-    }
+    //Testando il knock back    
+        if (other.gameObject.tag == "Test")
+        {
+            Debug.Log("colpito");
+            isKnockBack = true;
+            myRigidbody.velocity = new Vector2(-10, 10);
+           StartCoroutine(stopKnockback());
+		}
+	}
+
+    
 private void OnCollisionExit2D(Collision2D other){
 	if (other.gameObject.tag == "Platforms")
         {
@@ -639,6 +654,14 @@ private void OnCollisionExit2D(Collision2D other){
 			Player.transform.parent = null;
 		}
 	}
+private IEnumerator stopKnockback()
+{
+        yield return new WaitForSeconds(timeKnockBack);
+        isKnockBack = false;
+        myRigidbody.velocity = stopMove;
+
+}
+
 
 #endregion
 

@@ -33,7 +33,7 @@ public class Parallax : MonoBehaviour
 
             Vector2 amountToMove = new Vector2(transform.position.x - lastPos.x, transform.position.y - lastPos.y);
 
-            farBackground.position = farBackground.position + new Vector3(amountToMove.x, amountToMove.y, 0f);
+//            farBackground.position = farBackground.position + new Vector3(amountToMove.x, amountToMove.y, 0f);
             middleBackground.position += new Vector3(amountToMove.x, amountToMove.y, 0f) * .5f;
 
 
