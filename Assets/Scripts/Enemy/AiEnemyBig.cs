@@ -93,6 +93,7 @@ if(!isAttack && disToPlayer > agroRange){
                 }
 
                 anim.SetBool("isMoving", true);
+                anim.SetBool("isCrash", false);
             }
             else if (waitCount > 0)
             //Se il conteggio del movimento è maggiore di zero
@@ -107,6 +108,7 @@ if(!isAttack && disToPlayer > agroRange){
                     //Il tempo di movimento diventa randomico
                 }
                 anim.SetBool("isMoving", false);
+
             }
         } 
 #endregion
@@ -162,6 +164,7 @@ else if(transform.position.x > PlayerMovement.instance.transform.position.x)
 private void StopChasingPlayer()
 {
     StopAttack();
+    anim.SetBool("isCrash", false);
     anim.SetBool("isRunning", false);
     RB.velocity = new Vector2(moveSpeed, 0);
 }
@@ -190,6 +193,7 @@ private IEnumerator PrepareAttack()
     RB.velocity = new Vector2(0, 0);
     anim.SetBool("isMoving", false);
     anim.SetBool("isAttack", true);
+    anim.SetBool("isCrash", false);
     yield return new WaitForSeconds(timeBeforeAttack);
     StartCoroutine(crashAnimation());
     //CinemachineShake.instance.ShakeCamera(7f, .5f);
@@ -213,13 +217,28 @@ private void Crash()
    {
     AudioManager.instance.PlaySFX(3);
     PlayerMovement.instance.Hurt();
+
     if(fatEnemy)
     {
-        PlayerMovement.instance.knockBackBig();
+        if(movingRight)
+        {
+        PlayerMovement.instance.knockBackBigLeft();
+        }
+        else if(!movingRight)
+        {
+        PlayerMovement.instance.knockBackBigRight();
+        }
     }
     else if(!fatEnemy)
     {
-        PlayerMovement.instance.knockBack();
+        if(movingRight)
+        {
+        PlayerMovement.instance.knockBackLeftDir();
+        }
+        else if(!movingRight)
+        {
+        PlayerMovement.instance.knockBackRightDir();
+        }
     }
 }  
     

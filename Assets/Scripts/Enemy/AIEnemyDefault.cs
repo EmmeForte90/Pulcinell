@@ -178,6 +178,14 @@ public void Attack()
     RB.velocity = new Vector2(0, 0);
     anim.SetBool("isMoving", false);
     anim.SetBool("isAttack", true);
+    if(movingRight)
+        {
+        PlayerMovement.instance.knockBackLeftDir();
+        }
+        else if(!movingRight)
+        {
+        PlayerMovement.instance.knockBackRightDir();
+        }
     }
 
 public void StopAttack()

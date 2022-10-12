@@ -93,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Gizmo per l'engine")]
     [SerializeField] float wallJumpDistance = 1f;
+    [SerializeField] float knockDirectionDistance = 1f;
     
     [Header("Attacco")]
     [SerializeField] float attackRate = 2f;
@@ -113,6 +114,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public Transform gun;
     //Variabile per spostare o scalare l'oggetto
     [SerializeField] public Transform stompBox;
+    [SerializeField] public Transform backDirection;
     [SerializeField] public GameObject dust;
     [SerializeField] GameObject Change;
     //VFX per il cambio arma
@@ -164,6 +166,10 @@ private void Awake()
         //Se il player è morto si disattiva la funzione
         //Altrimenti si attivano le funzioni
 
+        //Calcolo distanza tra player e nemico
+        float disToPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+        //hit = Physics2D.Raycast(new Vector2(transform.position.x + moveSpeed * frontcheck, transform.position.y));
+        Debug.DrawRay(backDirection.transform.position, new Vector2(knockDirectionDistance, 0), Color.blue);
         Debug.DrawRay(transform.position, new Vector2(wallJumpDistance, 0), Color.red);
 
         Run();
@@ -725,35 +731,35 @@ private void OnCollisionExit2D(Collision2D other){
 			Player.transform.parent = null;
 		}
 	}
+#endregion
 
-public void knockBack()
+#region  KnockBack
+public void knockBackLeftDir()
 {
             isKnockBack = true;
-            if(m_FacingRight)
-            {
             moveInput = knockBackLeft;
-            }
-            else if(!m_FacingRight)
-            {
-            moveInput = knockBackRight;
-            }
             StartCoroutine(stopKnockback());
 }
-
-public void knockBackBig()
+public void knockBackRightDir()
 {
             isKnockBack = true;
-            if(m_FacingRight)
-            {
-            moveInput = knockBackLeftBig;
-            }
-            else if(!m_FacingRight)
-            {
-            moveInput = knockBackRightBig;
-            }
+            moveInput = knockBackRight;
             StartCoroutine(stopKnockback());
 }
 
+public void knockBackBigLeft()
+{
+            isKnockBack = true;
+            moveInput = knockBackLeftBig;
+            StartCoroutine(stopKnockback());
+}
+
+public void knockBackBigRight()
+{
+            isKnockBack = true;
+            moveInput = knockBackRightBig;
+            StartCoroutine(stopKnockback());
+}
 private IEnumerator stopKnockback()
 {
         yield return new WaitForSeconds(0.2f);
@@ -761,7 +767,6 @@ private IEnumerator stopKnockback()
         moveInput = stopMove;
 
 }
-
 
 #endregion
 

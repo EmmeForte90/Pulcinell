@@ -4914,6 +4914,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
+      propertyPath: backDirection
+      value: 
+      objectReference: {fileID: 1722371564}
+    - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
       propertyPath: timeKnockBack
       value: 0.2
       objectReference: {fileID: 0}
@@ -4928,6 +4932,10 @@ PrefabInstance:
     - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
       propertyPath: lowJumpMultiplier
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
+      propertyPath: knockDirectionDistance
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4345435097271187388, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
       propertyPath: m_Mesh
@@ -5023,6 +5031,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
+--- !u!4 &1722371564 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8196451450608429751, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
+  m_PrefabInstance: {fileID: 1722371563}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1736650993
 GameObject:
   m_ObjectHideFlags: 0
@@ -6471,12 +6484,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8078897636520853812, guid: ee2af8e1f935cfc479a12f13f30921ec, type: 3}
+      propertyPath: Enemy
+      value: 
+      objectReference: {fileID: 8078897637218130491}
     - target: {fileID: 8078897636520853815, guid: ee2af8e1f935cfc479a12f13f30921ec, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee2af8e1f935cfc479a12f13f30921ec, type: 3}
+--- !u!4 &8078897637218130491 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8078897636520853820, guid: ee2af8e1f935cfc479a12f13f30921ec, type: 3}
+  m_PrefabInstance: {fileID: 8078897637218130490}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8433030833902103737
 PrefabInstance:
   m_ObjectHideFlags: 0

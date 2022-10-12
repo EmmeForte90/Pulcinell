@@ -717,6 +717,7 @@ Transform:
   - {fileID: 4345435098086087624}
   - {fileID: 4345435097308954920}
   - {fileID: 4345435098333460634}
+  - {fileID: 8196451450608429751}
   - {fileID: 4345435097871317381}
   - {fileID: 4345435098428627364}
   m_Father: {fileID: 4345435096975618518}
@@ -949,16 +950,19 @@ MonoBehaviour:
   runSpeed: 5
   jumpSpeed: 6
   climbSpeed: 5
-  knockBack: {x: 5, y: 5}
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
   myRigidbody: {fileID: 4345435097271187384}
   PauseMenu: {fileID: 0}
   Player: {fileID: 4345435097271187367}
   wallJumpSkill: 0
   doubleJumpSkill: 0
+  isKnockBack: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 9480
   wallJumpDistance: 1
+  knockDirectionDistance: 1
   attackRate: 2
   attackrange: 0.5
   nextAttackTime: 0.2
@@ -967,6 +971,8 @@ MonoBehaviour:
   BAM: {fileID: 710082778365043659, guid: bacac78e5165ef54cbcf15609f4cb043, type: 3}
   gun: {fileID: 4345435098086087624}
   stompBox: {fileID: 4345435097871317381}
+  backDirection: {fileID: 0}
+  dust: {fileID: 0}
   Change: {fileID: 6274886995297764625, guid: b38aeaa98a2930344a64f1a8486072db, type: 3}
   footsteps: {fileID: 4345435097308954926}
   impactEffect: {fileID: 4345435098333460632}
@@ -5957,7 +5963,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4345435097271187389}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &4345435097871317403
 BoxCollider2D:
@@ -5998,6 +6004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stompBox: {fileID: 4345435097871317380}
+  stompDust: {fileID: 0}
 --- !u!1 &4345435098086087627
 GameObject:
   m_ObjectHideFlags: 0
@@ -10870,7 +10877,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4345435097271187389}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4377079823988674072
 GameObject:
@@ -11568,6 +11575,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &8116603872249444944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8196451450608429751}
+  m_Layer: 7
+  m_Name: KnockBackDirection
+  m_TagString: Untagged
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8196451450608429751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8116603872249444944}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.003, y: 0.692, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4345435097271187389}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8280450818260118720
 GameObject:
   m_ObjectHideFlags: 0
