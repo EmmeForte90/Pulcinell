@@ -73,8 +73,10 @@ public class PlayerMovement : MonoBehaviour
     bool canDoubleJump = false;
     //Può fare il doppio salto
     private bool platform = false;
-    bool isFall = false;
     //Variabile per identificare la piattaforma
+    bool isFall = false;
+    bool isClimbing = false;
+    bool moveClimb = false;
     [SerializeField] bool wallJumpSkill = false;
     //Variabile per verificare se è sbloccato il walljump
     [SerializeField] bool doubleJumpSkill = false;
@@ -298,7 +300,9 @@ public void BumpEnemy()
 public void OnLookUp(InputValue value)
 //Funzione guarda su
 {
-if (value.isPressed)
+    if(!isClimbing)
+    {
+    if (value.isPressed)
     {
         stopInput = true;
         lookUp = true;
@@ -310,11 +314,14 @@ if (value.isPressed)
     {
         lookUp = false;
     }
+    }
 }
 public void OnLookDown(InputValue value)
 //Funzione guarda su
 {
-if (value.isPressed)
+    if(!isClimbing)
+    {
+    if (value.isPressed)
     {
         stopInput = true;
         lookDown = true;
@@ -326,6 +333,7 @@ if (value.isPressed)
     else
     {
         lookDown = false;
+    }
     }
 }
 
@@ -610,10 +618,13 @@ public void playerActivateInput()
             myRigidbody.gravityScale = gravityScaleAtStart;
             //La gravità del rigidbody viene resettata
             myAnimator.SetBool("isClimbing", false);
+            myAnimator.SetBool("moveClimb", false);
+            isClimbing = false;
             //L'animazione viene disattivata
             return;
             //Il metodo ritorna
         }
+        myAnimator.SetBool("isClimbing", true);
         //Se il player si sta arrampicando
         Vector2 climbVelocity = new Vector2 (myRigidbody.velocity.x, moveInput.y * climbSpeed);
         //La variabilità dell'arrampicata assume un nuovo vettore
@@ -626,7 +637,8 @@ public void playerActivateInput()
         bool playerHasVerticalSpeed = Mathf.Abs(myRigidbody.velocity.y) > Mathf.Epsilon;
         //se il player si sta muovendo le sue coordinate x sono maggiori di quelle e
         //di un valore inferiore a 0
-        myAnimator.SetBool("isClimbing", playerHasVerticalSpeed);
+        myAnimator.SetBool("moveClimb", playerHasVerticalSpeed);
+        isClimbing = true;
         //Si attiva l'animazione dell'arrampicata
     }
 #endregion
