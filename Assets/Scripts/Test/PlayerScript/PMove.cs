@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+//Usa l'input system di Unity scaricato dal packet manager
+using Spine.Unity;
+//Collega Spine a Unity
+using Spine;
+//Usa i Json di Spine
 
 public class PMove : MonoBehaviour
 {
@@ -11,6 +17,7 @@ public class PMove : MonoBehaviour
     [SerializeField]
     LayerMask layerMask;
     bool isGround = false, canDoubleJump = false;
+    
 
     bool isDash = false;
     float lastDashTime;
@@ -20,21 +27,25 @@ public class PMove : MonoBehaviour
 
     bool canWallJumpLeft = false, canWallJumpRight = false, isWallJumping = false;
 
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
+
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         lastDashTime = Time.time;
     }
 
-    
 
     private void FixedUpdate()
     {
     ApplyMovement();
     CheckGround();
     checkWallJump();
+
+    
     }
 
 
@@ -112,6 +123,20 @@ void checkWallJump()
 
     public void Jump()
     {
+        /*if(!value.isPressed && body.velocity.y > 0)
+        {
+            body.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        } 
+        else if(body.velocity.y < 0)
+        {
+            body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }*/
+
+
+        
+    
+
+        /*
         if(isGround)
         {
             body.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -131,7 +156,7 @@ void checkWallJump()
             isWallJumping = true;
             wallJumpDir = new Vector2(-1, 1);
         
-        }
+        }*/
     }
 
 

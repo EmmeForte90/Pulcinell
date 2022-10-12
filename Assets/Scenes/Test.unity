@@ -4178,6 +4178,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   dashTime: 5
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
 --- !u!114 &1575965463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4900,6 +4902,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1102461547}
     - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
+      propertyPath: jumpSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
       propertyPath: stompDust
       value: 
       objectReference: {fileID: 5369050316975017941, guid: f17ce604848b21c4281dea54faa6cc2a, type: 3}
@@ -4912,8 +4918,16 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
+      propertyPath: fallMultiplier
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
       propertyPath: doubleJumpSkill
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345435097271187386, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
+      propertyPath: lowJumpMultiplier
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4345435097271187388, guid: ce70926447cf67044868c329b97f9fa9, type: 3}
       propertyPath: m_Mesh

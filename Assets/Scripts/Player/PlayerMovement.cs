@@ -26,7 +26,8 @@ public class PlayerMovement : MonoBehaviour
     
     Vector2 knockBackRightBig = new Vector2 (-10f, 10f);
     Vector2 knockBackLeftBig = new Vector2 (10f, 10f);
-
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
     //[SerializeField] float knockBack;
     //Saltello di morte
     public Rigidbody2D myRigidbody;
@@ -72,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
     bool canDoubleJump = false;
     //Può fare il doppio salto
     private bool platform = false;
+    bool isFall = false;
     //Variabile per identificare la piattaforma
     [SerializeField] bool wallJumpSkill = false;
     //Variabile per verificare se è sbloccato il walljump
@@ -185,6 +187,21 @@ private void Awake()
             footEmission.rateOverTime = 0f;
             dust.gameObject.SetActive(false);
         }
+
+        if(myRigidbody.velocity.y > 0)
+        {
+            myRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+            myAnimator.SetTrigger("Jump");
+
+        } 
+        else if(myRigidbody.velocity.y < 0)
+        {
+            myRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            isFall = true;
+            UpdateAnimation();
+        }
+
+
     }
        
 
@@ -197,6 +214,8 @@ void UpdateAnimation()
             myAnimator.SetBool("wallJump", isWallJumping);
             myAnimator.SetBool("lookDown", lookDown);
             myAnimator.SetBool("lookUp", lookUp);
+            myAnimator.SetBool("isFall", isFall);
+
     }
 
 
@@ -206,6 +225,7 @@ void CheckGround()
         if(Physics2D.Raycast(transform.position, Vector2.down, 1f, layerMask))
         {
             isGround = true;
+            isFall = false;
             UpdateAnimation();
             if(doubleJumpSkill)
             //Se l'abilità doppio salto non è sbloccato non puoi usare questa abilità
@@ -454,6 +474,7 @@ public void playerActivateInput()
     void OnJump(InputValue value) 
     {
         
+    
         //Se il player non sta toccando il suolo il salto(metodo) finisce
         if(value.isPressed && !platform && isGround)
         //Se il player sta premendo il tasto
